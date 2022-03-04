@@ -1,8 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts"
-import {
-  SummitswapRouter02,
-  OwnershipTransferred
-} from "../generated/SummitswapRouter02/SummitswapRouter02"
+import { SummitswapRouter02, OwnershipTransferred } from "../generated/SummitswapRouter02/SummitswapRouter02"
 import { ExampleEntity } from "../generated/schema"
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {

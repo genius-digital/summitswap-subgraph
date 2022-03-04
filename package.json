@@ -10,7 +10,7 @@
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 summitswap-subsgraph",
     "format:check": "prettier --check '*/**/*.{js,ts}'",
     "format:write": "prettier --write '*/**/*.{js,ts}'",
-    "lint": "eslint '*/**/*.{js,ts}'",
+    "lint-staged": "eslint '*/**/*.{js,ts}'",
     "prepare": "husky install"
   },
   "dependencies": {

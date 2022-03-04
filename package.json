@@ -1,5 +1,10 @@
 {
   "name": "summitswap-subsgraph",
+  "description": "SummitSwap SubsGraph",
+  "version": "1.0.0",
+  "private": true,
+  "repository": "https://github.com/Koda-Finance/summitswap-subgraph",
+  "author": "SummitSwap",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",

@@ -1,13 +1,13 @@
 {
-  "name": "blocks",
+  "name": "exchange",
   "description": "SummitSwap Subgraph",
   "version": "1.0.0",
   "repository": "https://github.com/Koda-Finance/summitswap-subgraph",
   "author": "SummitSwap",
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "codegen": "graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
-    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ summitswap/blocks subgraph.yaml"
+    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ summitswap/exchange subgraph.yaml"
   }
 }

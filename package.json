@@ -12,10 +12,6 @@
   "scripts": {
     "codegen": "lerna run codegen",
     "build": "lerna run build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ summitswap-subsgraph",
-    "create-local": "graph create --node http://localhost:8020/ summitswap-subsgraph",
-    "remove-local": "graph remove --node http://localhost:8020/ summitswap-subsgraph",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 summitswap-subsgraph",
     "format:check": "prettier --check '*/**/*.{js,ts}'",
     "format:write": "prettier --write '*/**/*.{js,ts}'",
     "lint-staged": "eslint '*/**/*.{js,ts}'",

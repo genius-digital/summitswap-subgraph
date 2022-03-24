@@ -57,6 +57,8 @@ export function handleTransfer(event: Transfer): void {
       mint.transaction = transaction.id
       mint.pair = pair.id
       mint.to = event.params.to
+      mint.token0 = pair.token0
+      mint.token1 = pair.token1
       mint.liquidity = value
       mint.timestamp = transaction.timestamp
       mint.transaction = transaction.id
@@ -76,6 +78,8 @@ export function handleTransfer(event: Transfer): void {
     let burn = new BurnEvent(event.transaction.hash.toHex().concat("-").concat(BigInt.fromI32(burns.length).toString()))
     burn.transaction = transaction.id
     burn.pair = pair.id
+    burn.token0 = pair.token0
+    burn.token1 = pair.token1
     burn.liquidity = value
     burn.timestamp = transaction.timestamp
     burn.to = event.params.to
@@ -108,6 +112,8 @@ export function handleTransfer(event: Transfer): void {
         burn.transaction = transaction.id
         burn.needsComplete = false
         burn.pair = pair.id
+        burn.token0 = pair.token0
+        burn.token1 = pair.token1
         burn.liquidity = value
         burn.transaction = transaction.id
         burn.timestamp = transaction.timestamp
@@ -117,6 +123,8 @@ export function handleTransfer(event: Transfer): void {
       burn.transaction = transaction.id
       burn.needsComplete = false
       burn.pair = pair.id
+      burn.token0 = pair.token0
+      burn.token1 = pair.token1
       burn.liquidity = value
       burn.transaction = transaction.id
       burn.timestamp = transaction.timestamp
@@ -265,6 +273,8 @@ export function handleMint(event: Mint): void {
   summit.save()
 
   mint.sender = event.params.sender
+  mint.token0 = token0.id
+  mint.token1 = token1.id
   mint.amount0 = token0Amount as BigDecimal
   mint.amount1 = token1Amount as BigDecimal
   mint.logIndex = event.logIndex
@@ -319,6 +329,8 @@ export function handleBurn(event: Burn): void {
 
   // update burn
   // burn.sender = event.params.sender
+  burn.token0 = token0.id
+  burn.token1 = token1.id
   burn.amount0 = token0Amount as BigDecimal
   burn.amount1 = token1Amount as BigDecimal
   // burn.to = event.params.to
@@ -425,6 +437,8 @@ export function handleSwap(event: Swap): void {
   swap.timestamp = transaction.timestamp
   swap.transaction = transaction.id
   swap.sender = event.params.sender
+  swap.token0 = token0.id
+  swap.token1 = token1.id
   swap.amount0In = amount0In
   swap.amount1In = amount1In
   swap.amount0Out = amount0Out

@@ -3,7 +3,7 @@ import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts"
 import { ERC20 } from "../../generated/SummitFactory/ERC20"
 import { ERC20NameBytes } from "../../generated/SummitFactory/ERC20NameBytes"
 import { ERC20SymbolBytes } from "../../generated/SummitFactory/ERC20SymbolBytes"
-import { Factory as FactoryContract } from "../../generated/templates/Pair/Factory"
+import { Factory as FactoryContract } from "../../generated/templates/SummitPair/Factory"
 
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000"
 export let SUMMIT_FACTORY_ADDRESS = "0x7067079bc460d2c5984cC89008786fE46839FCF0"

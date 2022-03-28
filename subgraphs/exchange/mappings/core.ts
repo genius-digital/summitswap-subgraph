@@ -12,7 +12,7 @@ import {
   PancakePair,
   PancakeToken,
 } from "../generated/schema"
-import { Mint, Burn, Swap, Transfer, Sync } from "../generated/templates/Pair/Pair"
+import { Mint, Burn, Swap, Transfer, Sync } from "../generated/templates/SummitPair/Pair"
 import { updatePairDayData, updateTokenDayData, updateSummitDayData, updatePairHourData } from "./dayUpdates"
 import {
   getBnbPriceInUSD,

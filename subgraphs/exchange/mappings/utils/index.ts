@@ -1,12 +1,13 @@
 /* eslint-disable prefer-const */
 import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts"
-import { ERC20 } from "../../generated/Factory/ERC20"
-import { ERC20NameBytes } from "../../generated/Factory/ERC20NameBytes"
-import { ERC20SymbolBytes } from "../../generated/Factory/ERC20SymbolBytes"
+import { ERC20 } from "../../generated/SummitFactory/ERC20"
+import { ERC20NameBytes } from "../../generated/SummitFactory/ERC20NameBytes"
+import { ERC20SymbolBytes } from "../../generated/SummitFactory/ERC20SymbolBytes"
 import { Factory as FactoryContract } from "../../generated/templates/Pair/Factory"
 
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000"
-export let FACTORY_ADDRESS = "0x7067079bc460d2c5984cC89008786fE46839FCF0"
+export let SUMMIT_FACTORY_ADDRESS = "0x7067079bc460d2c5984cC89008786fE46839FCF0"
+export let PANCAKE_FACTORY_ADDRESS = "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"
 
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)
@@ -14,7 +15,8 @@ export let ZERO_BD = BigDecimal.fromString("0")
 export let ONE_BD = BigDecimal.fromString("1")
 export let BI_18 = BigInt.fromI32(18)
 
-export let factoryContract = FactoryContract.bind(Address.fromString(FACTORY_ADDRESS))
+export let summitFactoryContract = FactoryContract.bind(Address.fromString(SUMMIT_FACTORY_ADDRESS))
+export let pancakeFactoryContract = FactoryContract.bind(Address.fromString(PANCAKE_FACTORY_ADDRESS))
 
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   let bd = BigDecimal.fromString("1")

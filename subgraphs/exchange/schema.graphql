@@ -1,3 +1,6 @@
+"""
+SummitSwap
+"""
 type SummitFactory @entity {
   id: ID!
 
@@ -270,4 +273,51 @@ type TokenDayData @entity {
 
   # price stats
   priceUSD: BigDecimal!
+}
+
+"""
+PancakeSwap
+"""
+type PancakeFactory @entity {
+  id: ID!
+
+  "Total of pairs"
+  totalPairs: BigInt!
+}
+
+type PancakeToken @entity {
+  id: ID!
+
+  "Name"
+  name: String!
+  "Symbol"
+  symbol: String!
+  "Decimals"
+  decimals: BigInt!
+
+  # derived prices
+  derivedBNB: BigDecimal
+  derivedUSD: BigDecimal
+}
+
+type PancakePair @entity {
+  id: ID!
+
+  name: String!
+
+  # mirrored from the smart contract
+  token0: PancakeToken!
+  token1: PancakeToken!
+  reserve0: BigDecimal!
+  reserve1: BigDecimal!
+
+  # derived liquidity
+  reserveBNB: BigDecimal!
+  reserveUSD: BigDecimal!
+  # Price in terms of the asset pair
+  token0Price: BigDecimal!
+  token1Price: BigDecimal!
+
+  block: BigInt!
+  timestamp: BigInt!
 }

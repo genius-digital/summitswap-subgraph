@@ -1,0 +1,128 @@
+specVersion: 0.0.2
+description: Track Referral Reward on SummitSwap protocol
+repository: https://github.com/koda-finance
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SummitReferral
+    network: bsc
+    source:
+      address: '0x7c63e26049FA5620FB3555e2f5B53b3b756B5919'
+      abi: SummitReferral
+      startBlock: 14963084
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/summitReferral.ts
+      entities:
+        - Token
+        - SummitReferral
+      abis:
+        - name: SummitReferral
+          file: ./abis/SummitReferral.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: ReferralRecorded(indexed address,indexed address,indexed address)
+          handler: handleReferralRecorded
+        - event: ReferralReward(indexed address,indexed address,uint256,address,address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleReferralReward
+  - kind: ethereum/contract
+    name: SummitFactory
+    network: bsc
+    source:
+      address: '0x7067079bc460d2c5984cC89008786fE46839FCF0'
+      abi: Factory
+      startBlock: 14962540
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/factory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+      eventHandlers:
+        - event: PairCreated(indexed address,indexed address,address,uint256)
+          handler: handleSummitPairCreated
+  - kind: ethereum/contract
+    name: PancakeFactory
+    network: bsc
+    source:
+      address: '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
+      abi: Factory
+      startBlock: 6809737
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/factory.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+      eventHandlers:
+        - event: PairCreated(indexed address,indexed address,address,uint256)
+          handler: handlePancakePairCreated
+templates:
+  - kind: ethereum/contract
+    name: SummitPair
+    network: bsc
+    source:
+      abi: Pair
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/core.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Pair
+          file: ./abis/Pair.json
+      eventHandlers:
+        - event: Sync(uint112,uint112)
+          handler: handleSummitSync
+  - kind: ethereum/contract
+    name: PancakePair
+    network: bsc
+    source:
+      abi: Pair
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/core.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Pair
+          file: ./abis/Pair.json
+      eventHandlers:
+        - event: Sync(uint112,uint112)
+          handler: handlePancakeSync

@@ -1,0 +1,213 @@
+"""
+SummitSwap Referral
+"""
+type SummitReferral @entity {
+  "ID (address)"
+  id: ID!
+
+  "Total of Referees"
+  totalReferees: BigInt!
+
+  "Total of Reward In USD"
+  totalRewardUSD: BigDecimal!
+  "Total of Reward In BNB"
+  totalRewardBNB: BigDecimal!
+}
+
+type Bundle @entity {
+  id: ID!
+
+  "BNB price, in USD"
+  bnbPrice: BigDecimal!
+}
+
+"""
+SummitSwap Referral Recorded
+"""
+type ReferralRecorded @entity {
+  "ID (address)"
+  id: ID!
+
+  "timestamp"
+  timestamp: BigInt!
+
+  "Referee"
+  referee: Account!
+  "Referrer"
+  referrer: Account!
+  "outputToken"
+  outputToken: Token!
+}
+
+"""
+SummitSwap Referral Reward
+"""
+type ReferralReward @entity {
+  "ID (address)"
+  id: ID!
+
+  "Referee"
+  referee: Account!
+  "Referrer"
+  referrer: Account!
+  "Lead Influencer"
+  leadInf: Account!
+  "Timestamp"
+  timestamp: BigInt!
+
+
+  "Input Token"
+  inputToken: Token!
+  "Input Token Amount"
+  inputTokenAmount: BigDecimal!
+  "Output Token"
+  outputToken: Token!
+  "Output Token Amount"
+  outputTokenAmount: BigDecimal!
+
+  "Referrer Reward"
+  referrerReward: BigDecimal!
+  "Lead Influencer Reward"
+  leadReward: BigDecimal!
+  "Dev Reward"
+  devReward: BigDecimal!
+}
+
+"""
+SummitSwap Factory
+"""
+type SummitFactory @entity {
+  id: ID!
+
+  "Total of pairs"
+  totalPairs: BigInt!
+}
+
+"""
+SummitSwap Pair
+"""
+type Pair @entity {
+  id: ID!
+
+  name: String!
+
+  # mirrored from the smart contract
+  token0: Token!
+  token1: Token!
+  reserve0: BigDecimal!
+  reserve1: BigDecimal!
+
+  # derived liquidity
+  reserveBNB: BigDecimal!
+  reserveUSD: BigDecimal!
+  # Price in terms of the asset pair
+  token0Price: BigDecimal!
+  token1Price: BigDecimal!
+
+  block: BigInt!
+  timestamp: BigInt!
+}
+
+"""
+SummitSwap Tokens
+"""
+type Token @entity {
+  "ID (address)"
+  id: ID!
+
+  "Name"
+  name: String!
+  "Symbol"
+  symbol: String!
+  "Decimals"
+  decimals: BigInt!
+
+  # derived prices
+  derivedBNB: BigDecimal
+  derivedUSD: BigDecimal
+
+  "Total Token for Output"
+  totalTokenAsOutput: BigDecimal!
+  "Total Token as Reward"
+  totalTokenAsReward: BigDecimal!
+
+  "Total of Reward In USD"
+  totalRewardUSD: BigDecimal!
+  "Total of Reward In BNB"
+  totalRewardBNB: BigDecimal!
+}
+
+"""
+Summitswap Account
+"""
+type Account @entity {
+  "ID (address)"
+  id: ID!
+
+  "ReferralReward"
+  referralRewards: [ReferralReward!]!
+  "Referred Token"
+  tokens: [Token!]
+
+  "Total of Referees"
+  totalReferees: BigInt!
+
+  "Total of Reward In USD"
+  totalRewardUSD: BigDecimal!
+  "Total of Reward In BNB"
+  totalRewardBNB: BigDecimal!
+
+}
+
+"""
+PancakeSwap Factory
+"""
+type PancakeFactory @entity {
+  id: ID!
+
+  "Total of pairs"
+  totalPairs: BigInt!
+}
+
+"""
+PancakeSwap Token
+"""
+type PancakeToken @entity {
+  id: ID!
+
+  "Name"
+  name: String!
+  "Symbol"
+  symbol: String!
+  "Decimals"
+  decimals: BigInt!
+
+  # derived prices
+  derivedBNB: BigDecimal
+  derivedUSD: BigDecimal
+}
+
+"""
+PancakeSwap Pair
+"""
+type PancakePair @entity {
+  id: ID!
+
+  name: String!
+
+  # mirrored from the smart contract
+  token0: PancakeToken!
+  token1: PancakeToken!
+  reserve0: BigDecimal!
+  reserve1: BigDecimal!
+
+  # derived liquidity
+  reserveBNB: BigDecimal!
+  reserveUSD: BigDecimal!
+  # Price in terms of the asset pair
+  token0Price: BigDecimal!
+  token1Price: BigDecimal!
+
+  block: BigInt!
+  timestamp: BigInt!
+}

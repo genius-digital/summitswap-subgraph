@@ -9,19 +9,11 @@ import {
   Burn as BurnEvent,
   Swap as SwapEvent,
   Bundle,
-  PancakePair,
-  PancakeToken,
 } from "../generated/schema"
-import { Mint, Burn, Swap, Transfer, Sync } from "../generated/templates/SummitPair/Pair"
+import { Mint, Burn, Swap, Transfer, Sync } from "../generated/templates/Pair/Pair"
 import { updatePairDayData, updateTokenDayData, updateSummitDayData, updatePairHourData } from "./dayUpdates"
-import {
-  getBnbPriceInUSD,
-  findSummitBnbPerToken,
-  findPancakeBnbPerToken,
-  getTrackedVolumeUSD,
-  getTrackedLiquidityUSD,
-} from "./pricing"
-import { convertTokenToDecimal, ADDRESS_ZERO, SUMMIT_FACTORY_ADDRESS, ONE_BI, ZERO_BD, BI_18 } from "./utils"
+import { getBnbPriceInUSD, findBnbPerToken, getTrackedVolumeUSD, getTrackedLiquidityUSD } from "./pricing"
+import { convertTokenToDecimal, ADDRESS_ZERO, FACTORY_ADDRESS, ONE_BI, ZERO_BD, BI_18 } from "./utils"
 
 function isCompleteMint(mintId: string): boolean {
   return MintEvent.load(mintId).sender !== null // sufficient checks
@@ -177,7 +169,7 @@ export function handleSync(event: Sync): void {
   let pair = Pair.load(event.address.toHex())
   let token0 = Token.load(pair.token0)
   let token1 = Token.load(pair.token1)
-  let summit = SummitFactory.load(SUMMIT_FACTORY_ADDRESS)
+  let summit = SummitFactory.load(FACTORY_ADDRESS)
 
   // reset factory liquidity by subtracting only tracked liquidity
   summit.totalLiquidityBNB = summit.totalLiquidityBNB.minus(pair.trackedReserveBNB as BigDecimal)
@@ -198,12 +190,12 @@ export function handleSync(event: Sync): void {
   bundle.bnbPrice = getBnbPriceInUSD()
   bundle.save()
 
-  let t0DerivedBNB = findSummitBnbPerToken(token0 as Token)
+  let t0DerivedBNB = findBnbPerToken(token0 as Token)
   token0.derivedBNB = t0DerivedBNB
   token0.derivedUSD = t0DerivedBNB.times(bundle.bnbPrice)
   token0.save()
 
-  let t1DerivedBNB = findSummitBnbPerToken(token1 as Token)
+  let t1DerivedBNB = findBnbPerToken(token1 as Token)
   token1.derivedBNB = t1DerivedBNB
   token1.derivedUSD = t1DerivedBNB.times(bundle.bnbPrice)
   token1.save()
@@ -250,7 +242,7 @@ export function handleMint(event: Mint): void {
   let mint = MintEvent.load(mints[mints.length - 1])
 
   let pair = Pair.load(event.address.toHex())
-  let summit = SummitFactory.load(SUMMIT_FACTORY_ADDRESS)
+  let summit = SummitFactory.load(FACTORY_ADDRESS)
 
   let token0 = Token.load(pair.token0)
   let token1 = Token.load(pair.token1)
@@ -306,7 +298,7 @@ export function handleBurn(event: Burn): void {
   let burn = BurnEvent.load(burns[burns.length - 1])
 
   let pair = Pair.load(event.address.toHex())
-  let summit = SummitFactory.load(SUMMIT_FACTORY_ADDRESS)
+  let summit = SummitFactory.load(FACTORY_ADDRESS)
 
   //update token info
   let token0 = Token.load(pair.token0)
@@ -415,7 +407,7 @@ export function handleSwap(event: Swap): void {
   pair.save()
 
   // update global values, only used tracked amounts for volume
-  let summit = SummitFactory.load(SUMMIT_FACTORY_ADDRESS)
+  let summit = SummitFactory.load(FACTORY_ADDRESS)
   summit.totalVolumeUSD = summit.totalVolumeUSD.plus(trackedAmountUSD)
   summit.totalVolumeBNB = summit.totalVolumeBNB.plus(trackedAmountBNB)
   summit.untrackedVolumeUSD = summit.untrackedVolumeUSD.plus(derivedAmountUSD)
@@ -506,43 +498,4 @@ export function handleSwap(event: Swap): void {
     amount1Total.times(token1.derivedBNB as BigDecimal).times(bundle.bnbPrice)
   )
   token1DayData.save()
-}
-
-export function handlePancakeSync(event: Sync): void {
-  let pair = PancakePair.load(event.address.toHex())
-  let token0 = PancakeToken.load(pair.token0)
-  let token1 = PancakeToken.load(pair.token1)
-
-  pair.reserve0 = convertTokenToDecimal(event.params.reserve0, token0.decimals)
-  pair.reserve1 = convertTokenToDecimal(event.params.reserve1, token1.decimals)
-
-  if (pair.reserve1.notEqual(ZERO_BD)) pair.token0Price = pair.reserve0.div(pair.reserve1)
-  else pair.token0Price = ZERO_BD
-  if (pair.reserve0.notEqual(ZERO_BD)) pair.token1Price = pair.reserve1.div(pair.reserve0)
-  else pair.token1Price = ZERO_BD
-
-  let bundle = Bundle.load("1")
-  bundle.bnbPrice = getBnbPriceInUSD()
-  bundle.save()
-
-  let t0DerivedBNB = findPancakeBnbPerToken(token0 as PancakeToken)
-  token0.derivedBNB = t0DerivedBNB
-  token0.derivedUSD = t0DerivedBNB.times(bundle.bnbPrice)
-  token0.save()
-
-  let t1DerivedBNB = findPancakeBnbPerToken(token1 as PancakeToken)
-  token1.derivedBNB = t1DerivedBNB
-  token1.derivedUSD = t1DerivedBNB.times(bundle.bnbPrice)
-  token1.save()
-
-  // use derived amounts within pair
-  pair.reserveBNB = pair.reserve0
-    .times(token0.derivedBNB as BigDecimal)
-    .plus(pair.reserve1.times(token1.derivedBNB as BigDecimal))
-  pair.reserveUSD = pair.reserveBNB.times(bundle.bnbPrice)
-
-  // save entities
-  pair.save()
-  token0.save()
-  token1.save()
 }

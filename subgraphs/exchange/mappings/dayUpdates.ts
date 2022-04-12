@@ -2,10 +2,10 @@
 import { PairHourData } from "../generated/schema"
 import { BigInt, BigDecimal, ethereum } from "@graphprotocol/graph-ts"
 import { Pair, Bundle, Token, SummitFactory, SummitDayData, PairDayData, TokenDayData } from "../generated/schema"
-import { ONE_BI, ZERO_BD, ZERO_BI, SUMMIT_FACTORY_ADDRESS } from "./utils"
+import { ONE_BI, ZERO_BD, ZERO_BI, FACTORY_ADDRESS } from "./utils"
 
 export function updateSummitDayData(event: ethereum.Event): SummitDayData {
-  let summit = SummitFactory.load(SUMMIT_FACTORY_ADDRESS)
+  let summit = SummitFactory.load(FACTORY_ADDRESS)
   let timestamp = event.block.timestamp.toI32()
   let dayID = timestamp / 86400
   let dayStartTimestamp = dayID * 86400

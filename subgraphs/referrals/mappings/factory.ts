@@ -41,6 +41,12 @@ export function handleSummitPairCreated(event: PairCreated): void {
     token0.decimals = decimals
     token0.derivedBNB = ZERO_BD
     token0.derivedUSD = ZERO_BD
+
+    token0.totalTokenAsOutput = ZERO_BD
+    token0.totalTokenAsReward = ZERO_BD
+    token0.totalRewardUSD = ZERO_BD
+    token0.totalRewardBNB = ZERO_BD
+
     token0.save()
   }
 
@@ -56,6 +62,12 @@ export function handleSummitPairCreated(event: PairCreated): void {
     token1.decimals = decimals
     token1.derivedBNB = ZERO_BD
     token1.derivedUSD = ZERO_BD
+
+    token1.totalTokenAsOutput = ZERO_BD
+    token1.totalTokenAsReward = ZERO_BD
+    token1.totalRewardUSD = ZERO_BD
+    token1.totalRewardBNB = ZERO_BD
+
     token1.save()
   }
 

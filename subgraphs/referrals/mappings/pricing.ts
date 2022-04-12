@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { BigDecimal, Address } from "@graphprotocol/graph-ts/index"
-import { Pair, Token, PancakePair, PancakeToken } from "../generated/schema"
-import { ZERO_BD, summitFactoryContract, ADDRESS_ZERO, ONE_BD, pancakeFactoryContract } from "./utils"
+import { Pair, Token } from "../generated/schema"
+import { ZERO_BD, summitFactoryContract, ADDRESS_ZERO, ONE_BD } from "./utils"
 
 let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
 let BUSD_WBNB_PAIR = "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16" // created block 589414
@@ -9,8 +9,8 @@ let USDT_WBNB_PAIR = "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae" // created blo
 
 export function getBnbPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let usdtPair = PancakePair.load(USDT_WBNB_PAIR) // usdt is token0
-  let busdPair = PancakePair.load(BUSD_WBNB_PAIR) // busd is token1
+  let usdtPair = Pair.load(USDT_WBNB_PAIR) // usdt is token0
+  let busdPair = Pair.load(BUSD_WBNB_PAIR) // busd is token1
 
   if (busdPair !== null && usdtPair !== null) {
     let totalLiquidityBNB = busdPair.reserve0.plus(usdtPair.reserve1)
@@ -63,32 +63,6 @@ export function findSummitBnbPerToken(token: Token): BigDecimal {
       }
       if (pair.token1 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
         let token0 = Token.load(pair.token0)
-        return pair.token0Price.times(token0.derivedBNB as BigDecimal) // return token0 per our token * BNB per token 0
-      }
-    }
-  }
-  return ZERO_BD // nothing was found return 0
-}
-
-/**
- * Search through graph to find derived BNB per token.
- * @todo update to be derived BNB (add stablecoin estimates)
- **/
-export function findPancakeBnbPerToken(token: PancakeToken): BigDecimal {
-  if (token.id == WBNB_ADDRESS) {
-    return ONE_BD
-  }
-  // loop through whitelist and check if paired with any
-  for (let i = 0; i < WHITELIST.length; ++i) {
-    let pairAddress = pancakeFactoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]))
-    if (pairAddress.toHex() != ADDRESS_ZERO) {
-      let pair = PancakePair.load(pairAddress.toHex())
-      if (pair.token0 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
-        let token1 = PancakeToken.load(pair.token1)
-        return pair.token1Price.times(token1.derivedBNB as BigDecimal) // return token1 per our token * BNB per token 1
-      }
-      if (pair.token1 == token.id && pair.reserveBNB.gt(MINIMUM_LIQUIDITY_THRESHOLD_BNB)) {
-        let token0 = PancakeToken.load(pair.token0)
         return pair.token0Price.times(token0.derivedBNB as BigDecimal) // return token0 per our token * BNB per token 0
       }
     }

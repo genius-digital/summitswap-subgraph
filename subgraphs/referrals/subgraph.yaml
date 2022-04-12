@@ -56,33 +56,6 @@ dataSources:
       eventHandlers:
         - event: PairCreated(indexed address,indexed address,address,uint256)
           handler: handleSummitPairCreated
-  - kind: ethereum/contract
-    name: PancakeFactory
-    network: bsc
-    source:
-      address: '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
-      abi: Factory
-      startBlock: 6809737
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ./mappings/factory.ts
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: Factory
-          file: ./abis/Factory.json
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
-      eventHandlers:
-        - event: PairCreated(indexed address,indexed address,address,uint256)
-          handler: handlePancakePairCreated
 templates:
   - kind: ethereum/contract
     name: SummitPair
@@ -105,24 +78,3 @@ templates:
       eventHandlers:
         - event: Sync(uint112,uint112)
           handler: handleSummitSync
-  - kind: ethereum/contract
-    name: PancakePair
-    network: bsc
-    source:
-      abi: Pair
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ./mappings/core.ts
-      entities:
-        - Pair
-        - Token
-      abis:
-        - name: Factory
-          file: ./abis/Factory.json
-        - name: Pair
-          file: ./abis/Pair.json
-      eventHandlers:
-        - event: Sync(uint112,uint112)
-          handler: handlePancakeSync

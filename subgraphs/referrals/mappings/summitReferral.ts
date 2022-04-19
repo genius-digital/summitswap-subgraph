@@ -186,7 +186,7 @@ export function handleReferralReward(event: ReferralRewardEvent): void {
   outputToken.totalRewardBNB = outputToken.totalRewardBNB.plus(totalRewardInBNB)
   outputToken.save()
 
-  summitReferral.totalRewardUSD = totalRewardInBNB
-  summitReferral.totalRewardBNB = totalRewardInUSD
+  summitReferral.totalRewardUSD = totalRewardInUSD
+  summitReferral.totalRewardBNB = totalRewardInBNB
   summitReferral.save()
 }

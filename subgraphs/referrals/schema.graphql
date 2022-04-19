@@ -145,7 +145,7 @@ type Account @entity {
   id: ID!
 
   "ReferralReward"
-  referralRewards: [ReferralReward!]!
+  referralRewards: [ReferralReward!]
   "Referred Token"
   tokens: [Token!]
 

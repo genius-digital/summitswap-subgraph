@@ -20,6 +20,7 @@ export function handleReferralRecorded(event: ReferralRecordedEvent): void {
   let referrer = Account.load(event.params.referrer.toHex())
   if (referrer === null) {
     referrer = new Account(event.params.referrer.toHex())
+    referrer.referralRewards = []
     referrer.tokens = []
     referrer.totalReferees = ZERO_BI
     referrer.totalRewardUSD = ZERO_BD
@@ -32,6 +33,7 @@ export function handleReferralRecorded(event: ReferralRecordedEvent): void {
   if (referee === null) {
     referee = new Account(event.params.referee.toHex())
     referee.tokens = []
+    referrer.referralRewards = []
     referee.totalReferees = ZERO_BI
     referee.totalRewardUSD = ZERO_BD
     referee.totalRewardBNB = ZERO_BD
@@ -77,6 +79,7 @@ export function handleReferralReward(event: ReferralRewardEvent): void {
   let referrer = Account.load(event.params.referrer.toHex())
   if (referrer === null) {
     referrer = new Account(event.params.referrer.toHex())
+    referrer.referralRewards = []
     referrer.tokens = []
     referrer.totalReferees = ZERO_BI
     referrer.totalRewardUSD = ZERO_BD
@@ -86,6 +89,7 @@ export function handleReferralReward(event: ReferralRewardEvent): void {
   let lead = Account.load(event.params.lead.toHex())
   if (lead === null) {
     lead = new Account(event.params.lead.toHex())
+    lead.referralRewards = []
     lead.tokens = []
     lead.totalReferees = ZERO_BI
     lead.totalRewardUSD = ZERO_BD

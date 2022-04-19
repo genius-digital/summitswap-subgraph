@@ -87,4 +87,3 @@ export function handleSummitPairCreated(event: PairCreated): void {
 
   SummitPairTemplate.create(event.params.pair)
 }
-

@@ -10,7 +10,6 @@ import {
   fetchTokenSymbol,
   fetchTokenName,
   fetchTokenDecimals,
-  PANCAKE_FACTORY_ADDRESS,
 } from "./utils"
 
 export function handleSummitPairCreated(event: PairCreated): void {

@@ -466,7 +466,7 @@ export function handleSwap(event: Swap): void {
   let token1DayData = updateTokenDayData(token1 as Token, event)
 
   // swap specific updating
-  summitDayData.dailyVolumeUSD = summitDayData.dailyVolumeUSD.plus(trackedAmountUSD)
+  summitDayData.dailyVolumeUSD = summitDayData.dailyVolumeUSD.plus(trackedAmountUSD) // call price from pancakeswap
   summitDayData.dailyVolumeBNB = summitDayData.dailyVolumeBNB.plus(trackedAmountBNB)
   summitDayData.dailyVolumeUntracked = summitDayData.dailyVolumeUntracked.plus(derivedAmountUSD)
   summitDayData.save()

@@ -1,4 +1,4 @@
-/* eslint-disable prefer-const */
+import { BigInt } from "@graphprotocol/graph-ts"/* eslint-disable prefer-const */
 import { SummitFactory, Pair, Token, Bundle } from "../generated/schema"
 import { Pair as PairTemplate } from "../generated/templates"
 import { PairCreated } from "../generated/Factory/Factory"
@@ -10,7 +10,9 @@ import {
   fetchTokenSymbol,
   fetchTokenName,
   fetchTokenDecimals,
+  convertTokenToDecimal,
 } from "./utils"
+import { Sync } from "../generated/templates/Pair/Pair"
 
 export function handlePairCreated(event: PairCreated): void {
   let factory = SummitFactory.load(FACTORY_ADDRESS)
@@ -93,4 +95,35 @@ export function handlePairCreated(event: PairCreated): void {
   pair.save()
 
   PairTemplate.create(event.params.pair)
+}
+
+export function handleSyncBnbBusdPair(event: Sync): void {
+  let pair = Pair.load(event.address.toHex())
+  if (pair === null) {
+    pair = new Pair(event.address.toHex()) as Pair
+    pair.token0 = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    pair.token1 = "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    pair.name = "WBNB-BUSD"
+    pair.totalTransactions = ZERO_BI
+    pair.reserve0 = ZERO_BD
+    pair.reserve1 = ZERO_BD
+    pair.trackedReserveBNB = ZERO_BD
+    pair.reserveBNB = ZERO_BD
+    pair.reserveUSD = ZERO_BD
+    pair.totalSupply = ZERO_BD
+    pair.volumeToken0 = ZERO_BD
+    pair.volumeToken1 = ZERO_BD
+    pair.volumeUSD = ZERO_BD
+    pair.untrackedVolumeUSD = ZERO_BD
+    pair.token0Price = ZERO_BD
+    pair.token1Price = ZERO_BD
+    pair.block = event.block.number
+    pair.timestamp = event.block.timestamp
+    pair.save()
+  }
+  pair.reserve0 = convertTokenToDecimal(event.params.reserve0, BigInt.fromI32(18))
+  pair.reserve1 = convertTokenToDecimal(event.params.reserve1, BigInt.fromI32(18))
+  pair.token0Price = pair.reserve0.div(pair.reserve1)
+  pair.token1Price = pair.reserve1.div(pair.reserve0)
+  pair.save()
 }

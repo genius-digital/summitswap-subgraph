@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts"/* eslint-disable prefer-const */
+import { Address, BigInt } from "@graphprotocol/graph-ts" /* eslint-disable prefer-const */
 import { SummitFactory, Pair, Token, Bundle } from "../generated/schema"
 import { Pair as PairTemplate } from "../generated/templates"
 import { PairCreated } from "../generated/Factory/Factory"
@@ -98,11 +98,54 @@ export function handlePairCreated(event: PairCreated): void {
 }
 
 export function handleSyncBnbBusdPair(event: Sync): void {
+  const wbnbAddress = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+  const busdAddress = "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+
+  let token0 = Token.load(wbnbAddress)
+  if (token0 === null) {
+    token0 = new Token(wbnbAddress)
+    token0.name = fetchTokenName(Address.fromString(wbnbAddress))
+    token0.symbol = fetchTokenSymbol(Address.fromString(wbnbAddress))
+    let decimals = fetchTokenDecimals(Address.fromString(wbnbAddress))
+    if (decimals === null) {
+      return
+    }
+    token0.decimals = decimals
+    token0.derivedBNB = ZERO_BD
+    token0.derivedUSD = ZERO_BD
+    token0.tradeVolume = ZERO_BD
+    token0.tradeVolumeUSD = ZERO_BD
+    token0.untrackedVolumeUSD = ZERO_BD
+    token0.totalLiquidity = ZERO_BD
+    token0.totalTransactions = ZERO_BI
+    token0.save()
+  }
+
+  let token1 = Token.load(busdAddress)
+  if (token1 === null) {
+    token1 = new Token(busdAddress)
+    token1.name = fetchTokenName(Address.fromString(busdAddress))
+    token1.symbol = fetchTokenSymbol(Address.fromString(busdAddress))
+    let decimals = fetchTokenDecimals(Address.fromString(busdAddress))
+    if (decimals === null) {
+      return
+    }
+    token1.decimals = decimals
+    token1.derivedBNB = ZERO_BD
+    token1.derivedUSD = ZERO_BD
+    token1.tradeVolume = ZERO_BD
+    token1.tradeVolumeUSD = ZERO_BD
+    token1.untrackedVolumeUSD = ZERO_BD
+    token1.totalLiquidity = ZERO_BD
+    token1.totalTransactions = ZERO_BI
+    token1.save()
+  }
+
   let pair = Pair.load(event.address.toHex())
   if (pair === null) {
     pair = new Pair(event.address.toHex()) as Pair
-    pair.token0 = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
-    pair.token1 = "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    pair.token0 = wbnbAddress
+    pair.token1 = busdAddress
     pair.name = "WBNB-BUSD"
     pair.totalTransactions = ZERO_BI
     pair.reserve0 = ZERO_BD

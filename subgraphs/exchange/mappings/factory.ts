@@ -104,13 +104,9 @@ export function handleSyncBnbBusdPair(event: Sync): void {
   let token0 = Token.load(wbnbAddress)
   if (token0 === null) {
     token0 = new Token(wbnbAddress)
-    token0.name = fetchTokenName(Address.fromString(wbnbAddress))
-    token0.symbol = fetchTokenSymbol(Address.fromString(wbnbAddress))
-    let decimals = fetchTokenDecimals(Address.fromString(wbnbAddress))
-    if (decimals === null) {
-      return
-    }
-    token0.decimals = decimals
+    token0.name = "Wrapped BNB"
+    token0.symbol = "WBNB"
+    token0.decimals = BigInt.fromString("18")
     token0.derivedBNB = ZERO_BD
     token0.derivedUSD = ZERO_BD
     token0.tradeVolume = ZERO_BD
@@ -124,13 +120,9 @@ export function handleSyncBnbBusdPair(event: Sync): void {
   let token1 = Token.load(busdAddress)
   if (token1 === null) {
     token1 = new Token(busdAddress)
-    token1.name = fetchTokenName(Address.fromString(busdAddress))
-    token1.symbol = fetchTokenSymbol(Address.fromString(busdAddress))
-    let decimals = fetchTokenDecimals(Address.fromString(busdAddress))
-    if (decimals === null) {
-      return
-    }
-    token1.decimals = decimals
+    token1.name = "BUSD Token"
+    token1.symbol = "BUSD"
+    token1.decimals = BigInt.fromString("18")
     token1.derivedBNB = ZERO_BD
     token1.derivedUSD = ZERO_BD
     token1.tradeVolume = ZERO_BD

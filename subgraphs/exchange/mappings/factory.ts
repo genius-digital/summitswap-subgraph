@@ -1,4 +1,4 @@
-import { Address, BigInt } from "@graphprotocol/graph-ts" /* eslint-disable prefer-const */
+import { BigDecimal, BigInt } from "@graphprotocol/graph-ts" /* eslint-disable prefer-const */
 import { SummitFactory, Pair, Token, Bundle } from "../generated/schema"
 import { Pair as PairTemplate } from "../generated/templates"
 import { PairCreated } from "../generated/Factory/Factory"
@@ -11,8 +11,10 @@ import {
   fetchTokenName,
   fetchTokenDecimals,
   convertTokenToDecimal,
+  ONE_BD,
 } from "./utils"
 import { Sync } from "../generated/templates/Pair/Pair"
+import { getBnbPriceInUSD } from "./pricing"
 
 export function handlePairCreated(event: PairCreated): void {
   let factory = SummitFactory.load(FACTORY_ADDRESS)
@@ -26,8 +28,13 @@ export function handlePairCreated(event: PairCreated): void {
     factory.untrackedVolumeUSD = ZERO_BD
     factory.totalLiquidityUSD = ZERO_BD
 
-    let bundle = new Bundle("1")
-    bundle.bnbPrice = ZERO_BD
+    let bundle = Bundle.load("1")
+    if (bundle === null) {
+      bundle = new Bundle("1")
+      bundle.bnbPrice = ZERO_BD
+      bundle.save()
+    }
+    bundle.bnbPrice = getBnbPriceInUSD()
     bundle.save()
   }
   factory.totalPairs = factory.totalPairs.plus(ONE_BI)
@@ -160,5 +167,30 @@ export function handleSyncBnbBusdPair(event: Sync): void {
   pair.reserve1 = convertTokenToDecimal(event.params.reserve1, BigInt.fromI32(18))
   pair.token0Price = pair.reserve0.div(pair.reserve1)
   pair.token1Price = pair.reserve1.div(pair.reserve0)
+  pair.reserveBNB = pair.reserve0
+    .times(token0.derivedBNB as BigDecimal)
+    .plus(pair.reserve1.times(token1.derivedBNB as BigDecimal))
+  pair.save()
+
+  let bundle = Bundle.load("1")
+  if (bundle === null) {
+    bundle = new Bundle("1")
+    bundle.bnbPrice = ZERO_BD
+    bundle.save()
+  }
+  bundle.bnbPrice = getBnbPriceInUSD()
+  bundle.save()
+
+  let t0DerivedBNB = ONE_BD
+  token0.derivedBNB = t0DerivedBNB
+  token0.derivedUSD = t0DerivedBNB.times(bundle.bnbPrice)
+  token0.save()
+
+  let t1DerivedBNB = pair.token0Price.times(token0.derivedBNB as BigDecimal)
+  token1.derivedBNB = t1DerivedBNB
+  token1.derivedUSD = t1DerivedBNB.times(bundle.bnbPrice)
+  token1.save()
+
+  pair.reserveUSD = pair.reserveBNB.times(bundle.bnbPrice)
   pair.save()
 }

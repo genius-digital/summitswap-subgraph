@@ -6,11 +6,11 @@ Currently, there are multiple subgraphs, but additional subgraphs can be added t
 
 ## Subgraphs
 
-1. **[Blocks]https://thegraph.com/legacy-explorer/subgraph/summitswap/blocks)**: Tracks all blocks on Binance Smart Chain.
+1. **[Blocks](https://thegraph.com/legacy-explorer/subgraph/koda-finance/blocks)**: Tracks all blocks on Binance Smart Chain.
 
-2. **[Exchange](https://thegraph.com/legacy-explorer/subgraph/summitswap/exchange)**: Tracks all SummitSwap Exchange data with price, volume, liquidity, ...
+2. **[Exchange](https://thegraph.com/legacy-explorer/subgraph/koda-finance/summitswap-exchange)**: Tracks all SummitSwap Exchange data with price, volume, liquidity, ...
 
-3. **[Pairs](https://thegraph.com/legacy-explorer/subgraph/summitswap/pairs)**: Tracks all SummitSwap Pairs and Tokens.
+3. **[Pairs](https://thegraph.com/legacy-explorer/subgraph/koda-finance/summitswap-pairs)**: Tracks all SummitSwap Pairs and Tokens.
 
 ## Dependencies
 

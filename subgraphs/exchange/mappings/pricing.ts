@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
-import { BigDecimal, Address } from "@graphprotocol/graph-ts/index"
+import { BigDecimal, Address, BigInt } from "@graphprotocol/graph-ts/index"
 import { Pair, Token, Bundle } from "../generated/schema"
-import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from "./utils"
+import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, fetchPairReserves, convertTokenToDecimal } from "./utils"
 
 let WBNB_ADDRESS = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
 let BUSD_WBNB_PAIR = "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16" // created block 589414
@@ -9,22 +9,51 @@ let USDT_WBNB_PAIR = "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae" // created blo
 
 export function getBnbPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let usdtPair = Pair.load(USDT_WBNB_PAIR) // usdt is token0
-  let busdPair = Pair.load(BUSD_WBNB_PAIR) // busd is token1
+  let usdtReserves = fetchPairReserves(Address.fromString(USDT_WBNB_PAIR))
+  let usdtReserve0 = ZERO_BD
+  let usdtReserve1 = ZERO_BD
+  let usdtPairPrice0 = ZERO_BD
+  let usdtPairPrice1 = ZERO_BD
 
-  if (busdPair !== null && usdtPair !== null) {
-    let totalLiquidityBNB = busdPair.reserve0.plus(usdtPair.reserve1)
+  if (usdtReserves.length > 0) {
+    usdtReserve0 = convertTokenToDecimal(usdtReserves[0], BigInt.fromI32(18))
+    usdtReserve1 = convertTokenToDecimal(usdtReserves[1], BigInt.fromI32(18))
+
+    if (usdtReserve1.notEqual(ZERO_BD)) usdtPairPrice0 = usdtReserve0.div(usdtReserve1)
+    else usdtPairPrice0 = ZERO_BD
+    if (usdtReserve0.notEqual(ZERO_BD)) usdtPairPrice1 = usdtReserve1.div(usdtReserve0)
+    else usdtPairPrice1 = ZERO_BD
+  }
+
+  let busdReserves = fetchPairReserves(Address.fromString(BUSD_WBNB_PAIR))
+  let busdReserve0 = ZERO_BD
+  let busdReserve1 = ZERO_BD
+  let busdPairPrice0 = ZERO_BD
+  let busdPairPrice1 = ZERO_BD
+
+  if (busdReserves.length > 0) {
+    busdReserve0 = convertTokenToDecimal(busdReserves[0], BigInt.fromI32(18))
+    busdReserve1 = convertTokenToDecimal(busdReserves[1], BigInt.fromI32(18))
+
+    if (busdReserve1.notEqual(ZERO_BD)) busdPairPrice0 = busdReserve0.div(busdReserve1)
+    else busdPairPrice0 = ZERO_BD
+    if (busdReserve0.notEqual(ZERO_BD)) busdPairPrice1 = busdReserve1.div(busdReserve0)
+    else busdPairPrice1 = ZERO_BD
+  }
+
+  if (usdtReserves.length > 0 && busdReserves.length > 0) {
+    let totalLiquidityBNB = busdReserve0.plus(usdtReserve1)
     if (totalLiquidityBNB.notEqual(ZERO_BD)) {
-      let busdWeight = busdPair.reserve0.div(totalLiquidityBNB)
-      let usdtWeight = usdtPair.reserve1.div(totalLiquidityBNB)
-      return busdPair.token1Price.times(busdWeight).plus(usdtPair.token0Price.times(usdtWeight))
+      let busdWeight = busdReserve0.div(totalLiquidityBNB)
+      let usdtWeight = usdtReserve1.div(totalLiquidityBNB)
+      return busdPairPrice1.times(busdWeight).plus(usdtPairPrice0.times(usdtWeight))
     } else {
       return ZERO_BD
     }
-  } else if (busdPair !== null) {
-    return busdPair.token1Price
-  } else if (usdtPair !== null) {
-    return usdtPair.token0Price
+  } else if (busdReserves.length > 0) {
+    return busdPairPrice1
+  } else if (usdtReserves.length > 0) {
+    return usdtPairPrice0
   } else {
     return ZERO_BD
   }
@@ -39,6 +68,7 @@ let WHITELIST: string[] = [
   "0x23396cf899ca06c4472205fc903bdb4de249d6fc", // UST
   "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c", // BTCB
   "0x2170ed0880ac9a755fd29b2688956bd959f933f8", // WETH
+  "0x8094e772fa4a60bdeb1dfec56ab040e17dd608d5", // KODA
 ]
 
 // minimum liquidity for price to get tracked

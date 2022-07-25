@@ -1,6 +1,7 @@
 /* eslint-disable prefer-const */
 import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts"
 import { ERC20 } from "../../generated/Factory/ERC20"
+import { Pair } from "../../generated/templates/Pair/Pair"
 import { ERC20NameBytes } from "../../generated/Factory/ERC20NameBytes"
 import { ERC20SymbolBytes } from "../../generated/Factory/ERC20SymbolBytes"
 import { Factory as FactoryContract } from "../../generated/templates/Pair/Factory"
@@ -81,4 +82,14 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     decimalValue = decimalResult.value
   }
   return BigInt.fromI32(decimalValue as i32)
+}
+
+export function fetchPairReserves(pairAddress: Address): BigInt[] {
+  let pair = Pair.bind(pairAddress)
+  let reservesResult = pair.try_getReserves()
+  let reserves: BigInt[] = []
+  if (!reservesResult.reverted) {
+    reserves = [reservesResult.value.value0, reservesResult.value.value1]
+  }
+  return reserves
 }

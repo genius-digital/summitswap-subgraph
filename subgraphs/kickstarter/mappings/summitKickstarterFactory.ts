@@ -30,6 +30,7 @@ export function handleProjectCreated(event: ProjectCreated): void {
     kickstarter.totalContribution = ZERO_BD
     kickstarter.projectGoals = convertTokenToDecimal(event.params._projectGoals, BigInt.fromI32(18))
     kickstarter.rewardDistributionTimestamp = event.params._rewardDistributionTimestamp
+    kickstarter.hasDistributedRewards = false
     kickstarter.startTimestamp = event.params._startTimestamp
     kickstarter.endTimestamp = event.params._endTimestamp
     kickstarter.createdAt = event.params.timestamp

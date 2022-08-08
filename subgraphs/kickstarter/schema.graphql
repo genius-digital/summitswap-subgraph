@@ -17,6 +17,7 @@ type Kickstarter @entity {
   totalContribution: BigDecimal!
   projectGoals: BigDecimal!
   rewardDistributionTimestamp: BigInt!
+  hasDistributedRewards: Boolean!
   startTimestamp: BigInt!
   endTimestamp: BigInt!
   createdAt: BigInt!

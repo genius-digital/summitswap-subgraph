@@ -41,7 +41,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_projectAddress",
+        "name": "_kickstarterAddress",
         "type": "address"
       },
       {

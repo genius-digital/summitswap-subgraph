@@ -1,0 +1,53 @@
+specVersion: 0.0.2
+description: Summit Kickstarter is a platform for people to raise money for projects and to support the community.
+repository: https://github.com/koda-finance
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SummitKickstarterFactory
+    network: bsc
+    source:
+      address: '0xA134fc7C72E58fFDCc2C9b9FD4FeB344987DD274'
+      abi: SummitKickstarterFactory
+      startBlock: 21762420
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/summitKickstarterFactory.ts
+      entities:
+        - SummitKickstarterFactory
+        - Kickstarter
+      abis:
+        - name: SummitKickstarterFactory
+          file: ./abis/SummitKickstarterFactory.json
+        - name: SummitKickstarter
+          file: ./abis/SummitKickstarter.json
+      eventHandlers:
+        - event: ProjectCreated(indexed address,indexed address,string,string,string,string,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleProjectCreated
+templates:
+  - kind: ethereum/contract
+    name: Kickstarter
+    network: bsc
+    source:
+      abi: SummitKickstarter
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/summitKickstarter.ts
+      entities:
+        - SummitKickstarterFactory
+        - Kickstarter
+      abis:
+        - name: SummitKickstarterFactory
+          file: ./abis/SummitKickstarterFactory.json
+        - name: SummitKickstarter
+          file: ./abis/SummitKickstarter.json
+      eventHandlers:
+        - event: Contribute(indexed address,uint256,uint256)
+          handler: handleContribute
+        - event: Refund(indexed address,uint256,uint256)
+          handler: handleRefund

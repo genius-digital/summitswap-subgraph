@@ -1,0 +1,46 @@
+type SummitKickstarterFactory @entity {
+  id: ID!
+  totalKickstarter: BigInt!
+  totalProjectGoals: BigDecimal!
+  totalContribution: BigDecimal!
+  totalRefund: BigDecimal!
+}
+
+type Kickstarter @entity {
+  id: ID!
+  owner: Account!
+  title: String!
+  creator: String!
+  projectDescription: String!
+  rewardDescription: String!
+  minContribution: BigDecimal!
+  projectGoals: BigDecimal!
+  rewardDistributionTimestamp: BigInt!
+  startTimestamp: BigInt!
+  endTimestamp: BigInt!
+  createdAt: BigInt!
+}
+
+type Account @entity {
+  id: ID!
+  totalKickstarter: BigInt!
+  totalProjectGoals: BigDecimal!
+  totalContribution: BigDecimal!
+  totalRefund: BigDecimal!
+}
+
+type Contribution @entity {
+  id: ID!
+  kickstarter: Kickstarter!
+  contributor: Account!
+  amount: BigDecimal!
+  createdAt: BigInt!
+}
+
+type Refund @entity {
+  id: ID!
+  kickstarter: Kickstarter!
+  contributor: Account!
+  amount: BigDecimal!
+  createdAt: BigInt!
+}

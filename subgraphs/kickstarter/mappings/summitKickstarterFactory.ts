@@ -18,9 +18,9 @@ export function handleProjectCreated(event: ProjectCreated): void {
   summitKickstarterFactory.totalProjectGoals = convertTokenToDecimal(event.params._projectGoals, BigInt.fromI32(18))
   summitKickstarterFactory.save()
 
-  let kickstarter = Kickstarter.load(event.params._projectAddress.toHex())
+  let kickstarter = Kickstarter.load(event.params._kickstarterAddress.toHex())
   if (kickstarter === null) {
-    kickstarter = new Kickstarter(event.params._projectAddress.toHex())
+    kickstarter = new Kickstarter(event.params._kickstarterAddress.toHex())
     kickstarter.owner = event.params._owner.toHex()
     kickstarter.title = event.params._title
     kickstarter.creator = event.params._creator
@@ -49,5 +49,5 @@ export function handleProjectCreated(event: ProjectCreated): void {
   account.totalProjectGoals = account.totalProjectGoals.plus(kickstarter.projectGoals)
   account.save()
 
-  KickstarterTemplate.create(event.params._projectAddress)
+  KickstarterTemplate.create(event.params._kickstarterAddress)
 }

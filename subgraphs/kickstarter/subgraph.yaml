@@ -51,3 +51,25 @@ templates:
           handler: handleContribute
         - event: Refund(indexed address,uint256,uint256)
           handler: handleRefund
+        - event: TitleUpdated(string)
+          handler: handleTitleUpdated
+        - event: CreatorUpdated(string)
+          handler: handleCreatorUpdated
+        - event: ProjectDescriptionUpdated(string)
+          handler: handleProjectDescriptionUpdated
+        - event: RewardDescriptionUpdated(string)
+          handler: handleRewardDescriptionUpdated
+        - event: MinContributionUpdated(uint256)
+          handler: handleMinContributionUpdated
+        - event: ProjectGoalsUpdated(uint256)
+          handler: handleProjectGoalsUpdated
+        - event: RewardDistributionTimestampUpdated(uint256)
+          handler: handleRewardDistributionTimestampUpdated
+        - event: StartTimestampUpdated(uint256)
+          handler: handleStartTimestampUpdated
+        - event: EndTimestampUpdated(uint256)
+          handler: handleEndTimestampUpdated
+        - event: HasDistributedRewardsUpdated(bool)
+          handler: handleHasDistributedRewardsUpdated
+        - event: KickstarterUpdated(string,string,string,string,uint256,uint256,uint256,uint256,uint256,bool)
+          handler: handleKickstarterUpdated

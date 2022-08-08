@@ -1,6 +1,7 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 import { SummitKickstarterFactory, Kickstarter, Account } from "../generated/schema"
 import { ProjectCreated } from "../generated/SummitKickstarterFactory/SummitKickstarterFactory"
+import { Kickstarter as KickstarterTemplate } from "../generated/templates"
 import { convertTokenToDecimal, ONE_BI, SUMMIT_KICKSTARTER_FACTORY_ADDRESS, ZERO_BD, ZERO_BI } from "../utils"
 
 export function handleProjectCreated(event: ProjectCreated): void {
@@ -46,4 +47,6 @@ export function handleProjectCreated(event: ProjectCreated): void {
   account.totalKickstarter = account.totalKickstarter.plus(ONE_BI)
   account.totalProjectGoals = account.totalProjectGoals.plus(kickstarter.projectGoals)
   account.save()
+
+  KickstarterTemplate.create(event.params._projectAddress)
 }

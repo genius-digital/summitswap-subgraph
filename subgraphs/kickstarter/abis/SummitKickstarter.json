@@ -275,7 +275,7 @@
       {
         "indexed": false,
         "internalType": "string",
-        "name": "newProjectDescription",
+        "name": "newRewardDescription",
         "type": "string"
       }
     ],

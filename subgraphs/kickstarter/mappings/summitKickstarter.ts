@@ -35,7 +35,7 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
   newAccount.totalKickstarter = newAccount.totalKickstarter.plus(ONE_BI)
   newAccount.totalProjectGoals = newAccount.totalProjectGoals.plus(kickstarter!.projectGoals)
   newAccount.save()
-  
+
   previousAccount!.totalKickstarter = previousAccount!.totalKickstarter.minus(ONE_BI)
   previousAccount!.totalProjectGoals = previousAccount!.totalProjectGoals.minus(kickstarter!.projectGoals)
   previousAccount!.save()

@@ -8,9 +8,9 @@ dataSources:
     name: SummitKickstarterFactory
     network: bsc
     source:
-      address: '0xA134fc7C72E58fFDCc2C9b9FD4FeB344987DD274'
+      address: '0x1d190929E5803007ce7e4585E240FEb5c4673E7E'
       abi: SummitKickstarterFactory
-      startBlock: 21762420
+      startBlock: 21790997
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

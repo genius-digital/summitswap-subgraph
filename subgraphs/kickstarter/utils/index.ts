@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { BigInt, BigDecimal } from "@graphprotocol/graph-ts"
 
-export let SUMMIT_KICKSTARTER_FACTORY_ADDRESS = "0xA134fc7C72E58fFDCc2C9b9FD4FeB344987DD274"
+export let SUMMIT_KICKSTARTER_FACTORY_ADDRESS = "0x1d190929E5803007ce7e4585E240FEb5c4673E7E"
 
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)

@@ -1,0 +1,13 @@
+{
+  "name": "pairs",
+  "description": "SummitSwap Subgraph",
+  "version": "1.0.0",
+  "repository": "https://github.com/Koda-Finance/summitswap-subgraph",
+  "author": "SummitSwap",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen subgraph.yaml",
+    "build": "graph build subgraph.yaml",
+    "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ koda-finance/summitswap-pairs subgraph.yaml"
+  }
+}

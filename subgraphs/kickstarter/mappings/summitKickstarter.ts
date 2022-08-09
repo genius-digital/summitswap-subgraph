@@ -18,6 +18,7 @@ import {
 } from "../generated/SummitKickstarterFactory/SummitKickstarter"
 import { convertTokenToDecimal, SUMMIT_KICKSTARTER_FACTORY_ADDRESS, ZERO_BD, ZERO_BI } from "../utils"
 
+// NEED TO UPDATE: ownership of kickstarter
 export function handleContribute(event: ContributeEvent): void {
   let contribution = new Contribution(event.transaction.hash.toHex())
   contribution.kickstarter = event.address.toHex()
@@ -64,7 +65,7 @@ export function handleRefund(event: RefundEvent): void {
     account.totalRefund = ZERO_BD
     account.save()
   }
-  account.totalContribution = account.totalContribution.minus(refund.amount)
+  account.totalRefund = account.totalRefund.plus(refund.amount)
   account.save()
 
   let kickstarter = Kickstarter.load(event.address.toHex())
@@ -72,7 +73,7 @@ export function handleRefund(event: RefundEvent): void {
   kickstarter!.save()
 
   let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
-  summitKickstarterFactory!.totalContribution = summitKickstarterFactory!.totalContribution.minus(refund.amount)
+  summitKickstarterFactory!.totalRefund = summitKickstarterFactory!.totalRefund.plus(refund.amount)
   summitKickstarterFactory!.save()
 }
 
@@ -108,8 +109,15 @@ export function handleMinContributionUpdated(event: MinContributionUpdatedEvent)
 
 export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
+
+  let account = Account.load(kickstarter!.owner)
+  account!.totalProjectGoals = account!.totalProjectGoals.minus(kickstarter!.projectGoals)
+
   kickstarter!.projectGoals = convertTokenToDecimal(event.params.newProjectGoals, BigInt.fromI32(18))
   kickstarter!.save()
+
+  account!.totalProjectGoals = account!.totalProjectGoals.plus(kickstarter!.projectGoals)
+  account!.save()
 }
 
 export function handleRewardDistributionTimestampUpdated(event: RewardDistributionTimestampUpdatedEvent): void {
@@ -138,6 +146,10 @@ export function handleHasDistributedRewardsUpdated(event: HasDistributedRewardsU
 
 export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
+
+  let account = Account.load(kickstarter!.owner)
+  account!.totalProjectGoals = account!.totalProjectGoals.minus(kickstarter!.projectGoals)
+
   kickstarter!.title = event.params.newTitle
   kickstarter!.creator = event.params.newCreator
   kickstarter!.projectDescription = event.params.newProjectDescription
@@ -149,4 +161,7 @@ export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {
   kickstarter!.endTimestamp = event.params.newEndTimestamp
   kickstarter!.hasDistributedRewards = event.params.newHasDistributedRewards
   kickstarter!.save()
+
+  account!.totalProjectGoals = account!.totalProjectGoals.plus(kickstarter!.projectGoals)
+  account!.save()
 }

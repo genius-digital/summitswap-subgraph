@@ -37,18 +37,5 @@ export function handleProjectCreated(event: ProjectCreated): void {
     kickstarter.save()
   }
 
-  let account = Account.load(event.params._owner.toHex())
-  if (account === null) {
-    account = new Account(event.params._owner.toHex())
-    account.totalKickstarter = ZERO_BI
-    account.totalProjectGoals = ZERO_BD
-    account.totalContribution = ZERO_BD
-    account.totalRefund = ZERO_BD
-    account.save()
-  }
-  account.totalKickstarter = account.totalKickstarter.plus(ONE_BI)
-  account.totalProjectGoals = account.totalProjectGoals.plus(kickstarter.projectGoals)
-  account.save()
-
   KickstarterTemplate.create(event.params._kickstarterAddress)
 }

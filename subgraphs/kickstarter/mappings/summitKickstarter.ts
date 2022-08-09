@@ -17,11 +17,26 @@ import {
   HasDistributedRewardsUpdated as HasDistributedRewardsUpdatedEvent,
   KickstarterUpdated as KickstarterUpdatedEvent,
 } from "../generated/SummitKickstarterFactory/SummitKickstarter"
-import { convertTokenToDecimal, SUMMIT_KICKSTARTER_FACTORY_ADDRESS, ZERO_BD, ZERO_BI, ONE_BI } from "../utils"
+import {
+  convertTokenToDecimal,
+  SUMMIT_KICKSTARTER_FACTORY_ADDRESS,
+  ZERO_BD,
+  ZERO_BI,
+  ONE_BI,
+  ADDRESS_ZERO,
+} from "../utils"
 
 export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
   let previousAccount = Account.load(event.params.previousOwner.toHex())
+  if (!previousAccount) {
+    previousAccount = new Account(event.params.previousOwner.toHex())
+    previousAccount.totalKickstarter = ZERO_BI
+    previousAccount.totalProjectGoals = ZERO_BD
+    previousAccount.totalContribution = ZERO_BD
+    previousAccount.totalRefund = ZERO_BD
+    previousAccount.save()
+  }
 
   let newAccount = Account.load(event.params.newOwner.toHex())
   if (!newAccount) {
@@ -32,13 +47,18 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
     newAccount.totalRefund = ZERO_BD
     newAccount.save()
   }
-  newAccount.totalKickstarter = newAccount.totalKickstarter.plus(ONE_BI)
-  newAccount.totalProjectGoals = newAccount.totalProjectGoals.plus(kickstarter!.projectGoals)
-  newAccount.save()
 
-  previousAccount!.totalKickstarter = previousAccount!.totalKickstarter.minus(ONE_BI)
-  previousAccount!.totalProjectGoals = previousAccount!.totalProjectGoals.minus(kickstarter!.projectGoals)
-  previousAccount!.save()
+  if (newAccount.id != ADDRESS_ZERO) {
+    newAccount.totalKickstarter = newAccount.totalKickstarter.plus(ONE_BI)
+    newAccount.totalProjectGoals = newAccount.totalProjectGoals.plus(kickstarter!.projectGoals)
+    newAccount.save()
+  }
+
+  if (previousAccount.id != ADDRESS_ZERO) {
+    previousAccount!.totalKickstarter = previousAccount!.totalKickstarter.minus(ONE_BI)
+    previousAccount!.totalProjectGoals = previousAccount!.totalProjectGoals.minus(kickstarter!.projectGoals)
+    previousAccount!.save()
+  }
 
   kickstarter!.owner = event.params.newOwner.toHex()
   kickstarter!.save()

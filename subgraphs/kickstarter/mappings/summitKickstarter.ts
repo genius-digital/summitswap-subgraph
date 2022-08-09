@@ -2,6 +2,7 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 import { SummitKickstarterFactory, Kickstarter, Account, Contribution, Refund } from "../generated/schema"
 import {
+  OwnershipTransferred as OwnershipTransferredEvent,
   Contribute as ContributeEvent,
   Refund as RefundEvent,
   TitleUpdated as TitleUpdatedEvent,
@@ -16,9 +17,33 @@ import {
   HasDistributedRewardsUpdated as HasDistributedRewardsUpdatedEvent,
   KickstarterUpdated as KickstarterUpdatedEvent,
 } from "../generated/SummitKickstarterFactory/SummitKickstarter"
-import { convertTokenToDecimal, SUMMIT_KICKSTARTER_FACTORY_ADDRESS, ZERO_BD, ZERO_BI } from "../utils"
+import { convertTokenToDecimal, SUMMIT_KICKSTARTER_FACTORY_ADDRESS, ZERO_BD, ZERO_BI, ONE_BI } from "../utils"
 
-// NEED TO UPDATE: ownership of kickstarter
+export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  let previousAccount = Account.load(event.params.previousOwner.toHex())
+
+  let newAccount = Account.load(event.params.newOwner.toHex())
+  if (!newAccount) {
+    newAccount = new Account(event.params.newOwner.toHex())
+    newAccount.totalKickstarter = ZERO_BI
+    newAccount.totalProjectGoals = ZERO_BD
+    newAccount.totalContribution = ZERO_BD
+    newAccount.totalRefund = ZERO_BD
+    newAccount.save()
+  }
+  newAccount.totalKickstarter = newAccount.totalKickstarter.plus(ONE_BI)
+  newAccount.totalProjectGoals = newAccount.totalProjectGoals.plus(kickstarter!.projectGoals)
+  newAccount.save()
+  
+  previousAccount!.totalKickstarter = previousAccount!.totalKickstarter.minus(ONE_BI)
+  previousAccount!.totalProjectGoals = previousAccount!.totalProjectGoals.minus(kickstarter!.projectGoals)
+  previousAccount!.save()
+
+  kickstarter!.owner = event.params.newOwner.toHex()
+  kickstarter!.save()
+}
+
 export function handleContribute(event: ContributeEvent): void {
   let contribution = new Contribution(event.transaction.hash.toHex())
   contribution.kickstarter = event.address.toHex()

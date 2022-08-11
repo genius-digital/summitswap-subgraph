@@ -1,0 +1,75 @@
+specVersion: 0.0.2
+description: Summit Kickstarter is a platform for people to raise money for projects and to support the community.
+repository: https://github.com/koda-finance
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SummitKickstarterFactory
+    network: chapel
+    source:
+      address: '0x1d190929E5803007ce7e4585E240FEb5c4673E7E'
+      abi: SummitKickstarterFactory
+      startBlock: 21790997
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/summitKickstarterFactory.ts
+      entities:
+        - SummitKickstarterFactory
+        - Kickstarter
+      abis:
+        - name: SummitKickstarterFactory
+          file: ./abis/SummitKickstarterFactory.json
+        - name: SummitKickstarter
+          file: ./abis/SummitKickstarter.json
+      eventHandlers:
+        - event: ProjectCreated(indexed address,indexed address,string,string,string,string,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleProjectCreated
+templates:
+  - kind: ethereum/contract
+    name: Kickstarter
+    network: chapel
+    source:
+      abi: SummitKickstarter
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/summitKickstarter.ts
+      entities:
+        - SummitKickstarterFactory
+        - Kickstarter
+      abis:
+        - name: SummitKickstarterFactory
+          file: ./abis/SummitKickstarterFactory.json
+        - name: SummitKickstarter
+          file: ./abis/SummitKickstarter.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Contribute(indexed address,uint256,uint256)
+          handler: handleContribute
+        - event: TitleUpdated(string)
+          handler: handleTitleUpdated
+        - event: CreatorUpdated(string)
+          handler: handleCreatorUpdated
+        - event: ProjectDescriptionUpdated(string)
+          handler: handleProjectDescriptionUpdated
+        - event: RewardDescriptionUpdated(string)
+          handler: handleRewardDescriptionUpdated
+        - event: MinContributionUpdated(uint256)
+          handler: handleMinContributionUpdated
+        - event: ProjectGoalsUpdated(uint256)
+          handler: handleProjectGoalsUpdated
+        - event: RewardDistributionTimestampUpdated(uint256)
+          handler: handleRewardDistributionTimestampUpdated
+        - event: StartTimestampUpdated(uint256)
+          handler: handleStartTimestampUpdated
+        - event: EndTimestampUpdated(uint256)
+          handler: handleEndTimestampUpdated
+        - event: HasDistributedRewardsUpdated(bool)
+          handler: handleHasDistributedRewardsUpdated
+        - event: KickstarterUpdated(string,string,string,string,uint256,uint256,uint256,uint256,uint256,bool)
+          handler: handleKickstarterUpdated

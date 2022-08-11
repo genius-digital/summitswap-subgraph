@@ -11,7 +11,6 @@ export function handleProjectCreated(event: ProjectCreated): void {
     summitKickstarterFactory.totalKickstarter = ZERO_BI
     summitKickstarterFactory.totalProjectGoals = ZERO_BD
     summitKickstarterFactory.totalContribution = ZERO_BD
-    summitKickstarterFactory.totalRefund = ZERO_BD
     summitKickstarterFactory.save()
   }
   summitKickstarterFactory.totalKickstarter = summitKickstarterFactory.totalKickstarter.plus(ONE_BI)

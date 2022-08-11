@@ -3,7 +3,6 @@ type SummitKickstarterFactory @entity {
   totalKickstarter: BigInt!
   totalProjectGoals: BigDecimal!
   totalContribution: BigDecimal!
-  totalRefund: BigDecimal!
 }
 
 type Kickstarter @entity {
@@ -28,18 +27,9 @@ type Account @entity {
   totalKickstarter: BigInt!
   totalProjectGoals: BigDecimal!
   totalContribution: BigDecimal!
-  totalRefund: BigDecimal!
 }
 
 type Contribution @entity {
-  id: ID!
-  kickstarter: Kickstarter!
-  contributor: Account!
-  amount: BigDecimal!
-  createdAt: BigInt!
-}
-
-type Refund @entity {
   id: ID!
   kickstarter: Kickstarter!
   contributor: Account!

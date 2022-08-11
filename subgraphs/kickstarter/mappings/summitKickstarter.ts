@@ -1,10 +1,9 @@
 /* eslint-disable prefer-const */
 import { BigInt } from "@graphprotocol/graph-ts"
-import { SummitKickstarterFactory, Kickstarter, Account, Contribution, Refund } from "../generated/schema"
+import { SummitKickstarterFactory, Kickstarter, Account, Contribution } from "../generated/schema"
 import {
   OwnershipTransferred as OwnershipTransferredEvent,
   Contribute as ContributeEvent,
-  Refund as RefundEvent,
   TitleUpdated as TitleUpdatedEvent,
   CreatorUpdated as CreatorUpdatedEvent,
   ProjectDescriptionUpdated as ProjectDescriptionUpdatedEvent,
@@ -34,7 +33,6 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
     previousAccount.totalKickstarter = ZERO_BI
     previousAccount.totalProjectGoals = ZERO_BD
     previousAccount.totalContribution = ZERO_BD
-    previousAccount.totalRefund = ZERO_BD
     previousAccount.save()
   }
 
@@ -44,7 +42,6 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
     newAccount.totalKickstarter = ZERO_BI
     newAccount.totalProjectGoals = ZERO_BD
     newAccount.totalContribution = ZERO_BD
-    newAccount.totalRefund = ZERO_BD
     newAccount.save()
   }
 
@@ -78,7 +75,6 @@ export function handleContribute(event: ContributeEvent): void {
     account.totalKickstarter = ZERO_BI
     account.totalProjectGoals = ZERO_BD
     account.totalContribution = ZERO_BD
-    account.totalRefund = ZERO_BD
     account.save()
   }
   account.totalContribution = account.totalContribution.plus(contribution.amount)
@@ -92,36 +88,6 @@ export function handleContribute(event: ContributeEvent): void {
   summitKickstarterFactory!.totalContribution = summitKickstarterFactory!.totalContribution.plus(contribution.amount)
   summitKickstarterFactory!.save()
 }
-
-export function handleRefund(event: RefundEvent): void {
-  let refund = new Refund(event.transaction.hash.toHex())
-  refund.kickstarter = event.address.toHex()
-  refund.contributor = event.params.contributor.toHex()
-  refund.amount = convertTokenToDecimal(event.params.amount, BigInt.fromI32(18))
-  refund.createdAt = event.params.timestamp
-  refund.save()
-
-  let account = Account.load(event.params.contributor.toHex())
-  if (!account) {
-    account = new Account(event.params.contributor.toHex())
-    account.totalKickstarter = ZERO_BI
-    account.totalProjectGoals = ZERO_BD
-    account.totalContribution = ZERO_BD
-    account.totalRefund = ZERO_BD
-    account.save()
-  }
-  account.totalRefund = account.totalRefund.plus(refund.amount)
-  account.save()
-
-  let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.totalContribution = kickstarter!.totalContribution.minus(refund.amount)
-  kickstarter!.save()
-
-  let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
-  summitKickstarterFactory!.totalRefund = summitKickstarterFactory!.totalRefund.plus(refund.amount)
-  summitKickstarterFactory!.save()
-}
-
 export function handleTitleUpdated(event: TitleUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
   kickstarter!.title = event.params.newTitle

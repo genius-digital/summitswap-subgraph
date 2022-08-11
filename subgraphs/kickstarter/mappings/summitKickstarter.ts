@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import { BigInt } from "@graphprotocol/graph-ts"
-import { SummitKickstarterFactory, Kickstarter, Account, Contribution } from "../generated/schema"
+import { SummitKickstarterFactory, Kickstarter, Account, Contribution, BackedKickstarter } from "../generated/schema"
 import {
   OwnershipTransferred as OwnershipTransferredEvent,
   Contribute as ContributeEvent,
@@ -84,10 +84,22 @@ export function handleContribute(event: ContributeEvent): void {
   kickstarter!.totalContribution = kickstarter!.totalContribution.plus(contribution.amount)
   kickstarter!.save()
 
+  let backedProject = BackedKickstarter.load(event.address.toHex() + "-" + event.params.contributor.toHex())
+  if (!backedProject) {
+    backedProject = new BackedKickstarter(event.address.toHex() + "-" + event.params.contributor.toHex())
+    backedProject.kickstarter = event.address.toHex()
+    backedProject.contributor = event.params.contributor.toHex()
+    backedProject.amount = ZERO_BD
+    backedProject.save()
+  }
+  backedProject.amount = backedProject.amount.plus(contribution.amount)
+  backedProject.save()
+
   let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
   summitKickstarterFactory!.totalContribution = summitKickstarterFactory!.totalContribution.plus(contribution.amount)
   summitKickstarterFactory!.save()
 }
+
 export function handleTitleUpdated(event: TitleUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
   kickstarter!.title = event.params.newTitle

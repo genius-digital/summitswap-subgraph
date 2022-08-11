@@ -22,6 +22,13 @@ type Kickstarter @entity {
   createdAt: BigInt!
 }
 
+type BackedKickstarter @entity {
+  id: ID!
+  contributor: Account!
+  kickstarter: Kickstarter!
+  amount: BigDecimal!
+}
+
 type Account @entity {
   id: ID!
   totalKickstarter: BigInt!

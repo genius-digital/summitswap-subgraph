@@ -5,7 +5,7 @@ type _Schema_
     algorithm: rank,
     include: [
       {
-        entity: "Token",
+        entity: "Kickstarter",
         fields: [
           { name: "id" },
           { name: "owner" },

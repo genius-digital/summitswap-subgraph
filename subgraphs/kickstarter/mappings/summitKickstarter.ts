@@ -90,9 +90,11 @@ export function handleContribute(event: ContributeEvent): void {
     backedProject.kickstarter = event.address.toHex()
     backedProject.contributor = event.params.contributor.toHex()
     backedProject.amount = ZERO_BD
+    backedProject.lastUpdated = event.block.timestamp
     backedProject.save()
   }
   backedProject.amount = backedProject.amount.plus(contribution.amount)
+  backedProject.lastUpdated = event.block.timestamp
   backedProject.save()
 
   let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)

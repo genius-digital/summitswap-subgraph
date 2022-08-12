@@ -47,6 +47,7 @@ type BackedKickstarter @entity {
   contributor: Account!
   kickstarter: Kickstarter!
   amount: BigDecimal!
+  lastUpdated: BigInt!
 }
 
 type Account @entity {

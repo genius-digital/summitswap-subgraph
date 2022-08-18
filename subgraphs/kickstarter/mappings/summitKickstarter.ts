@@ -31,6 +31,7 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
   if (!previousAccount) {
     previousAccount = new Account(event.params.previousOwner.toHex())
     previousAccount.totalKickstarter = ZERO_BI
+    previousAccount.totalBackedKickstarter = ZERO_BI
     previousAccount.totalProjectGoals = ZERO_BD
     previousAccount.totalContribution = ZERO_BD
     previousAccount.save()
@@ -40,6 +41,7 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
   if (!newAccount) {
     newAccount = new Account(event.params.newOwner.toHex())
     newAccount.totalKickstarter = ZERO_BI
+    newAccount.totalBackedKickstarter = ZERO_BI
     newAccount.totalProjectGoals = ZERO_BD
     newAccount.totalContribution = ZERO_BD
     newAccount.save()
@@ -73,6 +75,7 @@ export function handleContribute(event: ContributeEvent): void {
   if (!account) {
     account = new Account(event.params.contributor.toHex())
     account.totalKickstarter = ZERO_BI
+    account.totalBackedKickstarter = ZERO_BI
     account.totalProjectGoals = ZERO_BD
     account.totalContribution = ZERO_BD
     account.save()
@@ -92,6 +95,9 @@ export function handleContribute(event: ContributeEvent): void {
     backedProject.amount = ZERO_BD
     backedProject.lastUpdated = event.block.timestamp
     backedProject.save()
+
+    account.totalBackedKickstarter = account.totalBackedKickstarter.plus(ONE_BI)
+    account.save()
   }
   backedProject.amount = backedProject.amount.plus(contribution.amount)
   backedProject.lastUpdated = event.block.timestamp

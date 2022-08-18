@@ -53,6 +53,7 @@ type BackedKickstarter @entity {
 type Account @entity {
   id: ID!
   totalKickstarter: BigInt!
+  totalBackedKickstarter: BigInt!
   totalProjectGoals: BigDecimal!
   totalContribution: BigDecimal!
 }

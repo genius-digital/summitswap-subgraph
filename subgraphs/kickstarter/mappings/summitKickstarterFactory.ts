@@ -9,6 +9,7 @@ export function handleProjectCreated(event: ProjectCreated): void {
   if (summitKickstarterFactory === null) {
     summitKickstarterFactory = new SummitKickstarterFactory(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
     summitKickstarterFactory.totalKickstarter = ZERO_BI
+    summitKickstarterFactory.totalBackedKickstarter = ZERO_BI
     summitKickstarterFactory.totalProjectGoals = ZERO_BD
     summitKickstarterFactory.totalContribution = ZERO_BD
     summitKickstarterFactory.save()

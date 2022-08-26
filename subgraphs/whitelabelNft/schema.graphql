@@ -1,0 +1,39 @@
+type _Schema_
+  @fulltext(
+    name: "whitelabelNftSearch",
+    language: en
+    algorithm: rank,
+    include: [
+      {
+        entity: "WhitelabelNft",
+        fields: [
+          { name: "id" },
+          { name: "name" },
+          { name: "symbol" },
+        ]
+      }
+    ]
+  )
+
+
+type SummitWhitelabelNftFactory @entity {
+  id: ID!
+  totalWhitelabelNft: BigInt!
+}
+
+type WhitelabelNft @entity {
+  id: ID!
+  owner: Account!
+  name: String!
+  symbol: String!
+  maxSupply: BigInt!
+  whitelistMintPrice: BigInt!
+  publicMintPrice: BigInt!
+  phase: Int!
+  createdAt: BigInt!
+}
+
+type Account @entity {
+  id: ID!
+  totalWhitelabelNft: BigInt!
+}

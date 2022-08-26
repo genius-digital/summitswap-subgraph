@@ -8,9 +8,9 @@ dataSources:
     name: SummitKickstarterFactory
     network: bsc
     source:
-      address: '0x1d190929E5803007ce7e4585E240FEb5c4673E7E'
+      address: '0xe9e0837308a8776757E9D1a59D01A156Ae30B74e'
       abi: SummitKickstarterFactory
-      startBlock: 21790997
+      startBlock: 22282088
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -25,7 +25,7 @@ dataSources:
         - name: SummitKickstarter
           file: ./abis/SummitKickstarter.json
       eventHandlers:
-        - event: ProjectCreated(indexed address,indexed address,string,string,string,string,uint256,uint256,uint256,uint256,uint256,uint256)
+        - event: ProjectCreated(indexed address,indexed address,string,string,,string,string,string,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleProjectCreated
 templates:
   - kind: ethereum/contract
@@ -55,6 +55,8 @@ templates:
           handler: handleTitleUpdated
         - event: CreatorUpdated(string)
           handler: handleCreatorUpdated
+        - event: ImageUrlUpdated(string)
+          handler: handleImageUrlUpdated
         - event: ProjectDescriptionUpdated(string)
           handler: handleProjectDescriptionUpdated
         - event: RewardDescriptionUpdated(string)
@@ -71,5 +73,5 @@ templates:
           handler: handleEndTimestampUpdated
         - event: HasDistributedRewardsUpdated(bool)
           handler: handleHasDistributedRewardsUpdated
-        - event: KickstarterUpdated(string,string,string,string,uint256,uint256,uint256,uint256,uint256,bool)
+        - event: KickstarterUpdated(string,string,string,string,string,uint256,uint256,uint256,uint256,uint256,bool)
           handler: handleKickstarterUpdated

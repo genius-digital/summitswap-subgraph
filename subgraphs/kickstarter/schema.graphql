@@ -31,6 +31,7 @@ type Kickstarter @entity {
   owner: Account!
   title: String!
   creator: String!
+  imageUrl: String!
   projectDescription: String!
   rewardDescription: String!
   minContribution: BigDecimal!

@@ -6,6 +6,7 @@ import {
   Contribute as ContributeEvent,
   TitleUpdated as TitleUpdatedEvent,
   CreatorUpdated as CreatorUpdatedEvent,
+  ImageUrlUpdated as ImageUrlUpdatedEvent,
   ProjectDescriptionUpdated as ProjectDescriptionUpdatedEvent,
   RewardDescriptionUpdated as RewardDescriptionUpdatedEvent,
   MinContributionUpdated as MinContributionUpdatedEvent,
@@ -124,6 +125,12 @@ export function handleCreatorUpdated(event: CreatorUpdatedEvent): void {
   kickstarter!.save()
 }
 
+export function handleImageUrlUpdated(event: ImageUrlUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  kickstarter!.imageUrl = event.params.newImageUrl
+  kickstarter!.save()
+}
+
 export function handleProjectDescriptionUpdated(event: ProjectDescriptionUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
   kickstarter!.projectDescription = event.params.newProjectDescription
@@ -187,6 +194,7 @@ export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {
 
   kickstarter!.title = event.params.newTitle
   kickstarter!.creator = event.params.newCreator
+  kickstarter!.imageUrl = event.params.newImageUrl
   kickstarter!.projectDescription = event.params.newProjectDescription
   kickstarter!.rewardDescription = event.params.newRewardDescription
   kickstarter!.minContribution = convertTokenToDecimal(event.params.newMinContribution, BigInt.fromI32(18))

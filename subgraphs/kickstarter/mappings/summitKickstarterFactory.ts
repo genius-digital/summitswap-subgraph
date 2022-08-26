@@ -24,6 +24,7 @@ export function handleProjectCreated(event: ProjectCreated): void {
     kickstarter.owner = event.params._owner.toHex()
     kickstarter.title = event.params._title
     kickstarter.creator = event.params._creator
+    kickstarter.imageUrl = event.params._imageUrl
     kickstarter.projectDescription = event.params._projectDescription
     kickstarter.rewardDescription = event.params._rewardDescription
     kickstarter.minContribution = convertTokenToDecimal(event.params._minContribution, BigInt.fromI32(18))

@@ -103,6 +103,9 @@ export function handleContribute(event: ContributeEvent): void {
     let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
     summitKickstarterFactory!.totalBackedKickstarter = summitKickstarterFactory!.totalBackedKickstarter.plus(ONE_BI)
     summitKickstarterFactory!.save()
+
+    kickstarter!.totalContributor = kickstarter!.totalContributor.plus(ONE_BI)
+    kickstarter!.save()
   }
   backedProject.amount = backedProject.amount.plus(contribution.amount)
   backedProject.lastUpdated = event.block.timestamp

@@ -14,7 +14,6 @@ import {
   RewardDistributionTimestampUpdated as RewardDistributionTimestampUpdatedEvent,
   StartTimestampUpdated as StartTimestampUpdatedEvent,
   EndTimestampUpdated as EndTimestampUpdatedEvent,
-  HasDistributedRewardsUpdated as HasDistributedRewardsUpdatedEvent,
   KickstarterUpdated as KickstarterUpdatedEvent,
 } from "../generated/SummitKickstarterFactory/SummitKickstarter"
 import {
@@ -180,12 +179,6 @@ export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): 
 export function handleEndTimestampUpdated(event: EndTimestampUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
   kickstarter!.endTimestamp = event.params.newEndTimestamp
-  kickstarter!.save()
-}
-
-export function handleHasDistributedRewardsUpdated(event: HasDistributedRewardsUpdatedEvent): void {
-  let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.hasDistributedRewards = event.params.newHasDistributedRewards
   kickstarter!.save()
 }
 

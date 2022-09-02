@@ -25,12 +25,12 @@ dataSources:
         - name: SummitKickstarter
           file: ./abis/SummitKickstarter.json
       eventHandlers:
-        - event: ProjectCreated(indexed address,indexed address,string,string,,string,string,string,uint256,uint256,uint256,uint256,uint256,uint256)
+        - event: ProjectCreated((address,address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256))
           handler: handleProjectCreated
 templates:
   - kind: ethereum/contract
     name: Kickstarter
-    network: bsc
+    network: chapel
     source:
       abi: SummitKickstarter
     mapping:
@@ -47,31 +47,41 @@ templates:
         - name: SummitKickstarter
           file: ./abis/SummitKickstarter.json
       eventHandlers:
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: Contribute(indexed address,uint256,uint256)
+        - event: Approved(uint256,uint256)
+          handler: handleApproved
+        - event: Contribute(indexed address,string,uint256,uint256)
           handler: handleContribute
-        - event: TitleUpdated(string)
-          handler: handleTitleUpdated
         - event: CreatorUpdated(string)
           handler: handleCreatorUpdated
+        - event: EndTimestampUpdated(uint256)
+          handler: handleEndTimestampUpdated
+        - event: FixFeeAmountUpdated(uint256)
+          handler: handleFixFeeAmountUpdated
         - event: ImageUrlUpdated(string)
           handler: handleImageUrlUpdated
-        - event: ProjectDescriptionUpdated(string)
-          handler: handleProjectDescriptionUpdated
-        - event: RewardDescriptionUpdated(string)
-          handler: handleRewardDescriptionUpdated
+        - event: KickstarterUpdated((address,address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256))
+          handler: handleKickstarterUpdated
+        - event: KickstarterUpdatedByFactoryAdmin((address,address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256),uint8,uint256,uint256)
+          handler: handleKickstarterUpdatedByFactoryAdmin
         - event: MinContributionUpdated(uint256)
           handler: handleMinContributionUpdated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PercentageFeeAmountUpdated(uint256)
+          handler: handlePercentageFeeAmountUpdated
+        - event: ProjectDescriptionUpdated(string)
+          handler: handleProjectDescriptionUpdated
         - event: ProjectGoalsUpdated(uint256)
           handler: handleProjectGoalsUpdated
+        - event: Rejected(string)
+          handler: handleRejected
+        - event: RewardDescriptionUpdated(string)
+          handler: handleRewardDescriptionUpdated
         - event: RewardDistributionTimestampUpdated(uint256)
           handler: handleRewardDistributionTimestampUpdated
         - event: StartTimestampUpdated(uint256)
           handler: handleStartTimestampUpdated
-        - event: EndTimestampUpdated(uint256)
-          handler: handleEndTimestampUpdated
-        - event: HasDistributedRewardsUpdated(bool)
-          handler: handleHasDistributedRewardsUpdated
-        - event: KickstarterUpdated(string,string,string,string,string,uint256,uint256,uint256,uint256,uint256,bool)
-          handler: handleKickstarterUpdated
+        - event: StatusUpdated(uint8)
+          handler: handleStatusUpdated
+        - event: TitleUpdated(string)
+          handler: handleTitleUpdated

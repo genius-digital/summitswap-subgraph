@@ -32,7 +32,7 @@ import {
   fetchTokenDecimals,
 } from "../utils"
 
-export function handleApproved(event: ApprovedEvent): any {
+export function handleApproved(event: ApprovedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
   let decimals: BigInt = BigInt.fromI32(18)
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
@@ -43,7 +43,58 @@ export function handleApproved(event: ApprovedEvent): any {
   kickstarter!.save()
 }
 
-// export function handleContribute(event: ContributeEvent): any {}
+export function handleContribute(event: ContributeEvent): void {
+  let contribution = new Contribution(event.transaction.hash.toHex())
+  contribution.kickstarter = event.address.toHex()
+  contribution.contributor = event.params.contributor.toHex()
+  contribution.amount = convertTokenToDecimal(event.params.amount, BigInt.fromI32(18))
+  contribution.createdAt = event.params.timestamp
+  contribution.save()
+
+  let account = Account.load(event.params.contributor.toHex())
+  if (!account) {
+    account = new Account(event.params.contributor.toHex())
+    account.totalKickstarter = ZERO_BI
+    account.totalBackedKickstarter = ZERO_BI
+    account.totalProjectGoals = ZERO_BD
+    account.totalContribution = ZERO_BD
+    account.save()
+  }
+  account.totalContribution = account.totalContribution.plus(contribution.amount)
+  account.save()
+
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  kickstarter!.totalContribution = kickstarter!.totalContribution.plus(contribution.amount)
+  kickstarter!.save()
+
+  let backedProject = BackedKickstarter.load(event.address.toHex() + "-" + event.params.contributor.toHex())
+  if (!backedProject) {
+    backedProject = new BackedKickstarter(event.address.toHex() + "-" + event.params.contributor.toHex())
+    backedProject.kickstarter = event.address.toHex()
+    backedProject.contributor = event.params.contributor.toHex()
+    backedProject.amount = ZERO_BD
+    backedProject.lastUpdated = event.block.timestamp
+    backedProject.save()
+
+    account.totalBackedKickstarter = account.totalBackedKickstarter.plus(ONE_BI)
+    account.save()
+
+    let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
+    summitKickstarterFactory!.totalBackedKickstarter = summitKickstarterFactory!.totalBackedKickstarter.plus(ONE_BI)
+    summitKickstarterFactory!.save()
+
+    kickstarter!.totalContributor = kickstarter!.totalContributor.plus(ONE_BI)
+    kickstarter!.save()
+  }
+  backedProject.email = event.params.email;
+  backedProject.amount = backedProject.amount.plus(contribution.amount)
+  backedProject.lastUpdated = event.block.timestamp
+  backedProject.save()
+
+  let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
+  summitKickstarterFactory!.totalContribution = summitKickstarterFactory!.totalContribution.plus(contribution.amount)
+  summitKickstarterFactory!.save()
+}
 
 // export function handleCreatorUpdated(event: CreatorUpdatedEvent): any {}
 
@@ -115,58 +166,6 @@ export function handleApproved(event: ApprovedEvent): any {
 
 //   kickstarter!.owner = event.params.newOwner.toHex()
 //   kickstarter!.save()
-// }
-
-// export function handleContribute(event: ContributeEvent): void {
-//   let contribution = new Contribution(event.transaction.hash.toHex())
-//   contribution.kickstarter = event.address.toHex()
-//   contribution.contributor = event.params.contributor.toHex()
-//   contribution.amount = convertTokenToDecimal(event.params.amount, BigInt.fromI32(18))
-//   contribution.createdAt = event.params.timestamp
-//   contribution.save()
-
-//   let account = Account.load(event.params.contributor.toHex())
-//   if (!account) {
-//     account = new Account(event.params.contributor.toHex())
-//     account.totalKickstarter = ZERO_BI
-//     account.totalBackedKickstarter = ZERO_BI
-//     account.totalProjectGoals = ZERO_BD
-//     account.totalContribution = ZERO_BD
-//     account.save()
-//   }
-//   account.totalContribution = account.totalContribution.plus(contribution.amount)
-//   account.save()
-
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-//   kickstarter!.totalContribution = kickstarter!.totalContribution.plus(contribution.amount)
-//   kickstarter!.save()
-
-//   let backedProject = BackedKickstarter.load(event.address.toHex() + "-" + event.params.contributor.toHex())
-//   if (!backedProject) {
-//     backedProject = new BackedKickstarter(event.address.toHex() + "-" + event.params.contributor.toHex())
-//     backedProject.kickstarter = event.address.toHex()
-//     backedProject.contributor = event.params.contributor.toHex()
-//     backedProject.amount = ZERO_BD
-//     backedProject.lastUpdated = event.block.timestamp
-//     backedProject.save()
-
-//     account.totalBackedKickstarter = account.totalBackedKickstarter.plus(ONE_BI)
-//     account.save()
-
-//     let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
-//     summitKickstarterFactory!.totalBackedKickstarter = summitKickstarterFactory!.totalBackedKickstarter.plus(ONE_BI)
-//     summitKickstarterFactory!.save()
-
-//     kickstarter!.totalContributor = kickstarter!.totalContributor.plus(ONE_BI)
-//     kickstarter!.save()
-//   }
-//   backedProject.amount = backedProject.amount.plus(contribution.amount)
-//   backedProject.lastUpdated = event.block.timestamp
-//   backedProject.save()
-
-//   let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
-//   summitKickstarterFactory!.totalContribution = summitKickstarterFactory!.totalContribution.plus(contribution.amount)
-//   summitKickstarterFactory!.save()
 // }
 
 // export function handleTitleUpdated(event: TitleUpdatedEvent): void {

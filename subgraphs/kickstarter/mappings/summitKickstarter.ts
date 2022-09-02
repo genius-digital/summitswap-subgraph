@@ -102,7 +102,11 @@ export function handleCreatorUpdated(event: CreatorUpdatedEvent): void {
   kickstarter!.save()
 }
 
-// export function handleEndTimestampUpdated(event: EndTimestampUpdatedEvent): void {}
+export function handleEndTimestampUpdated(event: EndTimestampUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  kickstarter!.endTimestamp = event.params.newEndTimestamp
+  kickstarter!.save()
+}
 
 // export function handleFixFeeAmountUpdated(event: FixFeeAmountUpdatedEvent): void {}
 
@@ -128,7 +132,11 @@ export function handleCreatorUpdated(event: CreatorUpdatedEvent): void {
 
 // export function handleRewardDistributionTimestampUpdated(event: RewardDistributionTimestampUpdatedEvent): void {}
 
-// export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): void {}
+export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  kickstarter!.startTimestamp = event.params.newStartTimestamp
+  kickstarter!.save()
+}
 
 // export function handleStatusUpdated(event: StatusUpdatedEvent): void {}
 
@@ -218,18 +226,6 @@ export function handleCreatorUpdated(event: CreatorUpdatedEvent): void {
 // export function handleRewardDistributionTimestampUpdated(event: RewardDistributionTimestampUpdatedEvent): void {
 //   let kickstarter = Kickstarter.load(event.address.toHex())
 //   kickstarter!.rewardDistributionTimestamp = event.params.newRewardDistributionTimestamp
-//   kickstarter!.save()
-// }
-
-// export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): void {
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-//   kickstarter!.startTimestamp = event.params.newStartTimestamp
-//   kickstarter!.save()
-// }
-
-// export function handleEndTimestampUpdated(event: EndTimestampUpdatedEvent): void {
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-//   kickstarter!.endTimestamp = event.params.newEndTimestamp
 //   kickstarter!.save()
 // }
 

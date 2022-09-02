@@ -189,7 +189,15 @@ export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdated
   account!.save()
 }
 
-// export function handleMinContributionUpdated(event: MinContributionUpdatedEvent): void {}
+export function handleMinContributionUpdated(event: MinContributionUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  let decimals: BigInt = BigInt.fromI32(18)
+  if (kickstarter!.paymentToken != ADDRESS_ZERO) {
+    decimals = fetchTokenDecimals(event.address)
+  }
+  kickstarter!.minContribution = convertTokenToDecimal(event.params.newMinContribution, decimals)
+  kickstarter!.save()
+}
 
 // export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {}
 
@@ -268,12 +276,6 @@ export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): 
 // export function handleRewardDescriptionUpdated(event: RewardDescriptionUpdatedEvent): void {
 //   let kickstarter = Kickstarter.load(event.address.toHex())
 //   kickstarter!.rewardDescription = event.params.newRewardDescription
-//   kickstarter!.save()
-// }
-
-// export function handleMinContributionUpdated(event: MinContributionUpdatedEvent): void {
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-//   kickstarter!.minContribution = convertTokenToDecimal(event.params.newMinContribution, BigInt.fromI32(18))
 //   kickstarter!.save()
 // }
 

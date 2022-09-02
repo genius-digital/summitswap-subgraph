@@ -38,6 +38,8 @@ export function handleApproved(event: ApprovedEvent): void {
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
     decimals = fetchTokenDecimals(event.address)
   }
+  kickstarter!.status = BigInt.fromI32(1)
+  kickstarter!.rejectReason = ""
   kickstarter!.fixFeeAmount = convertTokenToDecimal(event.params.fixFeeAmount, decimals)
   kickstarter!.percentageFeeAmount = event.params.percentageFeeAmount
   kickstarter!.save()
@@ -108,7 +110,15 @@ export function handleEndTimestampUpdated(event: EndTimestampUpdatedEvent): void
   kickstarter!.save()
 }
 
-// export function handleFixFeeAmountUpdated(event: FixFeeAmountUpdatedEvent): void {}
+export function handleFixFeeAmountUpdated(event: FixFeeAmountUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  let decimals: BigInt = BigInt.fromI32(18)
+  if (kickstarter!.paymentToken != ADDRESS_ZERO) {
+    decimals = fetchTokenDecimals(event.address)
+  }
+  kickstarter!.fixFeeAmount = convertTokenToDecimal(event.params.newFixFeeAmount, decimals)
+  kickstarter!.save()
+}
 
 // export function handleImageUrlUpdated(event: ImageUrlUpdatedEvent): void {}
 

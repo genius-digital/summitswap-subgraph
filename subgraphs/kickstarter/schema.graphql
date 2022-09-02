@@ -45,7 +45,7 @@ type Kickstarter @entity {
   endTimestamp: BigInt!
   percentageFeeAmount: BigInt!
   fixFeeAmount: BigDecimal!
-  rejectReason: String!
+  rejectedReason: String!
   createdAt: BigInt!
 }
 

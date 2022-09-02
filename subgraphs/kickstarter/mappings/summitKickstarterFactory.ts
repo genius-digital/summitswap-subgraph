@@ -64,7 +64,7 @@ export function handleProjectCreated(event: ProjectCreatedEvent): void {
     kickstarter.endTimestamp = event.params.kickstarter.endTimestamp
     kickstarter.percentageFeeAmount = ZERO_BI
     kickstarter.fixFeeAmount = ZERO_BD
-    kickstarter.rejectReason = ""
+    kickstarter.rejectedReason = ""
     kickstarter.createdAt = event.block.timestamp
     kickstarter.save()
   }

@@ -1,10 +1,18 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 import { SummitKickstarterFactory, Kickstarter, Account } from "../generated/schema"
-import { ProjectCreated } from "../generated/SummitKickstarterFactory/SummitKickstarterFactory"
+import { ProjectCreated as ProjectCreatedEvent } from "../generated/SummitKickstarterFactory/SummitKickstarterFactory"
 import { Kickstarter as KickstarterTemplate } from "../generated/templates"
-import { convertTokenToDecimal, ONE_BI, SUMMIT_KICKSTARTER_FACTORY_ADDRESS, ZERO_BD, ZERO_BI } from "../utils"
+import {
+  ADDRESS_ZERO,
+  convertTokenToDecimal,
+  fetchTokenDecimals,
+  ONE_BI,
+  SUMMIT_KICKSTARTER_FACTORY_ADDRESS,
+  ZERO_BD,
+  ZERO_BI,
+} from "../utils"
 
-export function handleProjectCreated(event: ProjectCreated): void {
+export function handleProjectCreated(event: ProjectCreatedEvent): void {
   let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
   if (summitKickstarterFactory === null) {
     summitKickstarterFactory = new SummitKickstarterFactory(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
@@ -15,29 +23,51 @@ export function handleProjectCreated(event: ProjectCreated): void {
     summitKickstarterFactory.save()
   }
   summitKickstarterFactory.totalKickstarter = summitKickstarterFactory.totalKickstarter.plus(ONE_BI)
-  summitKickstarterFactory.totalProjectGoals = convertTokenToDecimal(event.params._projectGoals, BigInt.fromI32(18))
+  summitKickstarterFactory.totalProjectGoals = convertTokenToDecimal(
+    event.params.kickstarter.projectGoals,
+    BigInt.fromI32(18)
+  )
   summitKickstarterFactory.save()
 
-  let kickstarter = Kickstarter.load(event.params._kickstarterAddress.toHex())
+  let ownerAccount = Account.load(event.params.kickstarter.owner.toHex())
+  if (!ownerAccount) {
+    ownerAccount = new Account(event.params.kickstarter.owner.toHex())
+    ownerAccount.totalKickstarter = ZERO_BI
+    ownerAccount.totalBackedKickstarter = ZERO_BI
+    ownerAccount.totalProjectGoals = ZERO_BD
+    ownerAccount.totalContribution = ZERO_BD
+    ownerAccount.save()
+  }
+
+  let kickstarter = Kickstarter.load(event.params.kickstarterAddress.toHex())
+  let decimals: BigInt = BigInt.fromI32(18)
+  if (event.params.kickstarter.paymentToken.toHex() != ADDRESS_ZERO) {
+    decimals = fetchTokenDecimals(event.params.kickstarter.paymentToken)
+  }
+
   if (kickstarter === null) {
-    kickstarter = new Kickstarter(event.params._kickstarterAddress.toHex())
-    kickstarter.owner = event.params._owner.toHex()
-    kickstarter.title = event.params._title
-    kickstarter.creator = event.params._creator
-    kickstarter.imageUrl = event.params._imageUrl
-    kickstarter.projectDescription = event.params._projectDescription
-    kickstarter.rewardDescription = event.params._rewardDescription
-    kickstarter.minContribution = convertTokenToDecimal(event.params._minContribution, BigInt.fromI32(18))
+    kickstarter = new Kickstarter(event.params.kickstarterAddress.toHex())
+    kickstarter.paymentToken = event.params.kickstarter.paymentToken.toHex()
+    kickstarter.status = ZERO_BI
+    kickstarter.owner = event.params.kickstarter.owner.toHex()
+    kickstarter.title = event.params.kickstarter.title
+    kickstarter.creator = event.params.kickstarter.creator
+    kickstarter.imageUrl = event.params.kickstarter.imageUrl
+    kickstarter.projectDescription = event.params.kickstarter.projectDescription
+    kickstarter.rewardDescription = event.params.kickstarter.rewardDescription
+    kickstarter.minContribution = convertTokenToDecimal(event.params.kickstarter.minContribution, decimals)
     kickstarter.totalContribution = ZERO_BD
     kickstarter.totalContributor = ZERO_BI
-    kickstarter.projectGoals = convertTokenToDecimal(event.params._projectGoals, BigInt.fromI32(18))
-    kickstarter.rewardDistributionTimestamp = event.params._rewardDistributionTimestamp
-    kickstarter.hasDistributedRewards = false
-    kickstarter.startTimestamp = event.params._startTimestamp
-    kickstarter.endTimestamp = event.params._endTimestamp
-    kickstarter.createdAt = event.params.timestamp
+    kickstarter.projectGoals = convertTokenToDecimal(event.params.kickstarter.projectGoals, decimals)
+    kickstarter.rewardDistributionTimestamp = event.params.kickstarter.rewardDistributionTimestamp
+    kickstarter.startTimestamp = event.params.kickstarter.startTimestamp
+    kickstarter.endTimestamp = event.params.kickstarter.endTimestamp
+    kickstarter.percentageFeeAmount = ZERO_BI
+    kickstarter.fixFeeAmount = ZERO_BD
+    kickstarter.rejectReason = ""
+    kickstarter.createdAt = event.block.timestamp
     kickstarter.save()
   }
 
-  KickstarterTemplate.create(event.params._kickstarterAddress)
+  KickstarterTemplate.create(event.params.kickstarterAddress)
 }

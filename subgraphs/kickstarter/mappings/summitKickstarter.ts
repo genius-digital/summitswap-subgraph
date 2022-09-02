@@ -120,7 +120,11 @@ export function handleFixFeeAmountUpdated(event: FixFeeAmountUpdatedEvent): void
   kickstarter!.save()
 }
 
-// export function handleImageUrlUpdated(event: ImageUrlUpdatedEvent): void {}
+export function handleImageUrlUpdated(event: ImageUrlUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  kickstarter!.imageUrl = event.params.newImageUrl
+  kickstarter!.save()
+}
 
 // export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {}
 
@@ -193,12 +197,6 @@ export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): 
 // export function handleTitleUpdated(event: TitleUpdatedEvent): void {
 //   let kickstarter = Kickstarter.load(event.address.toHex())
 //   kickstarter!.title = event.params.newTitle
-//   kickstarter!.save()
-// }
-
-// export function handleImageUrlUpdated(event: ImageUrlUpdatedEvent): void {
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-//   kickstarter!.imageUrl = event.params.newImageUrl
 //   kickstarter!.save()
 // }
 

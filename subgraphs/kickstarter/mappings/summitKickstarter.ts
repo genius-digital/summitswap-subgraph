@@ -126,7 +126,35 @@ export function handleImageUrlUpdated(event: ImageUrlUpdatedEvent): void {
   kickstarter!.save()
 }
 
-// export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {}
+export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  let account = Account.load(kickstarter!.owner)
+  account!.totalProjectGoals = account!.totalProjectGoals.minus(kickstarter!.projectGoals)
+
+  let decimals: BigInt = BigInt.fromI32(18)
+  if (kickstarter!.paymentToken != ADDRESS_ZERO) {
+    decimals = fetchTokenDecimals(event.address)
+  }
+
+  kickstarter!.paymentToken = event.params.kickstarter.paymentToken.toHex()
+  kickstarter!.title = event.params.kickstarter.title
+  kickstarter!.creator = event.params.kickstarter.creator
+  kickstarter!.imageUrl = event.params.kickstarter.imageUrl
+  kickstarter!.projectDescription = event.params.kickstarter.projectDescription
+  kickstarter!.rewardDescription = event.params.kickstarter.rewardDescription
+  kickstarter!.minContribution = convertTokenToDecimal(
+    event.params.kickstarter.minContribution,
+    BigInt.fromI32(decimals)
+  )
+  kickstarter!.projectGoals = convertTokenToDecimal(event.params.kickstarter.projectGoals, BigInt.fromI32(decimals))
+  kickstarter!.rewardDistributionTimestamp = event.params.kickstarter.rewardDistributionTimestamp
+  kickstarter!.startTimestamp = event.params.kickstarter.startTimestamp
+  kickstarter!.endTimestamp = event.params.kickstarter.endTimestamp
+  kickstarter!.save()
+
+  account!.totalProjectGoals = account!.totalProjectGoals.plus(kickstarter!.projectGoals)
+  account!.save()
+}
 
 // export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdatedByFactoryAdminEvent): void {}
 
@@ -235,27 +263,4 @@ export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): 
 //   let kickstarter = Kickstarter.load(event.address.toHex())
 //   kickstarter!.rewardDistributionTimestamp = event.params.newRewardDistributionTimestamp
 //   kickstarter!.save()
-// }
-
-// export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-
-//   let account = Account.load(kickstarter!.owner)
-//   account!.totalProjectGoals = account!.totalProjectGoals.minus(kickstarter!.projectGoals)
-
-//   kickstarter!.title = event.params.newTitle
-//   kickstarter!.creator = event.params.newCreator
-//   kickstarter!.imageUrl = event.params.newImageUrl
-//   kickstarter!.projectDescription = event.params.newProjectDescription
-//   kickstarter!.rewardDescription = event.params.newRewardDescription
-//   kickstarter!.minContribution = convertTokenToDecimal(event.params.newMinContribution, BigInt.fromI32(18))
-//   kickstarter!.projectGoals = convertTokenToDecimal(event.params.newProjectGoals, BigInt.fromI32(18))
-//   kickstarter!.rewardDistributionTimestamp = event.params.newRewardDistributionTimestamp
-//   kickstarter!.startTimestamp = event.params.newStartTimestamp
-//   kickstarter!.endTimestamp = event.params.newEndTimestamp
-//   kickstarter!.hasDistributedRewards = event.params.newHasDistributedRewards
-//   kickstarter!.save()
-
-//   account!.totalProjectGoals = account!.totalProjectGoals.plus(kickstarter!.projectGoals)
-//   account!.save()
 // }

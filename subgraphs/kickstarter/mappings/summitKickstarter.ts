@@ -100,13 +100,13 @@ export function handleContribute(event: ContributeEvent): void {
 
 export function handleCreatorUpdated(event: CreatorUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.creator = event.params.newCreator
+  kickstarter!.creator = event.params.creator
   kickstarter!.save()
 }
 
 export function handleEndTimestampUpdated(event: EndTimestampUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.endTimestamp = event.params.newEndTimestamp
+  kickstarter!.endTimestamp = event.params.endTimestamp
   kickstarter!.save()
 }
 
@@ -116,13 +116,13 @@ export function handleFixFeeAmountUpdated(event: FixFeeAmountUpdatedEvent): void
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
     decimals = fetchTokenDecimals(event.address)
   }
-  kickstarter!.fixFeeAmount = convertTokenToDecimal(event.params.newFixFeeAmount, decimals)
+  kickstarter!.fixFeeAmount = convertTokenToDecimal(event.params.fixFeeAmount, decimals)
   kickstarter!.save()
 }
 
 export function handleImageUrlUpdated(event: ImageUrlUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.imageUrl = event.params.newImageUrl
+  kickstarter!.imageUrl = event.params.imageUrl
   kickstarter!.save()
 }
 
@@ -164,7 +164,7 @@ export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdated
   }
 
   kickstarter!.paymentToken = event.params.kickstarter.paymentToken.toHex()
-  kickstarter!.status = BigInt.fromI32(event.params.newStatus)
+  kickstarter!.status = BigInt.fromI32(event.params.status)
   kickstarter!.title = event.params.kickstarter.title
   kickstarter!.creator = event.params.kickstarter.creator
   kickstarter!.imageUrl = event.params.kickstarter.imageUrl
@@ -175,8 +175,8 @@ export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdated
   kickstarter!.rewardDistributionTimestamp = event.params.kickstarter.rewardDistributionTimestamp
   kickstarter!.startTimestamp = event.params.kickstarter.startTimestamp
   kickstarter!.endTimestamp = event.params.kickstarter.endTimestamp
-  kickstarter!.percentageFeeAmount = event.params.newPercentageFeeAmount
-  kickstarter!.fixFeeAmount = convertTokenToDecimal(event.params.newFixFeeAmount, decimals)
+  kickstarter!.percentageFeeAmount = event.params.percentageFeeAmount
+  kickstarter!.fixFeeAmount = convertTokenToDecimal(event.params.fixFeeAmount, decimals)
   kickstarter!.save()
 
   account!.totalProjectGoals = account!.totalProjectGoals.plus(kickstarter!.projectGoals)
@@ -189,7 +189,7 @@ export function handleMinContributionUpdated(event: MinContributionUpdatedEvent)
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
     decimals = fetchTokenDecimals(event.address)
   }
-  kickstarter!.minContribution = convertTokenToDecimal(event.params.newMinContribution, decimals)
+  kickstarter!.minContribution = convertTokenToDecimal(event.params.minContribution, decimals)
   kickstarter!.save()
 }
 
@@ -233,13 +233,13 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
 
 export function handlePercentageFeeAmountUpdated(event: PercentageFeeAmountUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.percentageFeeAmount = event.params.newPercentageFeeAmount
+  kickstarter!.percentageFeeAmount = event.params.percentageFeeAmount
   kickstarter!.save()
 }
 
 export function handleProjectDescriptionUpdated(event: ProjectDescriptionUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.projectDescription = event.params.newProjectDescription
+  kickstarter!.projectDescription = event.params.projectDescription
   kickstarter!.save()
 }
 
@@ -253,7 +253,7 @@ export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): void
   let account = Account.load(kickstarter!.owner)
   account!.totalProjectGoals = account!.totalProjectGoals.minus(kickstarter!.projectGoals)
 
-  kickstarter!.projectGoals = convertTokenToDecimal(event.params.newProjectGoals, decimals)
+  kickstarter!.projectGoals = convertTokenToDecimal(event.params.projectGoals, decimals)
   kickstarter!.save()
 
   account!.totalProjectGoals = account!.totalProjectGoals.plus(kickstarter!.projectGoals)
@@ -269,19 +269,19 @@ export function handleRejected(event: RejectedEvent): void {
 
 export function handleRewardDescriptionUpdated(event: RewardDescriptionUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.rewardDescription = event.params.newRewardDescription
+  kickstarter!.rewardDescription = event.params.rewardDescription
   kickstarter!.save()
 }
 
 export function handleRewardDistributionTimestampUpdated(event: RewardDistributionTimestampUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.rewardDistributionTimestamp = event.params.newRewardDistributionTimestamp
+  kickstarter!.rewardDistributionTimestamp = event.params.rewardDistributionTimestamp
   kickstarter!.save()
 }
 
 export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.startTimestamp = event.params.newStartTimestamp
+  kickstarter!.startTimestamp = event.params.startTimestamp
   kickstarter!.save()
 }
 
@@ -293,6 +293,6 @@ export function handleStatusUpdated(event: StatusUpdatedEvent): void {
 
 export function handleTitleUpdated(event: TitleUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.title = event.params.newTitle
+  kickstarter!.title = event.params.title
   kickstarter!.save()
 }

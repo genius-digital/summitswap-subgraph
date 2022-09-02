@@ -128,7 +128,7 @@
       {
         "indexed": false,
         "internalType": "string",
-        "name": "newCreator",
+        "name": "creator",
         "type": "string"
       }
     ],
@@ -141,7 +141,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newEndTimestamp",
+        "name": "endTimestamp",
         "type": "uint256"
       }
     ],
@@ -154,7 +154,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newFixFeeAmount",
+        "name": "fixFeeAmount",
         "type": "uint256"
       }
     ],
@@ -167,7 +167,7 @@
       {
         "indexed": false,
         "internalType": "string",
-        "name": "newImageUrl",
+        "name": "imageUrl",
         "type": "string"
       }
     ],
@@ -313,19 +313,19 @@
       {
         "indexed": false,
         "internalType": "enum Status",
-        "name": "newStatus",
+        "name": "status",
         "type": "uint8"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newPercentageFeeAmount",
+        "name": "percentageFeeAmount",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newFixFeeAmount",
+        "name": "fixFeeAmount",
         "type": "uint256"
       }
     ],
@@ -338,7 +338,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newMinContribution",
+        "name": "minContribution",
         "type": "uint256"
       }
     ],
@@ -370,7 +370,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newPercentageFeeAmount",
+        "name": "percentageFeeAmount",
         "type": "uint256"
       }
     ],
@@ -383,7 +383,7 @@
       {
         "indexed": false,
         "internalType": "string",
-        "name": "newProjectDescription",
+        "name": "projectDescription",
         "type": "string"
       }
     ],
@@ -396,7 +396,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newProjectGoals",
+        "name": "projectGoals",
         "type": "uint256"
       }
     ],
@@ -422,7 +422,7 @@
       {
         "indexed": false,
         "internalType": "string",
-        "name": "newRewardDescription",
+        "name": "rewardDescription",
         "type": "string"
       }
     ],
@@ -435,7 +435,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newRewardDistributionTimestamp",
+        "name": "rewardDistributionTimestamp",
         "type": "uint256"
       }
     ],
@@ -448,7 +448,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newStartTimestamp",
+        "name": "startTimestamp",
         "type": "uint256"
       }
     ],
@@ -474,7 +474,7 @@
       {
         "indexed": false,
         "internalType": "string",
-        "name": "newTitle",
+        "name": "title",
         "type": "string"
       }
     ],
@@ -912,7 +912,7 @@
     "inputs": [
       {
         "internalType": "string",
-        "name": "_rejectReason",
+        "name": "_rejectedReason",
         "type": "string"
       }
     ],
@@ -923,7 +923,7 @@
   },
   {
     "inputs": [],
-    "name": "rejectReason",
+    "name": "rejectedReason",
     "outputs": [
       {
         "internalType": "string",

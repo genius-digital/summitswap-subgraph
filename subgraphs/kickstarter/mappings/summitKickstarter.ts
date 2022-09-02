@@ -243,7 +243,11 @@ export function handlePercentageFeeAmountUpdated(event: PercentageFeeAmountUpdat
   kickstarter!.save()
 }
 
-// export function handleProjectDescriptionUpdated(event: ProjectDescriptionUpdatedEvent): void {}
+export function handleProjectDescriptionUpdated(event: ProjectDescriptionUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  kickstarter!.projectDescription = event.params.newProjectDescription
+  kickstarter!.save() 
+}
 
 // export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): void {}
 
@@ -266,12 +270,6 @@ export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): 
 // export function handleTitleUpdated(event: TitleUpdatedEvent): void {
 //   let kickstarter = Kickstarter.load(event.address.toHex())
 //   kickstarter!.title = event.params.newTitle
-//   kickstarter!.save()
-// }
-
-// export function handleProjectDescriptionUpdated(event: ProjectDescriptionUpdatedEvent): void {
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-//   kickstarter!.projectDescription = event.params.newProjectDescription
 //   kickstarter!.save()
 // }
 

@@ -33,6 +33,12 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "address",
+        "name": "kickstarterAddress",
+        "type": "address"
+      },
+      {
         "components": [
           {
             "internalType": "contract IERC20",

@@ -2,59 +2,71 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_owner",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_title",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_creator",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_imageUrl",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_projectDescription",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_rewardDescription",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_minContribution",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_projectGoals",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_rewardDistributionTimestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_startTimestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_endTimestamp",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "contract IERC20",
+            "name": "paymentToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "creator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "projectDescription",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "rewardDescription",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minContribution",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "projectGoals",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardDistributionTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTimestamp",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Kickstarter",
+        "name": "_kickstarter",
+        "type": "tuple"
       }
     ],
     "stateMutability": "nonpayable",
@@ -64,10 +76,35 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "percentageFeeAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fixFeeAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Approved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "contributor",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "email",
+        "type": "string"
       },
       {
         "indexed": false,
@@ -116,12 +153,12 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "newHasDistributedRewards",
-        "type": "bool"
+        "internalType": "uint256",
+        "name": "newFixFeeAmount",
+        "type": "uint256"
       }
     ],
-    "name": "HasDistributedRewardsUpdated",
+    "name": "FixFeeAmountUpdated",
     "type": "event"
   },
   {
@@ -141,73 +178,168 @@
     "anonymous": false,
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "contract IERC20",
+            "name": "paymentToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "creator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "projectDescription",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "rewardDescription",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minContribution",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "projectGoals",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardDistributionTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTimestamp",
+            "type": "uint256"
+          }
+        ],
         "indexed": false,
-        "internalType": "string",
-        "name": "newTitle",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "newCreator",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "newImageUrl",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "newProjectDescription",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "newRewardDescription",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newMinContribution",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newProjectGoals",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newRewardDistributionTimestamp",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newStartTimestamp",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newEndTimestamp",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "newHasDistributedRewards",
-        "type": "bool"
+        "internalType": "struct Kickstarter",
+        "name": "kickstarter",
+        "type": "tuple"
       }
     ],
     "name": "KickstarterUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "contract IERC20",
+            "name": "paymentToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "creator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "projectDescription",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "rewardDescription",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minContribution",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "projectGoals",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardDistributionTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTimestamp",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct Kickstarter",
+        "name": "kickstarter",
+        "type": "tuple"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum Status",
+        "name": "newStatus",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newPercentageFeeAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newFixFeeAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "KickstarterUpdatedByFactoryAdmin",
     "type": "event"
   },
   {
@@ -247,6 +379,19 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "newPercentageFeeAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PercentageFeeAmountUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "string",
         "name": "newProjectDescription",
         "type": "string"
@@ -266,6 +411,19 @@
       }
     ],
     "name": "ProjectGoalsUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "rejectedReason",
+        "type": "string"
+      }
+    ],
+    "name": "Rejected",
     "type": "event"
   },
   {
@@ -312,6 +470,19 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "enum Status",
+        "name": "status",
+        "type": "uint8"
+      }
+    ],
+    "name": "StatusUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "string",
         "name": "newTitle",
         "type": "string"
@@ -321,61 +492,104 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "FEE_DENOMINATOR",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "_title",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_creator",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_imageUrl",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_projectDescription",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_rewardDescription",
-        "type": "string"
-      },
-      {
         "internalType": "uint256",
-        "name": "_minContribution",
+        "name": "_percentageFeeAmount",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "_projectGoals",
+        "name": "_fixFeeAmount",
         "type": "uint256"
-      },
+      }
+    ],
+    "name": "approve",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_rewardDistributionTimestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_startTimestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_endTimestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "_hasDistributedRewards",
-        "type": "bool"
+        "components": [
+          {
+            "internalType": "contract IERC20",
+            "name": "paymentToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "creator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "projectDescription",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "rewardDescription",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minContribution",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "projectGoals",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardDistributionTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTimestamp",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Kickstarter",
+        "name": "_kickstarter",
+        "type": "tuple"
       }
     ],
     "name": "configProjectInfo",
@@ -384,7 +598,108 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "contract IERC20",
+            "name": "paymentToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "creator",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "projectDescription",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "rewardDescription",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minContribution",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "projectGoals",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardDistributionTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTimestamp",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Kickstarter",
+        "name": "_kickstarter",
+        "type": "tuple"
+      },
+      {
+        "internalType": "enum Status",
+        "name": "_status",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_percentageFeeAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_fixFeeAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "configProjectInfo",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_email",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
     "name": "contribute",
     "outputs": [],
     "stateMutability": "payable",
@@ -448,8 +763,14 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "creator",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "emails",
     "outputs": [
       {
         "internalType": "string",
@@ -462,7 +783,20 @@
   },
   {
     "inputs": [],
-    "name": "endTimestamp",
+    "name": "factory",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fixFeeAmount",
     "outputs": [
       {
         "internalType": "uint256",
@@ -487,8 +821,14 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "hasDistributedRewards",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isAdmin",
     "outputs": [
       {
         "internalType": "bool",
@@ -501,24 +841,66 @@
   },
   {
     "inputs": [],
-    "name": "imageUrl",
+    "name": "kickstarter",
     "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "paymentToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
       {
         "internalType": "string",
-        "name": "",
+        "name": "title",
         "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "minContribution",
-    "outputs": [
+      },
+      {
+        "internalType": "string",
+        "name": "creator",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "imageUrl",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "projectDescription",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "rewardDescription",
+        "type": "string"
+      },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "minContribution",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "projectGoals",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "rewardDistributionTimestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startTimestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endTimestamp",
         "type": "uint256"
       }
     ],
@@ -540,25 +922,38 @@
   },
   {
     "inputs": [],
-    "name": "projectDescription",
+    "name": "percentageFeeAmount",
     "outputs": [
       {
-        "internalType": "string",
+        "internalType": "uint256",
         "name": "",
-        "type": "string"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_rejectReason",
+        "type": "string"
+      }
+    ],
+    "name": "reject",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
-    "name": "projectGoals",
+    "name": "rejectReason",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "string",
         "name": "",
-        "type": "uint256"
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -572,29 +967,21 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "rewardDescription",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
+        "internalType": "address[]",
+        "name": "_walletsAddress",
+        "type": "address[]"
+      },
+      {
+        "internalType": "bool",
+        "name": "_isAdmin",
+        "type": "bool"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "rewardDistributionTimestamp",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "setAdmins",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -626,12 +1013,12 @@
   {
     "inputs": [
       {
-        "internalType": "bool",
-        "name": "_hasDistributedRewards",
-        "type": "bool"
+        "internalType": "uint256",
+        "name": "_fixFeeAmount",
+        "type": "uint256"
       }
     ],
-    "name": "setHasDistributedRewards",
+    "name": "setFixFeeAmount",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -652,12 +1039,38 @@
   {
     "inputs": [
       {
+        "internalType": "enum Status",
+        "name": "_status",
+        "type": "uint8"
+      }
+    ],
+    "name": "setKickstarterStatus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "_minContribution",
         "type": "uint256"
       }
     ],
     "name": "setMinContribution",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_percentageFeeAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "setPercentageFeeAmount",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -742,25 +1155,12 @@
   },
   {
     "inputs": [],
-    "name": "startTimestamp",
+    "name": "status",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "enum Status",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "title",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -805,7 +1205,7 @@
         "type": "address"
       }
     ],
-    "name": "withdrawBNB",
+    "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

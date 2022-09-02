@@ -199,7 +199,43 @@ export function handleMinContributionUpdated(event: MinContributionUpdatedEvent)
   kickstarter!.save()
 }
 
-// export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {}
+export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  let previousAccount = Account.load(event.params.previousOwner.toHex())
+  if (!previousAccount) {
+    previousAccount = new Account(event.params.previousOwner.toHex())
+    previousAccount.totalKickstarter = ZERO_BI
+    previousAccount.totalBackedKickstarter = ZERO_BI
+    previousAccount.totalProjectGoals = ZERO_BD
+    previousAccount.totalContribution = ZERO_BD
+    previousAccount.save()
+  }
+
+  let newAccount = Account.load(event.params.newOwner.toHex())
+  if (!newAccount) {
+    newAccount = new Account(event.params.newOwner.toHex())
+    newAccount.totalKickstarter = ZERO_BI
+    newAccount.totalBackedKickstarter = ZERO_BI
+    newAccount.totalProjectGoals = ZERO_BD
+    newAccount.totalContribution = ZERO_BD
+    newAccount.save()
+  }
+
+  if (newAccount.id != ADDRESS_ZERO) {
+    newAccount.totalKickstarter = newAccount.totalKickstarter.plus(ONE_BI)
+    newAccount.totalProjectGoals = newAccount.totalProjectGoals.plus(kickstarter!.projectGoals)
+    newAccount.save()
+  }
+
+  if (previousAccount.id != ADDRESS_ZERO) {
+    previousAccount!.totalKickstarter = previousAccount!.totalKickstarter.minus(ONE_BI)
+    previousAccount!.totalProjectGoals = previousAccount!.totalProjectGoals.minus(kickstarter!.projectGoals)
+    previousAccount!.save()
+  }
+
+  kickstarter!.owner = event.params.newOwner.toHex()
+  kickstarter!.save()
+}
 
 // export function handlePercentageFeeAmountUpdated(event: PercentageFeeAmountUpdatedEvent): void {}
 
@@ -222,44 +258,6 @@ export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): 
 // export function handleStatusUpdated(event: StatusUpdatedEvent): void {}
 
 // export function handleTitleUpdated(event: TitleUpdatedEvent): void {}
-
-// export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-//   let previousAccount = Account.load(event.params.previousOwner.toHex())
-//   if (!previousAccount) {
-//     previousAccount = new Account(event.params.previousOwner.toHex())
-//     previousAccount.totalKickstarter = ZERO_BI
-//     previousAccount.totalBackedKickstarter = ZERO_BI
-//     previousAccount.totalProjectGoals = ZERO_BD
-//     previousAccount.totalContribution = ZERO_BD
-//     previousAccount.save()
-//   }
-
-//   let newAccount = Account.load(event.params.newOwner.toHex())
-//   if (!newAccount) {
-//     newAccount = new Account(event.params.newOwner.toHex())
-//     newAccount.totalKickstarter = ZERO_BI
-//     newAccount.totalBackedKickstarter = ZERO_BI
-//     newAccount.totalProjectGoals = ZERO_BD
-//     newAccount.totalContribution = ZERO_BD
-//     newAccount.save()
-//   }
-
-//   if (newAccount.id != ADDRESS_ZERO) {
-//     newAccount.totalKickstarter = newAccount.totalKickstarter.plus(ONE_BI)
-//     newAccount.totalProjectGoals = newAccount.totalProjectGoals.plus(kickstarter!.projectGoals)
-//     newAccount.save()
-//   }
-
-//   if (previousAccount.id != ADDRESS_ZERO) {
-//     previousAccount!.totalKickstarter = previousAccount!.totalKickstarter.minus(ONE_BI)
-//     previousAccount!.totalProjectGoals = previousAccount!.totalProjectGoals.minus(kickstarter!.projectGoals)
-//     previousAccount!.save()
-//   }
-
-//   kickstarter!.owner = event.params.newOwner.toHex()
-//   kickstarter!.save()
-// }
 
 // export function handleTitleUpdated(event: TitleUpdatedEvent): void {
 //   let kickstarter = Kickstarter.load(event.address.toHex())

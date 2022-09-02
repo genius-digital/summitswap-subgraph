@@ -253,7 +253,11 @@ export function handleProjectDescriptionUpdated(event: ProjectDescriptionUpdated
 
 // export function handleRejected(event: RejectedEvent): void {}
 
-// export function handleRewardDescriptionUpdated(event: RewardDescriptionUpdatedEvent): void {}
+export function handleRewardDescriptionUpdated(event: RewardDescriptionUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  kickstarter!.rewardDescription = event.params.newRewardDescription
+  kickstarter!.save()
+}
 
 // export function handleRewardDistributionTimestampUpdated(event: RewardDistributionTimestampUpdatedEvent): void {}
 
@@ -270,12 +274,6 @@ export function handleTitleUpdated(event: TitleUpdatedEvent): void {
   kickstarter!.title = event.params.newTitle
   kickstarter!.save()
 }
-
-// export function handleRewardDescriptionUpdated(event: RewardDescriptionUpdatedEvent): void {
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-//   kickstarter!.rewardDescription = event.params.newRewardDescription
-//   kickstarter!.save()
-// }
 
 // export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): void {
 //   let kickstarter = Kickstarter.load(event.address.toHex())

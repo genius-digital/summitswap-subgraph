@@ -86,7 +86,7 @@ export function handleContribute(event: ContributeEvent): void {
     kickstarter!.totalContributor = kickstarter!.totalContributor.plus(ONE_BI)
     kickstarter!.save()
   }
-  backedProject.email = event.params.email;
+  backedProject.email = event.params.email
   backedProject.amount = backedProject.amount.plus(contribution.amount)
   backedProject.lastUpdated = event.block.timestamp
   backedProject.save()
@@ -96,39 +96,43 @@ export function handleContribute(event: ContributeEvent): void {
   summitKickstarterFactory!.save()
 }
 
-// export function handleCreatorUpdated(event: CreatorUpdatedEvent): any {}
+export function handleCreatorUpdated(event: CreatorUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  kickstarter!.creator = event.params.newCreator
+  kickstarter!.save()
+}
 
-// export function handleEndTimestampUpdated(event: EndTimestampUpdatedEvent): any {}
+// export function handleEndTimestampUpdated(event: EndTimestampUpdatedEvent): void {}
 
-// export function handleFixFeeAmountUpdated(event: FixFeeAmountUpdatedEvent): any {}
+// export function handleFixFeeAmountUpdated(event: FixFeeAmountUpdatedEvent): void {}
 
-// export function handleImageUrlUpdated(event: ImageUrlUpdatedEvent): any {}
+// export function handleImageUrlUpdated(event: ImageUrlUpdatedEvent): void {}
 
-// export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): any {}
+// export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {}
 
-// export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdatedByFactoryAdminEvent): any {}
+// export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdatedByFactoryAdminEvent): void {}
 
-// export function handleMinContributionUpdated(event: MinContributionUpdatedEvent): any {}
+// export function handleMinContributionUpdated(event: MinContributionUpdatedEvent): void {}
 
-// export function handleOwnershipTransferred(event: OwnershipTransferredEvent): any {}
+// export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {}
 
-// export function handlePercentageFeeAmountUpdated(event: PercentageFeeAmountUpdatedEvent): any {}
+// export function handlePercentageFeeAmountUpdated(event: PercentageFeeAmountUpdatedEvent): void {}
 
-// export function handleProjectDescriptionUpdated(event: ProjectDescriptionUpdatedEvent): any {}
+// export function handleProjectDescriptionUpdated(event: ProjectDescriptionUpdatedEvent): void {}
 
-// export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): any {}
+// export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): void {}
 
-// export function handleRejected(event: RejectedEvent): any {}
+// export function handleRejected(event: RejectedEvent): void {}
 
-// export function handleRewardDescriptionUpdated(event: RewardDescriptionUpdatedEvent): any {}
+// export function handleRewardDescriptionUpdated(event: RewardDescriptionUpdatedEvent): void {}
 
-// export function handleRewardDistributionTimestampUpdated(event: RewardDistributionTimestampUpdatedEvent): any {}
+// export function handleRewardDistributionTimestampUpdated(event: RewardDistributionTimestampUpdatedEvent): void {}
 
-// export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): any {}
+// export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): void {}
 
-// export function handleStatusUpdated(event: StatusUpdatedEvent): any {}
+// export function handleStatusUpdated(event: StatusUpdatedEvent): void {}
 
-// export function handleTitleUpdated(event: TitleUpdatedEvent): any {}
+// export function handleTitleUpdated(event: TitleUpdatedEvent): void {}
 
 // export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
 //   let kickstarter = Kickstarter.load(event.address.toHex())
@@ -171,12 +175,6 @@ export function handleContribute(event: ContributeEvent): void {
 // export function handleTitleUpdated(event: TitleUpdatedEvent): void {
 //   let kickstarter = Kickstarter.load(event.address.toHex())
 //   kickstarter!.title = event.params.newTitle
-//   kickstarter!.save()
-// }
-
-// export function handleCreatorUpdated(event: CreatorUpdatedEvent): void {
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-//   kickstarter!.creator = event.params.newCreator
 //   kickstarter!.save()
 // }
 

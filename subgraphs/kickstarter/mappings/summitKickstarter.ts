@@ -237,7 +237,11 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
   kickstarter!.save()
 }
 
-// export function handlePercentageFeeAmountUpdated(event: PercentageFeeAmountUpdatedEvent): void {}
+export function handlePercentageFeeAmountUpdated(event: PercentageFeeAmountUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  kickstarter!.percentageFeeAmount = event.params.newPercentageFeeAmount
+  kickstarter!.save()
+}
 
 // export function handleProjectDescriptionUpdated(event: ProjectDescriptionUpdatedEvent): void {}
 

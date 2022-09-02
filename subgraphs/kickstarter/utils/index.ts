@@ -1,5 +1,6 @@
 /* eslint-disable prefer-const */
-import { BigInt, BigDecimal } from "@graphprotocol/graph-ts"
+import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts"
+import { ERC20 } from "../generated/SummitKickstarterFactory/ERC20"
 
 export let SUMMIT_KICKSTARTER_FACTORY_ADDRESS = "0xe9e0837308a8776757E9D1a59D01A156Ae30B74e"
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000"
@@ -23,4 +24,14 @@ export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: Big
     return tokenAmount.toBigDecimal()
   }
   return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals))
+}
+
+export function fetchTokenDecimals(tokenAddress: Address): BigInt {
+  let contract = ERC20.bind(tokenAddress)
+  let decimalValue = null
+  let decimalResult = contract.try_decimals()
+  if (!decimalResult.reverted) {
+    decimalValue = decimalResult.value
+  }
+  return BigInt.fromI32(decimalValue as i32)
 }

@@ -28,8 +28,8 @@ type SummitKickstarterFactory @entity {
 
 type Kickstarter @entity {
   id: ID!
-  paymentToken: address!
-  status: uint256!
+  paymentToken: String!
+  status: BigInt!
   owner: Account!
   title: String!
   creator: String!
@@ -43,8 +43,8 @@ type Kickstarter @entity {
   rewardDistributionTimestamp: BigInt!
   startTimestamp: BigInt!
   endTimestamp: BigInt!
-  percentageFeeAmount: uint256!
-  fixFeeAmount: uint256!
+  percentageFeeAmount: BigInt!
+  fixFeeAmount: BigDecimal!
   rejectReason: String!
   createdAt: BigInt!
 }

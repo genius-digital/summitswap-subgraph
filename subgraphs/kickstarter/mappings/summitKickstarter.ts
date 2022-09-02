@@ -142,10 +142,7 @@ export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {
   kickstarter!.imageUrl = event.params.kickstarter.imageUrl
   kickstarter!.projectDescription = event.params.kickstarter.projectDescription
   kickstarter!.rewardDescription = event.params.kickstarter.rewardDescription
-  kickstarter!.minContribution = convertTokenToDecimal(
-    event.params.kickstarter.minContribution,
-    decimals
-  )
+  kickstarter!.minContribution = convertTokenToDecimal(event.params.kickstarter.minContribution, decimals)
   kickstarter!.projectGoals = convertTokenToDecimal(event.params.kickstarter.projectGoals, decimals)
   kickstarter!.rewardDistributionTimestamp = event.params.kickstarter.rewardDistributionTimestamp
   kickstarter!.startTimestamp = event.params.kickstarter.startTimestamp
@@ -173,10 +170,7 @@ export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdated
   kickstarter!.imageUrl = event.params.kickstarter.imageUrl
   kickstarter!.projectDescription = event.params.kickstarter.projectDescription
   kickstarter!.rewardDescription = event.params.kickstarter.rewardDescription
-  kickstarter!.minContribution = convertTokenToDecimal(
-    event.params.kickstarter.minContribution,
-    decimals
-  )
+  kickstarter!.minContribution = convertTokenToDecimal(event.params.kickstarter.minContribution, decimals)
   kickstarter!.projectGoals = convertTokenToDecimal(event.params.kickstarter.projectGoals, decimals)
   kickstarter!.rewardDistributionTimestamp = event.params.kickstarter.rewardDistributionTimestamp
   kickstarter!.startTimestamp = event.params.kickstarter.startTimestamp
@@ -270,7 +264,7 @@ export function handleRejected(event: RejectedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
   kickstarter!.status = BigInt.fromI32(2)
   kickstarter!.rejectedReason = event.params.rejectedReason
-  kickstarter!.save() 
+  kickstarter!.save()
 }
 
 export function handleRewardDescriptionUpdated(event: RewardDescriptionUpdatedEvent): void {
@@ -291,7 +285,11 @@ export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): 
   kickstarter!.save()
 }
 
-// export function handleStatusUpdated(event: StatusUpdatedEvent): void {}
+export function handleStatusUpdated(event: StatusUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  kickstarter!.status = BigInt.fromI32(event.params.status)
+  kickstarter!.save()
+}
 
 export function handleTitleUpdated(event: TitleUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())

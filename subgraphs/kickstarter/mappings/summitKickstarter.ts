@@ -249,7 +249,22 @@ export function handleProjectDescriptionUpdated(event: ProjectDescriptionUpdated
   kickstarter!.save()
 }
 
-// export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): void {}
+export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  let decimals: BigInt = BigInt.fromI32(18)
+  if (kickstarter!.paymentToken != ADDRESS_ZERO) {
+    decimals = fetchTokenDecimals(event.address)
+  }
+
+  let account = Account.load(kickstarter!.owner)
+  account!.totalProjectGoals = account!.totalProjectGoals.minus(kickstarter!.projectGoals)
+
+  kickstarter!.projectGoals = convertTokenToDecimal(event.params.newProjectGoals, BigInt.fromI32(decimals))
+  kickstarter!.save()
+
+  account!.totalProjectGoals = account!.totalProjectGoals.plus(kickstarter!.projectGoals)
+  account!.save()
+}
 
 // export function handleRejected(event: RejectedEvent): void {}
 
@@ -278,16 +293,3 @@ export function handleTitleUpdated(event: TitleUpdatedEvent): void {
   kickstarter!.title = event.params.newTitle
   kickstarter!.save()
 }
-
-// export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): void {
-//   let kickstarter = Kickstarter.load(event.address.toHex())
-
-//   let account = Account.load(kickstarter!.owner)
-//   account!.totalProjectGoals = account!.totalProjectGoals.minus(kickstarter!.projectGoals)
-
-//   kickstarter!.projectGoals = convertTokenToDecimal(event.params.newProjectGoals, BigInt.fromI32(18))
-//   kickstarter!.save()
-
-//   account!.totalProjectGoals = account!.totalProjectGoals.plus(kickstarter!.projectGoals)
-//   account!.save()
-// }

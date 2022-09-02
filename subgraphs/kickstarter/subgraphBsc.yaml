@@ -20,12 +20,14 @@ dataSources:
         - SummitKickstarterFactory
         - Kickstarter
       abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
         - name: SummitKickstarterFactory
           file: ./abis/SummitKickstarterFactory.json
         - name: SummitKickstarter
           file: ./abis/SummitKickstarter.json
       eventHandlers:
-        - event: ProjectCreated((address,address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256))
+        - event: ProjectCreated(address,(address,address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256))
           handler: handleProjectCreated
 templates:
   - kind: ethereum/contract
@@ -42,6 +44,8 @@ templates:
         - SummitKickstarterFactory
         - Kickstarter
       abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
         - name: SummitKickstarterFactory
           file: ./abis/SummitKickstarterFactory.json
         - name: SummitKickstarter

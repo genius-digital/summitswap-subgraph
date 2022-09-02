@@ -156,7 +156,38 @@ export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {
   account!.save()
 }
 
-// export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdatedByFactoryAdminEvent): void {}
+export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdatedByFactoryAdminEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
+  let account = Account.load(kickstarter!.owner)
+  account!.totalProjectGoals = account!.totalProjectGoals.minus(kickstarter!.projectGoals)
+
+  let decimals: BigInt = BigInt.fromI32(18)
+  if (kickstarter!.paymentToken != ADDRESS_ZERO) {
+    decimals = fetchTokenDecimals(event.address)
+  }
+
+  kickstarter!.paymentToken = event.params.kickstarter.paymentToken.toHex()
+  kickstarter!.status = BigInt.fromI32(event.params.newStatus)
+  kickstarter!.title = event.params.kickstarter.title
+  kickstarter!.creator = event.params.kickstarter.creator
+  kickstarter!.imageUrl = event.params.kickstarter.imageUrl
+  kickstarter!.projectDescription = event.params.kickstarter.projectDescription
+  kickstarter!.rewardDescription = event.params.kickstarter.rewardDescription
+  kickstarter!.minContribution = convertTokenToDecimal(
+    event.params.kickstarter.minContribution,
+    BigInt.fromI32(decimals)
+  )
+  kickstarter!.projectGoals = convertTokenToDecimal(event.params.kickstarter.projectGoals, BigInt.fromI32(decimals))
+  kickstarter!.rewardDistributionTimestamp = event.params.kickstarter.rewardDistributionTimestamp
+  kickstarter!.startTimestamp = event.params.kickstarter.startTimestamp
+  kickstarter!.endTimestamp = event.params.kickstarter.endTimestamp
+  kickstarter!.percentageFeeAmount = event.params.newPercentageFeeAmount
+  kickstarter!.fixFeeAmount = convertTokenToDecimal(event.params.newFixFeeAmount, decimals)
+  kickstarter!.save()
+
+  account!.totalProjectGoals = account!.totalProjectGoals.plus(kickstarter!.projectGoals)
+  account!.save()
+}
 
 // export function handleMinContributionUpdated(event: MinContributionUpdatedEvent): void {}
 

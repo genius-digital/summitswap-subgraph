@@ -2,15 +2,15 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
         "components": [
           {
             "internalType": "contract IERC20",
             "name": "paymentToken",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
             "type": "address"
           },
           {
@@ -185,11 +185,6 @@
             "type": "address"
           },
           {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
             "internalType": "string",
             "name": "title",
             "type": "string"
@@ -257,11 +252,6 @@
           {
             "internalType": "contract IERC20",
             "name": "paymentToken",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
             "type": "address"
           },
           {
@@ -532,11 +522,6 @@
             "type": "address"
           },
           {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
             "internalType": "string",
             "name": "title",
             "type": "string"
@@ -604,11 +589,6 @@
           {
             "internalType": "contract IERC20",
             "name": "paymentToken",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
             "type": "address"
           },
           {
@@ -846,11 +826,6 @@
       {
         "internalType": "contract IERC20",
         "name": "paymentToken",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "owner",
         "type": "address"
       },
       {

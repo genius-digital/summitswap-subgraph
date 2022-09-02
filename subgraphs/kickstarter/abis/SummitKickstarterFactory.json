@@ -46,11 +46,6 @@
             "type": "address"
           },
           {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
             "internalType": "string",
             "name": "title",
             "type": "string"
@@ -117,11 +112,6 @@
           {
             "internalType": "contract IERC20",
             "name": "paymentToken",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
             "type": "address"
           },
           {

@@ -29,9 +29,9 @@ export function handleProjectCreated(event: ProjectCreatedEvent): void {
   )
   summitKickstarterFactory.save()
 
-  let ownerAccount = Account.load(event.params.kickstarter.owner.toHex())
+  let ownerAccount = Account.load(event.transaction.from.toString())
   if (!ownerAccount) {
-    ownerAccount = new Account(event.params.kickstarter.owner.toHex())
+    ownerAccount = new Account(event.transaction.from.toString())
     ownerAccount.totalKickstarter = ZERO_BI
     ownerAccount.totalBackedKickstarter = ZERO_BI
     ownerAccount.totalProjectGoals = ZERO_BD
@@ -49,7 +49,7 @@ export function handleProjectCreated(event: ProjectCreatedEvent): void {
     kickstarter = new Kickstarter(event.params.kickstarterAddress.toHex())
     kickstarter.paymentToken = event.params.kickstarter.paymentToken.toHex()
     kickstarter.status = ZERO_BI
-    kickstarter.owner = event.params.kickstarter.owner.toHex()
+    kickstarter.owner = event.transaction.from.toString()
     kickstarter.title = event.params.kickstarter.title
     kickstarter.creator = event.params.kickstarter.creator
     kickstarter.imageUrl = event.params.kickstarter.imageUrl

@@ -27,7 +27,7 @@ dataSources:
         - name: SummitKickstarter
           file: ./abis/SummitKickstarter.json
       eventHandlers:
-        - event: ProjectCreated(address,(address,address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256))
+        - event: ProjectCreated(address,(address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256))
           handler: handleProjectCreated
 templates:
   - kind: ethereum/contract
@@ -63,9 +63,9 @@ templates:
           handler: handleFixFeeAmountUpdated
         - event: ImageUrlUpdated(string)
           handler: handleImageUrlUpdated
-        - event: KickstarterUpdated((address,address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256))
+        - event: KickstarterUpdated((address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256))
           handler: handleKickstarterUpdated
-        - event: KickstarterUpdatedByFactoryAdmin((address,address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256),uint8,uint256,uint256)
+        - event: KickstarterUpdatedByFactoryAdmin((address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256),uint8,uint256,uint256)
           handler: handleKickstarterUpdatedByFactoryAdmin
         - event: MinContributionUpdated(uint256)
           handler: handleMinContributionUpdated

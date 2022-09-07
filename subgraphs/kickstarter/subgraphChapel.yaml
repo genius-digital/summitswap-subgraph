@@ -8,9 +8,9 @@ dataSources:
     name: SummitKickstarterFactory
     network: chapel
     source:
-      address: '0x61400926A3ce63337777Ed24627fb2119C9426bB'
+      address: '0x44582215dCcE04DD1Ab9AceCC067a7E4407440D3'
       abi: SummitKickstarterFactory
-      startBlock: 22484734
+      startBlock: 22635624
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

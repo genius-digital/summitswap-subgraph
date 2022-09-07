@@ -77,6 +77,19 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "enum ApprovalStatus",
+        "name": "approvalStatus",
+        "type": "uint8"
+      }
+    ],
+    "name": "ApprovalStatusUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "percentageFeeAmount",
         "type": "uint256"
@@ -99,12 +112,6 @@
         "internalType": "address",
         "name": "contributor",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "email",
-        "type": "string"
       },
       {
         "indexed": false,
@@ -312,8 +319,8 @@
       },
       {
         "indexed": false,
-        "internalType": "enum Status",
-        "name": "status",
+        "internalType": "enum ApprovalStatus",
+        "name": "approvalStatus",
         "type": "uint8"
       },
       {
@@ -460,19 +467,6 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "enum Status",
-        "name": "status",
-        "type": "uint8"
-      }
-    ],
-    "name": "StatusUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "string",
         "name": "title",
         "type": "string"
@@ -489,6 +483,19 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "approvalStatus",
+    "outputs": [
+      {
+        "internalType": "enum ApprovalStatus",
+        "name": "",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -647,8 +654,8 @@
         "type": "tuple"
       },
       {
-        "internalType": "enum Status",
-        "name": "_status",
+        "internalType": "enum ApprovalStatus",
+        "name": "_approvalStatus",
         "type": "uint8"
       },
       {
@@ -669,11 +676,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "string",
-        "name": "_email",
-        "type": "string"
-      },
       {
         "internalType": "uint256",
         "name": "_amount",
@@ -737,25 +739,6 @@
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "emails",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -962,6 +945,19 @@
   {
     "inputs": [
       {
+        "internalType": "enum ApprovalStatus",
+        "name": "_approvalStatus",
+        "type": "uint8"
+      }
+    ],
+    "name": "setApprovalStatus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "string",
         "name": "_creator",
         "type": "string"
@@ -1007,19 +1003,6 @@
       }
     ],
     "name": "setImageUrl",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "enum Status",
-        "name": "_status",
-        "type": "uint8"
-      }
-    ],
-    "name": "setKickstarterStatus",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1126,19 +1109,6 @@
     "name": "setTitle",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "status",
-    "outputs": [
-      {
-        "internalType": "enum Status",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {

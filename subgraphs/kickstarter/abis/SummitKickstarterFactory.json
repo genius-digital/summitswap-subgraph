@@ -166,7 +166,7 @@
           }
         ],
         "internalType": "struct Kickstarter",
-        "name": "kickstarter",
+        "name": "_kickstarter",
         "type": "tuple"
       }
     ],

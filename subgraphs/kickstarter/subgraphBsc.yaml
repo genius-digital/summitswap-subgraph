@@ -85,7 +85,7 @@ templates:
           handler: handleRewardDistributionTimestampUpdated
         - event: StartTimestampUpdated(uint256)
           handler: handleStartTimestampUpdated
-        - event: StatusUpdated(uint8)
-          handler: handleStatusUpdated
+        - event: ApprovalStatusUpdated(uint8)
+          handler: handleApprovalStatusUpdated
         - event: TitleUpdated(string)
           handler: handleTitleUpdated

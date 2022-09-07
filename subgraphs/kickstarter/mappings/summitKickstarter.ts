@@ -19,7 +19,7 @@ import {
   RewardDescriptionUpdated as RewardDescriptionUpdatedEvent,
   RewardDistributionTimestampUpdated as RewardDistributionTimestampUpdatedEvent,
   StartTimestampUpdated as StartTimestampUpdatedEvent,
-  StatusUpdated as StatusUpdatedEvent,
+  ApprovalStatusUpdated as ApprovalStatusUpdatedEvent,
   TitleUpdated as TitleUpdatedEvent,
 } from "../generated/SummitKickstarterFactory/SummitKickstarter"
 import {
@@ -38,7 +38,7 @@ export function handleApproved(event: ApprovedEvent): void {
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
     decimals = fetchTokenDecimals(event.address)
   }
-  kickstarter!.status = BigInt.fromI32(1)
+  kickstarter!.approvalStatus = BigInt.fromI32(1)
   kickstarter!.rejectedReason = ""
   kickstarter!.fixFeeAmount = convertTokenToDecimal(event.params.fixFeeAmount, decimals)
   kickstarter!.percentageFeeAmount = event.params.percentageFeeAmount
@@ -88,7 +88,6 @@ export function handleContribute(event: ContributeEvent): void {
     kickstarter!.totalContributor = kickstarter!.totalContributor.plus(ONE_BI)
     kickstarter!.save()
   }
-  backedProject.email = event.params.email
   backedProject.amount = backedProject.amount.plus(contribution.amount)
   backedProject.lastUpdated = event.block.timestamp
   backedProject.save()
@@ -164,7 +163,7 @@ export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdated
   }
 
   kickstarter!.paymentToken = event.params.kickstarter.paymentToken.toHex()
-  kickstarter!.status = BigInt.fromI32(event.params.status)
+  kickstarter!.approvalStatus = BigInt.fromI32(event.params.approvalStatus)
   kickstarter!.title = event.params.kickstarter.title
   kickstarter!.creator = event.params.kickstarter.creator
   kickstarter!.imageUrl = event.params.kickstarter.imageUrl
@@ -262,7 +261,7 @@ export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): void
 
 export function handleRejected(event: RejectedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.status = BigInt.fromI32(2)
+  kickstarter!.approvalStatus = BigInt.fromI32(2)
   kickstarter!.rejectedReason = event.params.rejectedReason
   kickstarter!.save()
 }
@@ -285,9 +284,9 @@ export function handleStartTimestampUpdated(event: StartTimestampUpdatedEvent): 
   kickstarter!.save()
 }
 
-export function handleStatusUpdated(event: StatusUpdatedEvent): void {
+export function handleApprovalStatusUpdated(event: ApprovalStatusUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
-  kickstarter!.status = BigInt.fromI32(event.params.status)
+  kickstarter!.approvalStatus = BigInt.fromI32(event.params.approvalStatus)
   kickstarter!.save()
 }
 

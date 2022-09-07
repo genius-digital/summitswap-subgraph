@@ -48,7 +48,7 @@ export function handleProjectCreated(event: ProjectCreatedEvent): void {
   if (kickstarter === null) {
     kickstarter = new Kickstarter(event.params.kickstarterAddress.toHex())
     kickstarter.paymentToken = event.params.kickstarter.paymentToken.toHex()
-    kickstarter.status = ZERO_BI
+    kickstarter.approvalStatus = ZERO_BI
     kickstarter.owner = event.transaction.from.toString()
     kickstarter.title = event.params.kickstarter.title
     kickstarter.creator = event.params.kickstarter.creator

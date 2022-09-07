@@ -53,7 +53,7 @@ templates:
       eventHandlers:
         - event: Approved(uint256,uint256)
           handler: handleApproved
-        - event: Contribute(indexed address,string,uint256,uint256)
+        - event: Contribute(indexed address,uint256,uint256)
           handler: handleContribute
         - event: CreatorUpdated(string)
           handler: handleCreatorUpdated
@@ -85,7 +85,7 @@ templates:
           handler: handleRewardDistributionTimestampUpdated
         - event: StartTimestampUpdated(uint256)
           handler: handleStartTimestampUpdated
-        - event: StatusUpdated(uint8)
-          handler: handleStatusUpdated
+        - event: ApprovalStatusUpdated(uint8)
+          handler: handleApprovalStatusUpdated
         - event: TitleUpdated(string)
           handler: handleTitleUpdated

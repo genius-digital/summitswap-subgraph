@@ -29,7 +29,7 @@ type SummitKickstarterFactory @entity {
 type Kickstarter @entity {
   id: ID!
   paymentToken: String!
-  status: BigInt!
+  approvalStatus: BigInt!
   owner: Account!
   title: String!
   creator: String!
@@ -51,7 +51,6 @@ type Kickstarter @entity {
 
 type BackedKickstarter @entity {
   id: ID!
-  email: String!
   contributor: Account!
   kickstarter: Kickstarter!
   amount: BigDecimal!

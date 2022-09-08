@@ -26,6 +26,8 @@ dataSources:
           file: ./abis/SummitKickstarterFactory.json
         - name: SummitKickstarter
           file: ./abis/SummitKickstarter.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
         - event: ProjectCreated(address,(address,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256))
           handler: handleProjectCreated

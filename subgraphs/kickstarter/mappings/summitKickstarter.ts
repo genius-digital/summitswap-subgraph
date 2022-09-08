@@ -30,6 +30,7 @@ import {
   ONE_BI,
   ADDRESS_ZERO,
   fetchTokenDecimals,
+  fetchTokenSymbol,
 } from "../utils"
 
 export function handleApproved(event: ApprovedEvent): void {
@@ -136,6 +137,7 @@ export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {
   }
 
   kickstarter!.paymentToken = event.params.kickstarter.paymentToken.toHex()
+  kickstarter!.tokenSymbol = fetchTokenSymbol(event.params.kickstarter.paymentToken)
   kickstarter!.title = event.params.kickstarter.title
   kickstarter!.creator = event.params.kickstarter.creator
   kickstarter!.imageUrl = event.params.kickstarter.imageUrl
@@ -163,6 +165,7 @@ export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdated
   }
 
   kickstarter!.paymentToken = event.params.kickstarter.paymentToken.toHex()
+  kickstarter!.tokenSymbol = fetchTokenSymbol(event.params.kickstarter.paymentToken)
   kickstarter!.approvalStatus = BigInt.fromI32(event.params.approvalStatus)
   kickstarter!.title = event.params.kickstarter.title
   kickstarter!.creator = event.params.kickstarter.creator

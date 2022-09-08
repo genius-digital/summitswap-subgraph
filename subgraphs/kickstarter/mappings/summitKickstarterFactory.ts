@@ -6,6 +6,7 @@ import {
   ADDRESS_ZERO,
   convertTokenToDecimal,
   fetchTokenDecimals,
+  fetchTokenSymbol,
   ONE_BI,
   SUMMIT_KICKSTARTER_FACTORY_ADDRESS,
   ZERO_BD,
@@ -48,6 +49,7 @@ export function handleProjectCreated(event: ProjectCreatedEvent): void {
   if (kickstarter === null) {
     kickstarter = new Kickstarter(event.params.kickstarterAddress.toHex())
     kickstarter.paymentToken = event.params.kickstarter.paymentToken.toHex()
+    kickstarter.tokenSymbol = fetchTokenSymbol(event.params.kickstarter.paymentToken)
     kickstarter.approvalStatus = ZERO_BI
     kickstarter.owner = event.transaction.from.toString()
     kickstarter.title = event.params.kickstarter.title

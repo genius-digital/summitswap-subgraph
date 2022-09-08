@@ -24,10 +24,10 @@ export function handleProjectCreated(event: ProjectCreatedEvent): void {
     summitKickstarterFactory.save()
   }
   summitKickstarterFactory.totalKickstarter = summitKickstarterFactory.totalKickstarter.plus(ONE_BI)
-  summitKickstarterFactory.totalProjectGoals = convertTokenToDecimal(
+  summitKickstarterFactory.totalProjectGoals = summitKickstarterFactory.totalProjectGoals.plus(convertTokenToDecimal(
     event.params.kickstarter.projectGoals,
     BigInt.fromI32(18)
-  )
+  ))
   summitKickstarterFactory.save()
 
   let ownerAccount = Account.load(event.transaction.from.toString())

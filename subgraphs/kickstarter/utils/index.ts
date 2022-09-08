@@ -61,4 +61,3 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
   }
   return symbolValue
 }
-

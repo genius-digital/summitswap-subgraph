@@ -3,7 +3,7 @@ import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts"
 import { ERC20 } from "../generated/SummitKickstarterFactory/ERC20"
 import { ERC20SymbolBytes } from "../generated/SummitKickstarterFactory/ERC20SymbolBytes"
 
-export let SUMMIT_KICKSTARTER_FACTORY_ADDRESS = "0x44582215dcce04dd1ab9acecc067a7e4407440d3"
+export let SUMMIT_KICKSTARTER_FACTORY_ADDRESS = "0x44582215dCcE04DD1Ab9AceCC067a7E4407440D3"
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000"
 
 export let ZERO_BI = BigInt.fromI32(0)

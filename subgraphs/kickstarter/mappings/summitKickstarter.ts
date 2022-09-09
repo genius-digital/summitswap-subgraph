@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { BigInt } from "@graphprotocol/graph-ts"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { SummitKickstarterFactory, Kickstarter, Account, Contribution, BackedKickstarter } from "../generated/schema"
 import {
   Approved as ApprovedEvent,
@@ -37,7 +37,7 @@ export function handleApproved(event: ApprovedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
   let decimals: BigInt = BigInt.fromI32(18)
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
-    decimals = fetchTokenDecimals(event.address)
+    decimals = fetchTokenDecimals(Address.fromString(kickstarter!.paymentToken))
   }
   kickstarter!.approvalStatus = BigInt.fromI32(1)
   kickstarter!.rejectedReason = ""
@@ -114,7 +114,7 @@ export function handleFixFeeAmountUpdated(event: FixFeeAmountUpdatedEvent): void
   let kickstarter = Kickstarter.load(event.address.toHex())
   let decimals: BigInt = BigInt.fromI32(18)
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
-    decimals = fetchTokenDecimals(event.address)
+    decimals = fetchTokenDecimals(Address.fromString(kickstarter!.paymentToken))
   }
   kickstarter!.fixFeeAmount = convertTokenToDecimal(event.params.fixFeeAmount, decimals)
   kickstarter!.save()
@@ -133,7 +133,7 @@ export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {
 
   let decimals: BigInt = BigInt.fromI32(18)
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
-    decimals = fetchTokenDecimals(event.address)
+    decimals = fetchTokenDecimals(Address.fromString(kickstarter!.paymentToken))
   }
 
   kickstarter!.paymentToken = event.params.kickstarter.paymentToken.toHex()
@@ -161,7 +161,7 @@ export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdated
 
   let decimals: BigInt = BigInt.fromI32(18)
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
-    decimals = fetchTokenDecimals(event.address)
+    decimals = fetchTokenDecimals(Address.fromString(kickstarter!.paymentToken))
   }
 
   kickstarter!.paymentToken = event.params.kickstarter.paymentToken.toHex()
@@ -189,7 +189,7 @@ export function handleMinContributionUpdated(event: MinContributionUpdatedEvent)
   let kickstarter = Kickstarter.load(event.address.toHex())
   let decimals: BigInt = BigInt.fromI32(18)
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
-    decimals = fetchTokenDecimals(event.address)
+    decimals = fetchTokenDecimals(Address.fromString(kickstarter!.paymentToken))
   }
   kickstarter!.minContribution = convertTokenToDecimal(event.params.minContribution, decimals)
   kickstarter!.save()
@@ -249,7 +249,7 @@ export function handleProjectGoalsUpdated(event: ProjectGoalsUpdatedEvent): void
   let kickstarter = Kickstarter.load(event.address.toHex())
   let decimals: BigInt = BigInt.fromI32(18)
   if (kickstarter!.paymentToken != ADDRESS_ZERO) {
-    decimals = fetchTokenDecimals(event.address)
+    decimals = fetchTokenDecimals(Address.fromString(kickstarter!.paymentToken))
   }
 
   let account = Account.load(kickstarter!.owner)

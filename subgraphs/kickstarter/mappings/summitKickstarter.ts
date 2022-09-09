@@ -47,9 +47,15 @@ export function handleApproved(event: ApprovedEvent): void {
 }
 
 export function handleContribute(event: ContributeEvent): void {
+  let kickstarter = Kickstarter.load(event.address.toHex())
   let contribution = new Contribution(event.transaction.hash.toHex())
   contribution.kickstarter = event.address.toHex()
   contribution.contributor = event.params.contributor.toHex()
+  let decimals: BigInt = BigInt.fromI32(18)
+  if (kickstarter.paymentToken != ADDRESS_ZERO) {
+    decimals = fetchTokenDecimals(Address.fromString(kickstarter.paymentToken))
+  }
+
   contribution.amount = convertTokenToDecimal(event.params.amount, BigInt.fromI32(18))
   contribution.createdAt = event.params.timestamp
   contribution.save()
@@ -65,7 +71,6 @@ export function handleContribute(event: ContributeEvent): void {
   account.totalContribution = account.totalContribution.plus(contribution.amount)
   account.save()
 
-  let kickstarter = Kickstarter.load(event.address.toHex())
   kickstarter.totalContribution = kickstarter.totalContribution.plus(contribution.amount)
   kickstarter.save()
 

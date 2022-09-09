@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 description: Summit Kickstarter is a platform for people to raise money for projects and to support the community.
-repository: https://github.com/koda-finance
+repository: https://github.com/koda-finance/summitswap-subgraph
 schema:
   file: ./schema.graphql
 dataSources:

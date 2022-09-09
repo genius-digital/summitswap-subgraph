@@ -20,6 +20,9 @@ type _Schema_
 
 type SummitKickstarterFactory @entity {
   id: ID!
+  totalWaitingForApprovalKickstarter: BigInt!
+  totalApprovedKickstarter: BigInt!
+  totalRejectedKickstarter: BigInt!
   totalKickstarter: BigInt!
   totalBackedKickstarter: BigInt!
   totalContribution: BigDecimal!

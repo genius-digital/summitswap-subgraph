@@ -19,14 +19,10 @@ export function handleProjectCreated(event: ProjectCreatedEvent): void {
     summitKickstarterFactory = new SummitKickstarterFactory(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
     summitKickstarterFactory.totalKickstarter = ZERO_BI
     summitKickstarterFactory.totalBackedKickstarter = ZERO_BI
-    summitKickstarterFactory.totalProjectGoals = ZERO_BD
     summitKickstarterFactory.totalContribution = ZERO_BD
     summitKickstarterFactory.save()
   }
   summitKickstarterFactory.totalKickstarter = summitKickstarterFactory.totalKickstarter.plus(ONE_BI)
-  summitKickstarterFactory.totalProjectGoals = summitKickstarterFactory.totalProjectGoals.plus(
-    convertTokenToDecimal(event.params.kickstarter.projectGoals, BigInt.fromI32(18))
-  )
   summitKickstarterFactory.save()
 
   let ownerAccount = Account.load(event.transaction.from.toString())
@@ -34,7 +30,6 @@ export function handleProjectCreated(event: ProjectCreatedEvent): void {
     ownerAccount = new Account(event.transaction.from.toString())
     ownerAccount.totalKickstarter = ZERO_BI
     ownerAccount.totalBackedKickstarter = ZERO_BI
-    ownerAccount.totalProjectGoals = ZERO_BD
     ownerAccount.totalContribution = ZERO_BD
     ownerAccount.save()
   }

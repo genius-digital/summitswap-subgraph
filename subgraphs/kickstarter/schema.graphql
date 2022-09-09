@@ -22,7 +22,6 @@ type SummitKickstarterFactory @entity {
   id: ID!
   totalKickstarter: BigInt!
   totalBackedKickstarter: BigInt!
-  totalProjectGoals: BigDecimal!
   totalContribution: BigDecimal!
 }
 
@@ -62,7 +61,6 @@ type Account @entity {
   id: ID!
   totalKickstarter: BigInt!
   totalBackedKickstarter: BigInt!
-  totalProjectGoals: BigDecimal!
   totalContribution: BigDecimal!
 }
 

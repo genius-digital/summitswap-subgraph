@@ -21,7 +21,7 @@ import {
   StartTimestampUpdated as StartTimestampUpdatedEvent,
   ApprovalStatusUpdated as ApprovalStatusUpdatedEvent,
   TitleUpdated as TitleUpdatedEvent,
-} from "../generated/SummitKickstarterFactory/SummitKickstarter"
+} from "../generated/templates/Kickstarter/SummitKickstarter"
 import {
   convertTokenToDecimal,
   SUMMIT_KICKSTARTER_FACTORY_ADDRESS,

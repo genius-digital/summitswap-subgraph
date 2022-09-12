@@ -25,7 +25,8 @@ export function handleProjectCreated(event: ProjectCreatedEvent): void {
     summitKickstarterFactory.totalRejectedKickstarter = ZERO_BI
     summitKickstarterFactory.save()
   }
-  summitKickstarterFactory.totalWaitingForApprovalKickstarter = summitKickstarterFactory.totalWaitingForApprovalKickstarter.plus(ONE_BI)
+  summitKickstarterFactory.totalWaitingForApprovalKickstarter =
+    summitKickstarterFactory.totalWaitingForApprovalKickstarter.plus(ONE_BI)
   summitKickstarterFactory.totalKickstarter = summitKickstarterFactory.totalKickstarter.plus(ONE_BI)
   summitKickstarterFactory.save()
 

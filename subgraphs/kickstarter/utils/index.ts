@@ -42,7 +42,7 @@ export function isNullBnbValue(value: string): boolean {
 }
 
 export function fetchTokenSymbol(tokenAddress: Address): string {
-  if (tokenAddress.toHex() == ADDRESS_ZERO) return "BNB"
+  if (tokenAddress.toHexString() == ADDRESS_ZERO) return "BNB"
 
   let contract = ERC20.bind(tokenAddress)
   let contractSymbolBytes = ERC20SymbolBytes.bind(tokenAddress)

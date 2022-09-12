@@ -147,13 +147,15 @@ export function handleKickstarterUpdated(event: KickstarterUpdatedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
   let account = Account.load(kickstarter.owner)
 
+  let newPaymentToken = event.params.kickstarter.paymentToken
+
   let decimals: BigInt = BigInt.fromI32(18)
-  if (kickstarter.paymentToken != ADDRESS_ZERO) {
-    decimals = fetchTokenDecimals(Address.fromString(kickstarter.paymentToken))
+  if (newPaymentToken.toHex() != ADDRESS_ZERO) {
+    decimals = fetchTokenDecimals(newPaymentToken)
   }
 
-  kickstarter.paymentToken = event.params.kickstarter.paymentToken.toHex()
-  kickstarter.tokenSymbol = fetchTokenSymbol(event.params.kickstarter.paymentToken)
+  kickstarter.paymentToken = newPaymentToken.toHex()
+  kickstarter.tokenSymbol = fetchTokenSymbol(newPaymentToken)
   kickstarter.title = event.params.kickstarter.title
   kickstarter.creator = event.params.kickstarter.creator
   kickstarter.imageUrl = event.params.kickstarter.imageUrl
@@ -191,13 +193,15 @@ export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdated
   }
   summitKickstarterFactory.save()
 
+  let newPaymentToken = event.params.kickstarter.paymentToken
+
   let decimals: BigInt = BigInt.fromI32(18)
-  if (kickstarter.paymentToken != ADDRESS_ZERO) {
-    decimals = fetchTokenDecimals(Address.fromString(kickstarter.paymentToken))
+  if (newPaymentToken.toHex() != ADDRESS_ZERO) {
+    decimals = fetchTokenDecimals(newPaymentToken)
   }
 
-  kickstarter.paymentToken = event.params.kickstarter.paymentToken.toHex()
-  kickstarter.tokenSymbol = fetchTokenSymbol(event.params.kickstarter.paymentToken)
+  kickstarter.paymentToken = newPaymentToken.toHex()
+  kickstarter.tokenSymbol = fetchTokenSymbol(newPaymentToken)
   kickstarter.approvalStatus = BigInt.fromI32(event.params.approvalStatus)
   kickstarter.title = event.params.kickstarter.title
   kickstarter.creator = event.params.kickstarter.creator

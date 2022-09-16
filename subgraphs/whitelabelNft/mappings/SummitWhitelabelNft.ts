@@ -1,10 +1,10 @@
 /* eslint-disable prefer-const */
-import { Account, WhitelabelNft } from "../generated/schema"
+import { Account, WhitelabelNftCollection } from "../generated/schema"
 import { OwnershipTransferred as OwnershipTransferredEvent } from "../generated/SummitWhitelabelNftFactory/SummitWhitelabelNft"
 import { ADDRESS_ZERO, ONE_BI, ZERO_BI } from "../utils"
 
 export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
-  let whitelabelNft = WhitelabelNft.load(event.address.toHex())
+  let whitelabelNftCollection = WhitelabelNftCollection.load(event.address.toHex())
   let previousAccount = Account.load(event.params.previousOwner.toHex())
   if (!previousAccount) {
     previousAccount = new Account(event.params.previousOwner.toHex())
@@ -29,6 +29,6 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
     previousAccount.save()
   }
 
-  whitelabelNft.owner = event.params.newOwner.toHex()
-  whitelabelNft.save()
+  whitelabelNftCollection!.owner = event.params.newOwner.toHex()
+  whitelabelNftCollection!.save()
 }

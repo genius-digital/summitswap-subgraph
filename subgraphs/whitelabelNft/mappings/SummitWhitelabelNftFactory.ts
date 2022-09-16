@@ -1,30 +1,43 @@
-import { SummitWhitelabelNftFactory, WhitelabelNft } from "../generated/schema"
+/* eslint-disable prefer-const */
+import { BigInt } from "@graphprotocol/graph-ts"
+import { WhitelabelNftFactory, WhitelabelNftCollection, Account } from "../generated/schema"
 import { CreateNft } from "../generated/SummitWhitelabelNftFactory/SummitWhitelabelNftFactory"
 import { WhitelabelNft as WhitelabelNftTemplate } from "../generated/templates"
-import { ONE_BI, SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS, ZERO_BI } from "../utils"
+import { convertTokenToDecimal, ONE_BI, SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS, ZERO_BI } from "../utils"
 
 export function handleCreateNft(event: CreateNft): void {
-  let summitWhitelabelNftFactory = SummitWhitelabelNftFactory.load(SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS)
-  if (summitWhitelabelNftFactory === null) {
-    summitWhitelabelNftFactory = new SummitWhitelabelNftFactory(SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS)
-    summitWhitelabelNftFactory.totalWhitelabelNft = ZERO_BI
-    summitWhitelabelNftFactory.save()
+  let whitelabelNftFactory = WhitelabelNftFactory.load(SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS)
+  if (whitelabelNftFactory === null) {
+    whitelabelNftFactory = new WhitelabelNftFactory(SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS)
+    whitelabelNftFactory.totalWhitelabelNft = ZERO_BI
+    whitelabelNftFactory.save()
   }
-  summitWhitelabelNftFactory.totalWhitelabelNft = summitWhitelabelNftFactory.totalWhitelabelNft.plus(ONE_BI)
-  summitWhitelabelNftFactory.save()
+  whitelabelNftFactory.totalWhitelabelNft = whitelabelNftFactory.totalWhitelabelNft.plus(ONE_BI)
+  whitelabelNftFactory.save()
 
-  let whitelabelNft = WhitelabelNft.load(event.params.nftAddress.toHex())
-  if (whitelabelNft === null) {
-    whitelabelNft = new WhitelabelNft(event.params.nftAddress.toHex())
-    whitelabelNft.owner = event.params.owner.toHex()
-    whitelabelNft.name = event.params.name
-    whitelabelNft.symbol = event.params.symbol
-    whitelabelNft.maxSupply = event.params.maxSupply
-    whitelabelNft.whitelistMintPrice = event.params.whitelistMintPrice
-    whitelabelNft.publicMintPrice = event.params.publicMintPrice
-    whitelabelNft.phase = event.params.phase
-    whitelabelNft.createdAt = event.params.timestamp
-    whitelabelNft.save()
+  let ownerAccount = Account.load(event.params.owner.toHex())
+  if (!ownerAccount) {
+    ownerAccount = new Account(event.params.owner.toHex())
+    ownerAccount.totalWhitelabelNft = ZERO_BI
+    ownerAccount.save()
+  }
+
+  let decimals = BigInt.fromI32(18)
+
+  let whitelabelNftCollection = WhitelabelNftCollection.load(event.params.nftAddress.toHex())
+  if (whitelabelNftCollection === null) {
+    whitelabelNftCollection = new WhitelabelNftCollection(event.params.nftAddress.toHex())
+    whitelabelNftCollection.owner = event.params.owner.toHex()
+    whitelabelNftCollection.name = event.params.tokenInfo.name
+    whitelabelNftCollection.symbol = event.params.tokenInfo.symbol
+    whitelabelNftCollection.previewImageUrl = event.params.tokenInfo.previewImageUrl
+    whitelabelNftCollection.maxSupply = event.params.tokenInfo.maxSupply
+    whitelabelNftCollection.whitelistMintPrice = convertTokenToDecimal(event.params.tokenInfo.whitelistMintPrice, decimals)
+    whitelabelNftCollection.publicMintPrice = convertTokenToDecimal(event.params.tokenInfo.publicMintPrice, decimals)
+    whitelabelNftCollection.phase = event.params.tokenInfo.phase
+    whitelabelNftCollection.isReveal = event.params.tokenInfo.isReveal
+    whitelabelNftCollection.createdAt = event.block.timestamp
+    whitelabelNftCollection.save()
   }
 
   WhitelabelNftTemplate.create(event.params.nftAddress)

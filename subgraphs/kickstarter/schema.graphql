@@ -1,0 +1,76 @@
+type _Schema_
+  @fulltext(
+    name: "kickstarterSearch",
+    language: en
+    algorithm: rank,
+    include: [
+      {
+        entity: "Kickstarter",
+        fields: [
+          { name: "id" },
+          { name: "title" },
+          { name: "creator" },
+          { name: "projectDescription" },
+          { name: "rewardDescription" },
+        ]
+      }
+    ]
+  )
+
+
+type SummitKickstarterFactory @entity {
+  id: ID!
+  totalWaitingForApprovalKickstarter: BigInt!
+  totalApprovedKickstarter: BigInt!
+  totalRejectedKickstarter: BigInt!
+  totalKickstarter: BigInt!
+  totalBackedKickstarter: BigInt!
+  totalContribution: BigDecimal!
+}
+
+type Kickstarter @entity {
+  id: ID!
+  paymentToken: String!
+  tokenSymbol: String!
+  approvalStatus: BigInt!
+  owner: Account!
+  title: String!
+  creator: String!
+  imageUrl: String!
+  projectDescription: String!
+  rewardDescription: String!
+  minContribution: BigDecimal!
+  totalContribution: BigDecimal!
+  totalContributor: BigInt!
+  projectGoals: BigDecimal!
+  rewardDistributionTimestamp: BigInt!
+  startTimestamp: BigInt!
+  endTimestamp: BigInt!
+  percentageFeeAmount: BigInt!
+  fixFeeAmount: BigDecimal!
+  rejectedReason: String!
+  createdAt: BigInt!
+}
+
+type BackedKickstarter @entity {
+  id: ID!
+  contributor: Account!
+  kickstarter: Kickstarter!
+  amount: BigDecimal!
+  lastUpdated: BigInt!
+}
+
+type Account @entity {
+  id: ID!
+  totalKickstarter: BigInt!
+  totalBackedKickstarter: BigInt!
+  totalContribution: BigDecimal!
+}
+
+type Contribution @entity {
+  id: ID!
+  kickstarter: Kickstarter!
+  contributor: Account!
+  amount: BigDecimal!
+  createdAt: BigInt!
+}

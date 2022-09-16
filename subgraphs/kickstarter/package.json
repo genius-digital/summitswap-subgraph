@@ -1,0 +1,17 @@
+{
+    "name": "kickstarter",
+    "description": "SummitKickstarter Subgraph",
+    "version": "1.0.0",
+    "repository": "https://github.com/Koda-Finance/summitswap-subgraph",
+    "author": "SummitSwap",
+    "license": "UNLICENSED",
+    "scripts": {
+      "codegen": "graph codegen subgraphChapel.yaml",
+      "codegen-mainnet": "graph deploy subgraphBsc.yaml",
+      "build": "graph build subgraphChapel.yaml",
+      "build-mainnet": "graph build subgraphBsc.yaml",
+      "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ erwin-huang/summitswap-kickstarter subgraphChapel.yaml",
+      "deploy-mainnet": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ koda-finance/summit-kickstarter subgraphBsc.yaml"
+    }
+  }
+  

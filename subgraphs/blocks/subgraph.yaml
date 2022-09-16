@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 description: Binance Smart Chain Blocks
-repository: https://github.com/koda-finance
+repository: https://github.com/koda-finance/summitswap-subgraph
 schema:
   file: ./schema.graphql
 dataSources:

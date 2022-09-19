@@ -1,7 +1,8 @@
 /* eslint-disable prefer-const */
-import { BigInt, BigDecimal } from "@graphprotocol/graph-ts"
+import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts"
+import { SummitWhitelabelNft } from "../generated/SummitWhitelabelNftFactory/SummitWhitelabelNft"
 
-export let SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS = "0x306b78cbf50b5eb771be7956ddc5f381579d8e50"
+export let SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS = "0x679add177873aa63764569e1355b03aee51adce6"
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000"
 
 export let ZERO_BI = BigInt.fromI32(0)
@@ -23,4 +24,14 @@ export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: Big
     return tokenAmount.toBigDecimal()
   }
   return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals))
+}
+
+export function fetchPhase(whitelabelNftAddress: Address): number {
+  let contract = SummitWhitelabelNft.bind(whitelabelNftAddress)
+  let tokenInfoValue = 0
+  let tokenInfoResult = contract.try_tokenInfo()
+  if (!tokenInfoResult.reverted) {
+    tokenInfoValue = tokenInfoResult.value.value7
+  }
+  return tokenInfoValue
 }

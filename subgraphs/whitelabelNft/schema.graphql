@@ -1,24 +1,17 @@
-# type _Schema_
-#   @fulltext(
-#     name: "whitelabelNftSearch",
-#     language: en
-#     algorithm: rank,
-#     include: [
-#       {
-#         entity: "WhitelabelNft",
-#         fields: [
-#           { name: "id" },
-#           { name: "name" },
-#           { name: "symbol" },
-#         ]
-#       }
-#     ]
-#   )
-
+type _Schema_
+  @fulltext(
+    name: "whitelabelNftCollectionSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "WhitelabelNftCollection", fields: [{ name: "id" }, { name: "name" }, { name: "symbol" }] }]
+  )
 
 type WhitelabelNftFactory @entity {
   id: ID!
   totalWhitelabelNft: BigInt!
+  totalWhitelabelNftPausedPhase: BigInt!
+  totalWhitelabelNftPublicPhase: BigInt!
+  totalWhitelabelNftWhitelistPhase: BigInt!
 }
 
 type WhitelabelNftCollection @entity {
@@ -26,6 +19,7 @@ type WhitelabelNftCollection @entity {
   owner: Account!
   name: String!
   symbol: String!
+  description: String!
   previewImageUrl: String!
   maxSupply: BigInt!
   whitelistMintPrice: BigDecimal!
@@ -38,4 +32,7 @@ type WhitelabelNftCollection @entity {
 type Account @entity {
   id: ID!
   totalWhitelabelNft: BigInt!
+  totalWhitelabelNftPausedPhase: BigInt!
+  totalWhitelabelNftPublicPhase: BigInt!
+  totalWhitelabelNftWhitelistPhase: BigInt!
 }

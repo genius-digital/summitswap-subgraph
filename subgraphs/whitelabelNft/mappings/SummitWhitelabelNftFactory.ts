@@ -10,15 +10,22 @@ export function handleCreateNft(event: CreateNft): void {
   if (whitelabelNftFactory === null) {
     whitelabelNftFactory = new WhitelabelNftFactory(SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS)
     whitelabelNftFactory.totalWhitelabelNft = ZERO_BI
+    whitelabelNftFactory.totalWhitelabelNftPausedPhase = ZERO_BI
+    whitelabelNftFactory.totalWhitelabelNftWhitelistPhase = ZERO_BI
+    whitelabelNftFactory.totalWhitelabelNftPublicPhase = ZERO_BI
     whitelabelNftFactory.save()
   }
   whitelabelNftFactory.totalWhitelabelNft = whitelabelNftFactory.totalWhitelabelNft.plus(ONE_BI)
+  whitelabelNftFactory.totalWhitelabelNftPausedPhase = whitelabelNftFactory.totalWhitelabelNftPausedPhase.plus(ONE_BI)
   whitelabelNftFactory.save()
 
   let ownerAccount = Account.load(event.params.owner.toHex())
   if (!ownerAccount) {
     ownerAccount = new Account(event.params.owner.toHex())
     ownerAccount.totalWhitelabelNft = ZERO_BI
+    ownerAccount.totalWhitelabelNftPausedPhase = ZERO_BI
+    ownerAccount.totalWhitelabelNftWhitelistPhase = ZERO_BI
+    ownerAccount.totalWhitelabelNftPublicPhase = ZERO_BI
     ownerAccount.save()
   }
 
@@ -30,9 +37,13 @@ export function handleCreateNft(event: CreateNft): void {
     whitelabelNftCollection.owner = event.params.owner.toHex()
     whitelabelNftCollection.name = event.params.tokenInfo.name
     whitelabelNftCollection.symbol = event.params.tokenInfo.symbol
+    whitelabelNftCollection.description = event.params.tokenInfo.description
     whitelabelNftCollection.previewImageUrl = event.params.tokenInfo.previewImageUrl
     whitelabelNftCollection.maxSupply = event.params.tokenInfo.maxSupply
-    whitelabelNftCollection.whitelistMintPrice = convertTokenToDecimal(event.params.tokenInfo.whitelistMintPrice, decimals)
+    whitelabelNftCollection.whitelistMintPrice = convertTokenToDecimal(
+      event.params.tokenInfo.whitelistMintPrice,
+      decimals
+    )
     whitelabelNftCollection.publicMintPrice = convertTokenToDecimal(event.params.tokenInfo.publicMintPrice, decimals)
     whitelabelNftCollection.phase = event.params.tokenInfo.phase
     whitelabelNftCollection.isReveal = event.params.tokenInfo.isReveal

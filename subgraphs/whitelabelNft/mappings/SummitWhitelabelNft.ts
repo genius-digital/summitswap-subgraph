@@ -54,13 +54,13 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
     previousAccount.totalWhitelabelNft = previousAccount.totalWhitelabelNft.minus(ONE_BI)
 
     if (phase == 0) {
-      previousAccount.totalWhitelabelNftPausedPhase = previousAccount.totalWhitelabelNftPausedPhase.plus(ONE_BI)
+      previousAccount.totalWhitelabelNftPausedPhase = previousAccount.totalWhitelabelNftPausedPhase.minus(ONE_BI)
     }
     if (phase == 1) {
-      previousAccount.totalWhitelabelNftWhitelistPhase = previousAccount.totalWhitelabelNftWhitelistPhase.plus(ONE_BI)
+      previousAccount.totalWhitelabelNftWhitelistPhase = previousAccount.totalWhitelabelNftWhitelistPhase.minus(ONE_BI)
     }
     if (phase == 2) {
-      previousAccount.totalWhitelabelNftPublicPhase = previousAccount.totalWhitelabelNftPublicPhase.plus(ONE_BI)
+      previousAccount.totalWhitelabelNftPublicPhase = previousAccount.totalWhitelabelNftPublicPhase.minus(ONE_BI)
     }
     previousAccount.save()
   }

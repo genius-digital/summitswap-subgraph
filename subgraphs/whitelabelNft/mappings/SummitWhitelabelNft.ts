@@ -128,6 +128,16 @@ export function handlePreviewImageUrlUpdated(event: PreviewImageUrlUpdatedEvent)
 export function handleMint(event: TransferEvent): void {
   let itemId = event.address.toHex() + "-" + event.params.tokenId.toString()
 
+  let toAccount = Account.load(event.params.to.toHex())
+  if (!toAccount) {
+    toAccount = new Account(event.params.to.toHex())
+    toAccount.totalWhitelabelNft = ZERO_BI
+    toAccount.totalWhitelabelNftPausedPhase = ZERO_BI
+    toAccount.totalWhitelabelNftWhitelistPhase = ZERO_BI
+    toAccount.totalWhitelabelNftPublicPhase = ZERO_BI
+    toAccount.save()
+  }
+
   if (event.params.from.toHex() == ADDRESS_ZERO) {
     let item = WhitelabelNftItem.load(itemId)
     if (!item) {

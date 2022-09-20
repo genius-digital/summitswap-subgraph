@@ -8,9 +8,9 @@ dataSources:
     name: SummitWhitelabelNftFactory
     network: chapel
     source:
-      address: "0x679ADD177873Aa63764569e1355b03aeE51AdCE6"
+      address: "0x58f942819CC2C94f51D0f25A421dBB90ADE3cf86"
       abi: SummitWhitelabelNftFactory
-      startBlock: 22980154
+      startBlock: 22995857
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -49,8 +49,8 @@ templates:
       eventHandlers:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        # - event: Transfer(indexed address,indexed address,indexed uint256)
-        #   handler: handleMint
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleMint
         - event: PhaseUpdated(uint8,uint8)
           handler: handlePhaseUpdated
         - event: WhitelistMintPriceUpdated(uint256)

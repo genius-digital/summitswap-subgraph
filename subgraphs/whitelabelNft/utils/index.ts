@@ -2,7 +2,7 @@
 import { BigInt, BigDecimal, Address } from "@graphprotocol/graph-ts"
 import { SummitWhitelabelNft } from "../generated/SummitWhitelabelNftFactory/SummitWhitelabelNft"
 
-export let SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS = "0x679add177873aa63764569e1355b03aee51adce6"
+export let SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS = "0x58f942819cc2c94f51d0f25a421dbb90ade3cf86"
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000"
 
 export let ZERO_BI = BigInt.fromI32(0)

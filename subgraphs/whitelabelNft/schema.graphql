@@ -36,3 +36,10 @@ type Account @entity {
   totalWhitelabelNftPublicPhase: BigInt!
   totalWhitelabelNftWhitelistPhase: BigInt!
 }
+
+type WhitelabelNftItem @entity {
+  id: ID!
+  collection: WhitelabelNftCollection!
+  tokenId: BigInt!
+  owner: Account!
+}

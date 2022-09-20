@@ -1,12 +1,13 @@
 /* eslint-disable prefer-const */
 import { BigInt } from "@graphprotocol/graph-ts"
-import { Account, WhitelabelNftCollection } from "../generated/schema"
+import { Account, WhitelabelNftCollection, WhitelabelNftItem } from "../generated/schema"
 import {
   IsRevealUpdated as IsRevealUpdatedEvent,
   OwnershipTransferred as OwnershipTransferredEvent,
   PhaseUpdated as PhaseUpdatedEvent,
   PreviewImageUrlUpdated as PreviewImageUrlUpdatedEvent,
   PublicMintPriceUpdated as PublicMintPriceUpdatedEvent,
+  Transfer as TransferEvent,
   WhitelistMintPriceUpdated as WhitelistMintPriceUpdatedEvent,
 } from "../generated/SummitWhitelabelNftFactory/SummitWhitelabelNft"
 import { ADDRESS_ZERO, convertTokenToDecimal, fetchPhase, ONE_BI, ZERO_BI } from "../utils"
@@ -74,7 +75,7 @@ export function handlePhaseUpdated(event: PhaseUpdatedEvent): void {
   whitelabelNftCollection!.phase = event.params.updatedPhase
   whitelabelNftCollection!.save()
 
-  let account = Account.load(event.address.toHex())
+  let account = Account.load(event.transaction.from.toHex())
   if (event.params.previousPhase == 0) {
     account!.totalWhitelabelNftPausedPhase = account!.totalWhitelabelNftPausedPhase.minus(ONE_BI)
   }
@@ -124,8 +125,29 @@ export function handlePreviewImageUrlUpdated(event: PreviewImageUrlUpdatedEvent)
   whitelabelNftCollection!.save()
 }
 
-// export function handleMint(event: TransferEvent): void {
-//   let whitelabelNftCollection = WhitelabelNftCollection.load(event.address.toHex())
+export function handleMint(event: TransferEvent): void {
+  let itemId = event.address.toHex() + "-" + event.params.tokenId.toString()
 
-//   let phase = fetchTokenInfo<number>(event.address, "phase") || 0
-// }
+  if (event.params.from.toHex() == ADDRESS_ZERO) {
+    let item = WhitelabelNftItem.load(itemId)
+    if (!item) {
+      item = new WhitelabelNftItem(itemId)
+      item.collection = event.address.toHex()
+      item.tokenId = event.params.tokenId
+      item.owner = event.params.to.toHex()
+      item.save()
+    }
+  }
+
+  if (event.params.to.toHex() == ADDRESS_ZERO) {
+    let item = WhitelabelNftItem.load(itemId)
+    item!.owner = ADDRESS_ZERO
+    item!.save()
+  }
+
+  if (event.params.from.toHex() != ADDRESS_ZERO && event.params.to.toHex() != ADDRESS_ZERO) {
+    let item = WhitelabelNftItem.load(itemId)
+    item!.owner = event.params.to.toHex()
+    item!.save()
+  }
+}

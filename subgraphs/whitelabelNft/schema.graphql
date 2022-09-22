@@ -44,3 +44,10 @@ type WhitelabelNftItem @entity {
   tokenId: BigInt!
   owner: Account!
 }
+
+type NftOwner @entity {
+  id: ID!
+  collection: WhitelabelNftCollection!
+  owner: Account!
+  nftCount: BigInt!
+}

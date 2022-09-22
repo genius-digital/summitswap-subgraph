@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { BigInt } from "@graphprotocol/graph-ts"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { Account, WhitelabelNftCollection, WhitelabelNftItem } from "../generated/schema"
 import {
   IsRevealUpdated as IsRevealUpdatedEvent,
@@ -10,7 +10,7 @@ import {
   Transfer as TransferEvent,
   WhitelistMintPriceUpdated as WhitelistMintPriceUpdatedEvent,
 } from "../generated/SummitWhitelabelNftFactory/SummitWhitelabelNft"
-import { ADDRESS_ZERO, convertTokenToDecimal, fetchPhase, ONE_BI, ZERO_BI } from "../utils"
+import { ADDRESS_ZERO, convertTokenToDecimal, fetchBalanceOf, fetchPhase, ONE_BI, ZERO_BI } from "../utils"
 
 export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
   let whitelabelNftCollection = WhitelabelNftCollection.load(event.address.toHex())
@@ -34,7 +34,7 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
     newAccount.save()
   }
 
-  let phase = fetchPhase(event.address)
+  let phase = fetchPhase(Address.fromString(event.address.toHex()))
 
   if (newAccount.id != ADDRESS_ZERO) {
     newAccount.totalWhitelabelNft = newAccount.totalWhitelabelNft.plus(ONE_BI)
@@ -126,6 +126,7 @@ export function handlePreviewImageUrlUpdated(event: PreviewImageUrlUpdatedEvent)
 }
 
 export function handleMint(event: TransferEvent): void {
+  let whitelabelNftCollection = WhitelabelNftCollection.load(event.address.toHex())
   let itemId = event.address.toHex() + "-" + event.params.tokenId.toString()
 
   let toAccount = Account.load(event.params.to.toHex())
@@ -159,5 +160,20 @@ export function handleMint(event: TransferEvent): void {
     let item = WhitelabelNftItem.load(itemId)
     item!.owner = event.params.to.toHex()
     item!.save()
+  }
+
+  let fromBalance = fetchBalanceOf(
+    Address.fromString(event.address.toHex()),
+    Address.fromString(event.params.from.toHex())
+  )
+  let toBalance = fetchBalanceOf(Address.fromString(event.address.toHex()), Address.fromString(event.params.to.toHex()))
+
+  if (fromBalance == 0) {
+    whitelabelNftCollection!.totalOwner = whitelabelNftCollection!.totalOwner.minus(ONE_BI)
+    whitelabelNftCollection!.save()
+  }
+  if (toBalance == 1) {
+    whitelabelNftCollection!.totalOwner = whitelabelNftCollection!.totalOwner.plus(ONE_BI)
+    whitelabelNftCollection!.save()
   }
 }

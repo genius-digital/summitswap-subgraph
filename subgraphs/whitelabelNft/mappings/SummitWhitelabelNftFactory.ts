@@ -47,6 +47,7 @@ export function handleCreateNft(event: CreateNft): void {
     whitelabelNftCollection.publicMintPrice = convertTokenToDecimal(event.params.tokenInfo.publicMintPrice, decimals)
     whitelabelNftCollection.phase = event.params.tokenInfo.phase
     whitelabelNftCollection.isReveal = event.params.tokenInfo.isReveal
+    whitelabelNftCollection.totalOwner = ZERO_BI
     whitelabelNftCollection.createdAt = event.block.timestamp
     whitelabelNftCollection.save()
   }

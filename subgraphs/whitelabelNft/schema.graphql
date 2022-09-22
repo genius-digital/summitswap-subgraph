@@ -26,6 +26,7 @@ type WhitelabelNftCollection @entity {
   publicMintPrice: BigDecimal!
   phase: Int!
   isReveal: Boolean!
+  totalOwner: BigInt!
   createdAt: BigInt!
 }
 

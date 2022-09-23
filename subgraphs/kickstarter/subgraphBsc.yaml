@@ -8,9 +8,9 @@ dataSources:
     name: SummitKickstarterFactory
     network: bsc
     source:
-      address: '0xe9e0837308a8776757E9D1a59D01A156Ae30B74e'
+      address: '0x5774a2c6566828f39F5527559494A1d7368cdB9b'
       abi: SummitKickstarterFactory
-      startBlock: 22282088
+      startBlock: 21571582
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -22,6 +22,8 @@ dataSources:
       abis:
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
         - name: SummitKickstarterFactory
           file: ./abis/SummitKickstarterFactory.json
         - name: SummitKickstarter
@@ -32,7 +34,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Kickstarter
-    network: chapel
+    network: bsc
     source:
       abi: SummitKickstarter
     mapping:
@@ -46,16 +48,16 @@ templates:
       abis:
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
         - name: SummitKickstarterFactory
           file: ./abis/SummitKickstarterFactory.json
         - name: SummitKickstarter
           file: ./abis/SummitKickstarter.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
       eventHandlers:
         - event: Approved(uint256,uint256)
           handler: handleApproved
-        - event: Contribute(indexed address,string,uint256,uint256)
+        - event: Contribute(indexed address,uint256,uint256)
           handler: handleContribute
         - event: CreatorUpdated(string)
           handler: handleCreatorUpdated

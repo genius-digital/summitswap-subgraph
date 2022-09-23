@@ -7,11 +7,10 @@
     "license": "UNLICENSED",
     "scripts": {
       "codegen": "graph codegen subgraphChapel.yaml",
-      "codegen-mainnet": "graph deploy subgraphBsc.yaml",
+      "codegen-mainnet": "graph codegen subgraphBsc.yaml",
       "build": "graph build subgraphChapel.yaml",
       "build-mainnet": "graph build subgraphBsc.yaml",
       "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ erwin-huang/summitswap-kickstarter subgraphChapel.yaml",
-      "deploy-mainnet": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ koda-finance/summit-kickstarter subgraphBsc.yaml"
+      "deploy-mainnet": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ koda-finance/kickstarter subgraphBsc.yaml"
     }
   }
-  

@@ -21,6 +21,7 @@ type WhitelabelNftCollection @entity {
   symbol: String!
   description: String!
   previewImageUrl: String!
+  baseTokenURI: String!
   maxSupply: BigInt!
   whitelistMintPrice: BigDecimal!
   publicMintPrice: BigDecimal!

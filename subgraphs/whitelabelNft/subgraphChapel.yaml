@@ -8,9 +8,9 @@ dataSources:
     name: SummitWhitelabelNftFactory
     network: chapel
     source:
-      address: "0xD271cb48BA79c99553f00BAC114cDe754CaEb5AE"
+      address: "0x964062FE8136cBf1A4BAe80c684d47d110aA6F2C"
       abi: SummitWhitelabelNftFactory
-      startBlock: 23062473
+      startBlock: 23199398
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -25,7 +25,7 @@ dataSources:
         - name: SummitWhitelabelNft
           file: ./abis/SummitWhitelabelNft.json
       eventHandlers:
-        - event: CreateNft(indexed address,indexed address,(string,string,string,string,uint256,uint256,uint256,uint8,bool))
+        - event: CreateNft(indexed address,indexed address,(string,string,string,string,uint256,uint256,uint256,uint8,bool),string)
           handler: handleCreateNft
 templates:
   - kind: ethereum/contract
@@ -61,3 +61,5 @@ templates:
           handler: handleIsRevealUpdated
         - event: PreviewImageUrlUpdated(string)
           handler: handlePreviewImageUrlUpdated
+        - event: BaseTokenUriUpdated(string)
+          handler: handleBaseTokenUriUpdated

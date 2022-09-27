@@ -2,6 +2,7 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 import { Account, NftOwner, WhitelabelNftCollection, WhitelabelNftItem } from "../generated/schema"
 import {
+  BaseTokenUriUpdated as BaseTokenUriUpdatedEvent,
   IsRevealUpdated as IsRevealUpdatedEvent,
   OwnershipTransferred as OwnershipTransferredEvent,
   PhaseUpdated as PhaseUpdatedEvent,
@@ -122,6 +123,12 @@ export function handleIsRevealUpdated(event: IsRevealUpdatedEvent): void {
 export function handlePreviewImageUrlUpdated(event: PreviewImageUrlUpdatedEvent): void {
   let whitelabelNftCollection = WhitelabelNftCollection.load(event.address.toHex())
   whitelabelNftCollection!.previewImageUrl = event.params.previewImageUrl
+  whitelabelNftCollection!.save()
+}
+
+export function handleBaseTokenUriUpdated(event: BaseTokenUriUpdatedEvent): void {
+  let whitelabelNftCollection = WhitelabelNftCollection.load(event.address.toHex())
+  whitelabelNftCollection!.baseTokenURI = event.params.baseUri
   whitelabelNftCollection!.save()
 }
 

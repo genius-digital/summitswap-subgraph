@@ -171,6 +171,7 @@ export function handleTransfer(event: TransferEvent): void {
     item.collection = event.address.toHex()
     item.tokenId = event.params.tokenId
     item.owner = event.params.to.toHex()
+    item.createdAt = event.block.timestamp
     item.save()
   }
 

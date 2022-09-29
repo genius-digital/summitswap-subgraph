@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import { BigInt } from "@graphprotocol/graph-ts"
-import { Account, NftOwner, WhitelabelNftCollection, WhitelabelNftItem } from "../generated/schema"
+import { Account, NftOwner, WhitelabelNftCollection, WhitelabelNftFactory, WhitelabelNftItem } from "../generated/schema"
 import {
   BaseTokenUriUpdated as BaseTokenUriUpdatedEvent,
   IsRevealUpdated as IsRevealUpdatedEvent,
@@ -11,7 +11,7 @@ import {
   Transfer as TransferEvent,
   WhitelistMintPriceUpdated as WhitelistMintPriceUpdatedEvent,
 } from "../generated/SummitWhitelabelNftFactory/SummitWhitelabelNft"
-import { ADDRESS_ZERO, convertTokenToDecimal, ONE_BI, ZERO_BI } from "../utils"
+import { ADDRESS_ZERO, convertTokenToDecimal, ONE_BI, SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS, ZERO_BI } from "../utils"
 
 export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
   let whitelabelNftCollection = WhitelabelNftCollection.load(event.address.toHex())
@@ -76,25 +76,33 @@ export function handlePhaseUpdated(event: PhaseUpdatedEvent): void {
   whitelabelNftCollection!.phase = event.params.updatedPhase
   whitelabelNftCollection!.save()
 
+  let whitelabelNftFactory = WhitelabelNftFactory.load(SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS)
   let account = Account.load(event.transaction.from.toHex())
   if (event.params.previousPhase == 0) {
+    whitelabelNftFactory!.totalWhitelabelNftPausedPhase = whitelabelNftFactory!.totalWhitelabelNftPausedPhase.minus(ONE_BI)
     account!.totalWhitelabelNftPausedPhase = account!.totalWhitelabelNftPausedPhase.minus(ONE_BI)
   }
   if (event.params.previousPhase == 1) {
+    whitelabelNftFactory!.totalWhitelabelNftWhitelistPhase = whitelabelNftFactory!.totalWhitelabelNftWhitelistPhase.minus(ONE_BI)
     account!.totalWhitelabelNftWhitelistPhase = account!.totalWhitelabelNftWhitelistPhase.minus(ONE_BI)
   }
   if (event.params.previousPhase == 2) {
+    whitelabelNftFactory!.totalWhitelabelNftPublicPhase = whitelabelNftFactory!.totalWhitelabelNftPublicPhase.minus(ONE_BI)
     account!.totalWhitelabelNftPublicPhase = account!.totalWhitelabelNftPublicPhase.minus(ONE_BI)
   }
   if (event.params.updatedPhase == 0) {
+    whitelabelNftFactory!.totalWhitelabelNftPausedPhase = whitelabelNftFactory!.totalWhitelabelNftPausedPhase.plus(ONE_BI)
     account!.totalWhitelabelNftPausedPhase = account!.totalWhitelabelNftPausedPhase.plus(ONE_BI)
   }
   if (event.params.updatedPhase == 1) {
+    whitelabelNftFactory!.totalWhitelabelNftWhitelistPhase = whitelabelNftFactory!.totalWhitelabelNftWhitelistPhase.plus(ONE_BI)
     account!.totalWhitelabelNftWhitelistPhase = account!.totalWhitelabelNftWhitelistPhase.plus(ONE_BI)
   }
   if (event.params.updatedPhase == 2) {
+    whitelabelNftFactory!.totalWhitelabelNftPublicPhase = whitelabelNftFactory!.totalWhitelabelNftPublicPhase.plus(ONE_BI)
     account!.totalWhitelabelNftPublicPhase = account!.totalWhitelabelNftPublicPhase.plus(ONE_BI)
   }
+  whitelabelNftFactory!.save()
   account!.save()
 }
 

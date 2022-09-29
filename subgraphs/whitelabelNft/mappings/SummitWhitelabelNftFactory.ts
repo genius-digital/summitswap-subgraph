@@ -41,10 +41,7 @@ export function handleCreateNft(event: CreateNft): void {
     whitelabelNftCollection.previewImageUrl = event.params.tokenInfo.previewImageUrl
     whitelabelNftCollection.baseTokenURI = event.params.initialURI
     whitelabelNftCollection.maxSupply = event.params.tokenInfo.maxSupply
-    whitelabelNftCollection.whitelistMintPrice = convertTokenToDecimal(
-      event.params.tokenInfo.whitelistMintPrice,
-      decimals
-    )
+    whitelabelNftCollection.whitelistMintPrice = convertTokenToDecimal(event.params.tokenInfo.whitelistMintPrice, decimals)
     whitelabelNftCollection.publicMintPrice = convertTokenToDecimal(event.params.tokenInfo.publicMintPrice, decimals)
     whitelabelNftCollection.phase = event.params.tokenInfo.phase
     whitelabelNftCollection.isReveal = event.params.tokenInfo.isReveal

@@ -33,9 +33,7 @@ export function handleSummitSync(event: Sync): void {
   token1.save()
 
   // use derived amounts within pair
-  pair.reserveBNB = pair.reserve0
-    .times(token0.derivedBNB as BigDecimal)
-    .plus(pair.reserve1.times(token1.derivedBNB as BigDecimal))
+  pair.reserveBNB = pair.reserve0.times(token0.derivedBNB as BigDecimal).plus(pair.reserve1.times(token1.derivedBNB as BigDecimal))
   pair.reserveUSD = pair.reserveBNB.times(bundle.bnbPrice)
 
   // save entities

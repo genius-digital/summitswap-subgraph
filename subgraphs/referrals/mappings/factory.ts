@@ -2,15 +2,7 @@
 import { SummitFactory, Pair, Token, Bundle } from "../generated/schema"
 import { SummitPair as SummitPairTemplate } from "../generated/templates"
 import { PairCreated } from "../generated/SummitFactory/Factory"
-import {
-  SUMMIT_FACTORY_ADDRESS,
-  ZERO_BD,
-  ZERO_BI,
-  ONE_BI,
-  fetchTokenSymbol,
-  fetchTokenName,
-  fetchTokenDecimals,
-} from "./utils"
+import { SUMMIT_FACTORY_ADDRESS, ZERO_BD, ZERO_BI, ONE_BI, fetchTokenSymbol, fetchTokenName, fetchTokenDecimals } from "./utils"
 
 export function handleSummitPairCreated(event: PairCreated): void {
   let factory = SummitFactory.load(SUMMIT_FACTORY_ADDRESS)

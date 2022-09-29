@@ -38,8 +38,7 @@ export function handleApproved(event: ApprovedEvent): void {
 
   let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
   if (kickstarter.approvalStatus == BigInt.fromI32(0)) {
-    summitKickstarterFactory.totalWaitingForApprovalKickstarter =
-      summitKickstarterFactory.totalWaitingForApprovalKickstarter.minus(ONE_BI)
+    summitKickstarterFactory.totalWaitingForApprovalKickstarter = summitKickstarterFactory.totalWaitingForApprovalKickstarter.minus(ONE_BI)
   } else if (kickstarter.approvalStatus == BigInt.fromI32(1)) {
     summitKickstarterFactory.totalApprovedKickstarter = summitKickstarterFactory.totalApprovedKickstarter.minus(ONE_BI)
   } else if (kickstarter.approvalStatus == BigInt.fromI32(2)) {
@@ -176,16 +175,14 @@ export function handleKickstarterUpdatedByFactoryAdmin(event: KickstarterUpdated
   let account = Account.load(kickstarter.owner)
   let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
   if (kickstarter.approvalStatus == BigInt.fromI32(0)) {
-    summitKickstarterFactory.totalWaitingForApprovalKickstarter =
-      summitKickstarterFactory.totalWaitingForApprovalKickstarter.minus(ONE_BI)
+    summitKickstarterFactory.totalWaitingForApprovalKickstarter = summitKickstarterFactory.totalWaitingForApprovalKickstarter.minus(ONE_BI)
   } else if (kickstarter.approvalStatus == BigInt.fromI32(1)) {
     summitKickstarterFactory.totalApprovedKickstarter = summitKickstarterFactory.totalApprovedKickstarter.minus(ONE_BI)
   } else if (kickstarter.approvalStatus == BigInt.fromI32(2)) {
     summitKickstarterFactory.totalRejectedKickstarter = summitKickstarterFactory.totalRejectedKickstarter.minus(ONE_BI)
   }
   if (BigInt.fromI32(event.params.approvalStatus) == BigInt.fromI32(0)) {
-    summitKickstarterFactory.totalWaitingForApprovalKickstarter =
-      summitKickstarterFactory.totalWaitingForApprovalKickstarter.plus(ONE_BI)
+    summitKickstarterFactory.totalWaitingForApprovalKickstarter = summitKickstarterFactory.totalWaitingForApprovalKickstarter.plus(ONE_BI)
   } else if (BigInt.fromI32(event.params.approvalStatus) == BigInt.fromI32(1)) {
     summitKickstarterFactory.totalApprovedKickstarter = summitKickstarterFactory.totalApprovedKickstarter.plus(ONE_BI)
   } else if (BigInt.fromI32(event.params.approvalStatus) == BigInt.fromI32(2)) {
@@ -295,8 +292,7 @@ export function handleRejected(event: RejectedEvent): void {
   let kickstarter = Kickstarter.load(event.address.toHex())
   let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
   if (kickstarter.approvalStatus == BigInt.fromI32(0)) {
-    summitKickstarterFactory.totalWaitingForApprovalKickstarter =
-      summitKickstarterFactory.totalWaitingForApprovalKickstarter.minus(ONE_BI)
+    summitKickstarterFactory.totalWaitingForApprovalKickstarter = summitKickstarterFactory.totalWaitingForApprovalKickstarter.minus(ONE_BI)
   } else if (kickstarter.approvalStatus == BigInt.fromI32(1)) {
     summitKickstarterFactory.totalApprovedKickstarter = summitKickstarterFactory.totalApprovedKickstarter.minus(ONE_BI)
   } else if (kickstarter.approvalStatus == BigInt.fromI32(2)) {
@@ -332,16 +328,14 @@ export function handleApprovalStatusUpdated(event: ApprovalStatusUpdatedEvent): 
   let kickstarter = Kickstarter.load(event.address.toHex())
   let summitKickstarterFactory = SummitKickstarterFactory.load(SUMMIT_KICKSTARTER_FACTORY_ADDRESS)
   if (kickstarter.approvalStatus == BigInt.fromI32(0)) {
-    summitKickstarterFactory.totalWaitingForApprovalKickstarter =
-      summitKickstarterFactory.totalWaitingForApprovalKickstarter.minus(ONE_BI)
+    summitKickstarterFactory.totalWaitingForApprovalKickstarter = summitKickstarterFactory.totalWaitingForApprovalKickstarter.minus(ONE_BI)
   } else if (kickstarter.approvalStatus == BigInt.fromI32(1)) {
     summitKickstarterFactory.totalApprovedKickstarter = summitKickstarterFactory.totalApprovedKickstarter.minus(ONE_BI)
   } else if (kickstarter.approvalStatus == BigInt.fromI32(2)) {
     summitKickstarterFactory.totalRejectedKickstarter = summitKickstarterFactory.totalRejectedKickstarter.minus(ONE_BI)
   }
   if (BigInt.fromI32(event.params.approvalStatus) == BigInt.fromI32(0)) {
-    summitKickstarterFactory.totalWaitingForApprovalKickstarter =
-      summitKickstarterFactory.totalWaitingForApprovalKickstarter.plus(ONE_BI)
+    summitKickstarterFactory.totalWaitingForApprovalKickstarter = summitKickstarterFactory.totalWaitingForApprovalKickstarter.plus(ONE_BI)
   } else if (BigInt.fromI32(event.params.approvalStatus) == BigInt.fromI32(1)) {
     summitKickstarterFactory.totalApprovedKickstarter = summitKickstarterFactory.totalApprovedKickstarter.plus(ONE_BI)
   } else if (BigInt.fromI32(event.params.approvalStatus) == BigInt.fromI32(2)) {

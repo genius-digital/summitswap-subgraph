@@ -8,9 +8,9 @@ dataSources:
     name: SummitWhitelabelNftFactory
     network: chapel
     source:
-      address: "0xA58f8dBebD745789ae0a002a457B3013ad7A98b5"
+      address: "0x7BafBd55716C987Ced9Eb25CFE3A4804bFB3A847"
       abi: SummitWhitelabelNftFactory
-      startBlock: 23370464
+      startBlock: 23401164
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

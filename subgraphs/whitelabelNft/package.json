@@ -11,6 +11,6 @@
       "build": "graph build subgraphChapel.yaml",
       "build-mainnet": "graph build subgraphBsc.yaml",
       "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sxio/staging subgraphChapel.yaml",
-      "deploy-mainnet": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ koda-finance/summit-kickstarter subgraphBsc.yaml"
+      "deploy-mainnet": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ koda-finance/summit-whitelabel-nft subgraphMainnet.yaml"
     }
   }

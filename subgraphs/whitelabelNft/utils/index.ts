@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts"
 
-export let SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS = "0x7bafbd55716c987ced9eb25cfe3a4804bfb3a847"
+export let SUMMIT_WHITELABEL_NFT_FACTORY_ADDRESS = "0xe2984d883dc7606114b528f8fb650965e4d08592"
 export let ADDRESS_ZERO = "0x0000000000000000000000000000000000000000"
 
 export let ZERO_BI = BigInt.fromI32(0)

@@ -8,9 +8,9 @@ dataSources:
     name: SummitWhitelabelNftFactory
     network: goerli
     source:
-      address: "0xe2984D883Dc7606114b528F8Fb650965e4D08592"
+      address: "0x1549d28F1c56A23864D63f5b00Ad1aeA1c7609A4"
       abi: SummitWhitelabelNftFactory
-      startBlock: 7721372
+      startBlock: 8546799
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

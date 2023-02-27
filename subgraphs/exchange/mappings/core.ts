@@ -51,9 +51,7 @@ export function handleTransfer(event: Transfer): void {
 
     // create new mint if no mints so far or if last one is done already
     if (mints.length === 0 || isCompleteMint(mints[mints.length - 1])) {
-      let mint = new MintEvent(
-        event.transaction.hash.toHex().concat("-").concat(BigInt.fromI32(mints.length).toString())
-      )
+      let mint = new MintEvent(event.transaction.hash.toHex().concat("-").concat(BigInt.fromI32(mints.length).toString()))
       mint.transaction = transaction.id
       mint.pair = pair.id
       mint.to = event.params.to
@@ -203,22 +201,16 @@ export function handleSync(event: Sync): void {
   // get tracked liquidity - will be 0 if neither is in whitelist
   let trackedLiquidityBNB: BigDecimal
   if (bundle.bnbPrice.notEqual(ZERO_BD)) {
-    trackedLiquidityBNB = getTrackedLiquidityUSD(
-      bundle as Bundle,
-      pair.reserve0,
-      token0 as Token,
-      pair.reserve1,
-      token1 as Token
-    ).div(bundle.bnbPrice)
+    trackedLiquidityBNB = getTrackedLiquidityUSD(bundle as Bundle, pair.reserve0, token0 as Token, pair.reserve1, token1 as Token).div(
+      bundle.bnbPrice
+    )
   } else {
     trackedLiquidityBNB = ZERO_BD
   }
 
   // use derived amounts within pair
   pair.trackedReserveBNB = trackedLiquidityBNB
-  pair.reserveBNB = pair.reserve0
-    .times(token0.derivedBNB as BigDecimal)
-    .plus(pair.reserve1.times(token1.derivedBNB as BigDecimal))
+  pair.reserveBNB = pair.reserve0.times(token0.derivedBNB as BigDecimal).plus(pair.reserve1.times(token1.derivedBNB as BigDecimal))
   pair.reserveUSD = pair.reserveBNB.times(bundle.bnbPrice)
 
   // use tracked amounts globally
@@ -257,10 +249,7 @@ export function handleMint(event: Mint): void {
 
   // get new amounts of USD and BNB for tracking
   let bundle = Bundle.load("1")
-  let amountTotalUSD = token1.derivedBNB
-    .times(token1Amount)
-    .plus(token0.derivedBNB.times(token0Amount))
-    .times(bundle.bnbPrice)
+  let amountTotalUSD = token1.derivedBNB.times(token1Amount).plus(token0.derivedBNB.times(token0Amount)).times(bundle.bnbPrice)
 
   // update txn counts
   pair.totalTransactions = pair.totalTransactions.plus(ONE_BI)
@@ -312,10 +301,7 @@ export function handleBurn(event: Burn): void {
 
   // get new amounts of USD and BNB for tracking
   let bundle = Bundle.load("1")
-  let amountTotalUSD = token1.derivedBNB
-    .times(token1Amount)
-    .plus(token0.derivedBNB.times(token0Amount))
-    .times(bundle.bnbPrice)
+  let amountTotalUSD = token1.derivedBNB.times(token1Amount).plus(token0.derivedBNB.times(token0Amount)).times(bundle.bnbPrice)
 
   // update txn counts
   summit.totalTransactions = summit.totalTransactions.plus(ONE_BI)
@@ -362,20 +348,11 @@ export function handleSwap(event: Swap): void {
   let bundle = Bundle.load("1")
 
   // get total amounts of derived USD and BNB for tracking
-  let derivedAmountBNB = token1.derivedBNB
-    .times(amount1Total)
-    .plus(token0.derivedBNB.times(amount0Total))
-    .div(BigDecimal.fromString("2"))
+  let derivedAmountBNB = token1.derivedBNB.times(amount1Total).plus(token0.derivedBNB.times(amount0Total)).div(BigDecimal.fromString("2"))
   let derivedAmountUSD = derivedAmountBNB.times(bundle.bnbPrice)
 
   // only accounts for volume through white listed tokens
-  let trackedAmountUSD = getTrackedVolumeUSD(
-    bundle as Bundle,
-    amount0Total,
-    token0 as Token,
-    amount1Total,
-    token1 as Token
-  )
+  let trackedAmountUSD = getTrackedVolumeUSD(bundle as Bundle, amount0Total, token0 as Token, amount1Total, token1 as Token)
 
   let trackedAmountBNB: BigDecimal
   if (bundle.bnbPrice.equals(ZERO_BD)) {

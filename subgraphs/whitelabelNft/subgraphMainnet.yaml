@@ -1,0 +1,65 @@
+specVersion: 0.0.2
+description: Summit Whitelabel NFT is a platform for people to create NFT Collection with minting page and whitelist support.
+repository: https://github.com/koda-finance
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SummitWhitelabelNftFactory
+    network: mainnet
+    source:
+      address: "0x7BafBd55716C987Ced9Eb25CFE3A4804bFB3A847"
+      abi: SummitWhitelabelNftFactory
+      startBlock: 23401164
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/SummitWhitelabelNftFactory.ts
+      entities:
+        - SummitWhitelabelNftFactory
+        - WhitelabelNft
+      abis:
+        - name: SummitWhitelabelNftFactory
+          file: ./abis/SummitWhitelabelNftFactory.json
+        - name: SummitWhitelabelNft
+          file: ./abis/SummitWhitelabelNft.json
+      eventHandlers:
+        - event: CreateNft(indexed address,indexed address,(string,string,string,string,uint256,uint256,uint256,uint8,bool),string)
+          handler: handleCreateNft
+templates:
+  - kind: ethereum/contract
+    name: WhitelabelNft
+    network: mainnet
+    source:
+      abi: SummitWhitelabelNft
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/SummitWhitelabelNft.ts
+      entities:
+        - SummitWhitelabelNftFactory
+        - WhitelabelNft
+      abis:
+        - name: SummitWhitelabelNftFactory
+          file: ./abis/SummitWhitelabelNftFactory.json
+        - name: SummitWhitelabelNft
+          file: ./abis/SummitWhitelabelNft.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: PhaseUpdated(uint8,uint8)
+          handler: handlePhaseUpdated
+        - event: WhitelistMintPriceUpdated(uint256)
+          handler: handleWhitelistMintPriceUpdated
+        - event: PublicMintPriceUpdated(uint256)
+          handler: handlePublicMintPriceUpdated
+        - event: IsRevealUpdated(bool)
+          handler: handleIsRevealUpdated
+        - event: PreviewImageUrlUpdated(string)
+          handler: handlePreviewImageUrlUpdated
+        - event: BaseTokenUriUpdated(string)
+          handler: handleBaseTokenUriUpdated

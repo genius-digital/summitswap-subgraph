@@ -1,0 +1,16 @@
+{
+    "name": "whitelabel",
+    "description": "SummitWhitelabelNft Subgraph",
+    "version": "1.0.0",
+    "repository": "https://github.com/Koda-Finance/summitswap-subgraph",
+    "author": "SummitSwap",
+    "license": "UNLICENSED",
+    "scripts": {
+      "codegen": "graph codegen subgraphGoerli.yaml",
+      "codegen-mainnet": "graph deploy subgraphMainnet.yaml",
+      "build": "graph build subgraphGoerli.yaml",
+      "build-mainnet": "graph build subgraphMainnet.yaml",
+      "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sxio/staging subgraphGoerli.yaml",
+      "deploy-mainnet": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ koda-finance/summit-whitelabel-nft subgraphMainnet.yaml"
+    }
+  }
